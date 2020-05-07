@@ -14,8 +14,12 @@ session_start();
         <link rel=stylesheet href="PageModel.css" type="text/css">
     </head>
     <body>
-
-        <form action="Control.php" method="post">
+        <?php
+            if (!isset($_POST['submit'])){
+                
+            }
+        ?>
+        <form action="index2.php" method="post">
             <div id="header">
                 <p><h1>Log in to BKOD</h1></p>
             </div>

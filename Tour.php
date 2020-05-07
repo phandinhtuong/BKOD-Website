@@ -20,7 +20,7 @@ if (!isset($_SESSION["u"])){
     </head>
     <body>
         <div id="header">
-            <p><h1>Home Page</h1></p>
+            <p><h1>Tours list</h1></p>
     </div>
 
     <ul id="navbar">
@@ -42,7 +42,7 @@ if (!isset($_SESSION["u"])){
     </ul>
 
     <div id="main">
-        <h1 align="center">Welcome to BKOD Website</h1>
+        
 
 
     </div>
