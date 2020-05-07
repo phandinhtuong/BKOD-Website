@@ -3,7 +3,7 @@
 require_once 'DB.php';
 # parameters for connecting to the "business_service" 
 $usernameDB = "root";
-$password = "";
+$passwordDB = "";
 $hostspec = "localhost";
 $database = "bkod";
 // $dbtype = 'pgsql';
@@ -11,7 +11,7 @@ $database = "bkod";
 $dbtype = 'mysqli';
 
 # DSN constructed from parameters 
-$dsn = "$dbtype://$usernameDB:$password@$hostspec/$database";
+$dsn = "$dbtype://$usernameDB:$passwordDB@$hostspec/$database";
 
 # Establish the connection
 $db = DB::connect($dsn);
