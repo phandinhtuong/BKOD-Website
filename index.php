@@ -20,7 +20,7 @@ session_start();
                 <p><h1>Log in to BKOD</h1></p>
             </div>
             <?php
-            
+
             if (isset($_SESSION["w"])) {
                 echo "<h2 align='center'>Wrong username or password.</h2>";
                 unset($_SESSION["w"]);
@@ -36,10 +36,11 @@ session_start();
                 <input type="text" name="username" value="a@a.a"><br>
                 <input type="text" name="password" value="a"><br>
                 <input type="submit" value="Log in">
-
+                <br />
+                <div style="font-size: 14px">Does not have an account? Click <a href="Register.html" >here</a> to register.</div>
             </div>
         </form>
-        
+
 
     </body>
 </html>
