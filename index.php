@@ -26,8 +26,13 @@ session_start();
                 unset($_SESSION["w"]);
                 session_destroy();
             }
-            if (isset($_SESSION["u"])){
+            else if (isset($_SESSION["u"])){
                 unset($_SESSION["u"]);
+                session_destroy();
+            }
+            else if (isset($_SESSION["registerSuccess"])){
+                echo "<h2 align='center'>Registered successfully!</h2>";
+                unset($_SESSION["registerSuccess"]);
                 session_destroy();
             }
             ?>
@@ -37,7 +42,7 @@ session_start();
                 <input type="text" name="password" value="a"><br>
                 <input type="submit" value="Log in">
                 <br />
-                <div style="font-size: 14px">Does not have an account? Click <a href="Register.html" >here</a> to register.</div>
+                <div style="font-size: 14px">Does not have an account? Click <a href="Register.php" >here</a> to register.</div>
             </div>
         </form>
 
