@@ -15,13 +15,6 @@ if ($psw != $repeat_psw) {
 $fullName = $_POST['fullName'];
 $hash256Password = $psw . $username . "BKODv1Habvietio";
 $hash256Password = hash("sha256", $hash256Password);
-echo $hash256Password . "/n";
-
-echo $username;
-echo $psw;
-echo $repeat_psw;
-
-echo $db;
 
 $userId = time();
 $insertUserQuery = $db->prepare("INSERT INTO user (UserId, username, password, fullname) VALUES (?, ?, ?, ?)");
@@ -30,26 +23,25 @@ if (PEAR::isError($insertUserQuery)) {
 }
 $data = array($userId, $username, $hash256Password, $fullName);
 
-$res = & $db->execute($insertUserQuery, $data);
+$res = &$db->execute($insertUserQuery, $data);
 
 if (PEAR::isError($res)) {
   $err = $res->getDebugInfo();
   if (strpos($err, 'Duplicate entry') !== false) {
     $_SESSION["duplicateEntry"] = "duplicateEntry";
-  header('Location: Register.php');
-  exit();
-
-
+    header('Location: Register.php');
+    exit();
+  } else {
+    $_SESSION["unknownError"] = "unknownError";
+    header('Location: Register.php');
+    exit();
+  }
 } else {
-  $_SESSION["unknownError"] = "unknownError";
-  header('Location: Register.php');
-  exit();
-}
-
-} else {
-  $_SESSION["registerSuccess"] = "registerSuccess";
+  $loginInfo = array(
+    'username' => $username,
+    'psw' => $psw
+  );
+  $_SESSION["registerSuccess"] = $loginInfo;
   header('Location: index.php');
   exit();
 }
-
-?>
