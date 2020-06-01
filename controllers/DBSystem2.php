@@ -1,7 +1,7 @@
 <?php
 class DBSystem2{
     function checkValidLogin($username, $password) {
-    require 'db_connection.php';
+    require '../utils/db_connection.php';
     $hash256Password = $password . $username . "BKODv1Habvietio";
     $hash256Password = hash("sha256", $hash256Password);
     //print($hash256Password);
@@ -29,7 +29,7 @@ class DBSystem2{
 //    print("<br>");
 //    print($hash256Password);
 //    print("<br>");
-    
+
     if (strcmp($row[1], $username) == 0 && strcmp($row[2], $hash256Password) == 0) {
       //  print("OK");
         return 1;
