@@ -23,12 +23,12 @@ if (isset($_SESSION["registerSuccess"])) {
 <head>
     <meta charset="UTF-8">
     <title>BKOD-Website</title>
-    <link rel=stylesheet href="PageModel.css" type="text/css">
+    <link rel=stylesheet href="static/PageModel.css" type="text/css">
 </head>
 
 <body>
 
-    <form action="Control.php" method="post">
+    <form action="../controllers/Control.php" method="post">
         <div id="header">
             <p>
                 <h1>Log in to BKOD</h1>

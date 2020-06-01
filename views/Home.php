@@ -16,11 +16,11 @@ if (!isset($_SESSION["u"])){
         <title>BKOD-Website</title>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <link rel=stylesheet href="PageModel.css" type="text/css">
+        <link rel=stylesheet href="static/PageModel.css" type="text/css">
     </head>
     <body>
         <div id="header">
-            <p><h1>Tours list</h1></p>
+            <p><h1>Home Page</h1></p>
     </div>
 
     <ul id="navbar">
@@ -35,14 +35,14 @@ if (!isset($_SESSION["u"])){
         <!--Support-->
         <li><a href="Support.html">Support</a></li>
         <!--private info-->
-        <li><a href="User.html"><?php echo $_SESSION["u"]; ?></a></li>        
-        
+        <li><a href="User.html"><?php echo $_SESSION["u"]; ?></a></li>
+
         <!--Log out-->
         <li><a href="index.php">Log out</a></li>
     </ul>
 
     <div id="main">
-        
+        <h1 align="center">Welcome to BKOD Website</h1>
 
 
     </div>

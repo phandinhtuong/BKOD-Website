@@ -76,7 +76,7 @@ session_start();
 
 <body>
 
-  <form action="RegisterController.php" method="POST">
+  <form action="../controllers/RegisterController.php" method="POST">
     <div class="container">
       <h1>BKOD Account Registration</h1>
       <hr>

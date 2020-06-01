@@ -11,12 +11,12 @@ session_start();
     <head>
         <meta charset="UTF-8">
         <title>BKOD-Website</title>
-        <link rel=stylesheet href="PageModel.css" type="text/css">
+        <link rel=stylesheet href="static/PageModel.css" type="text/css">
     </head>
     <body>
         <?php
             if (!isset($_POST['submit'])){
-                
+
             }
         ?>
         <form action="index2.php" method="post">
@@ -24,7 +24,7 @@ session_start();
                 <p><h1>Log in to BKOD</h1></p>
             </div>
             <?php
-            
+
             if (isset($_SESSION["w"])) {
                 echo "<h2 align='center'>Wrong username or password.</h2>";
                 unset($_SESSION["w"]);
@@ -43,7 +43,7 @@ session_start();
 
             </div>
         </form>
-        
+
 
     </body>
 </html>

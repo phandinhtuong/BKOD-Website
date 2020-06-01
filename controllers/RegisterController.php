@@ -1,6 +1,6 @@
 <?php
 session_start();
-require 'db_connection.php';
+require '../utils/db_connection.php';
 
 $username = $_POST['username'];
 $psw = $_POST['psw'];
@@ -8,7 +8,7 @@ $repeat_psw = $_POST['psw-repeat'];
 
 if ($psw != $repeat_psw) {
   $_SESSION["mismatchPsw"] = "mismatchPsw";
-  header('Location: Register.php');
+  header('Location: ../views/Register.php');
   exit();
 }
 
@@ -29,11 +29,11 @@ if (PEAR::isError($res)) {
   $err = $res->getDebugInfo();
   if (strpos($err, 'Duplicate entry') !== false) {
     $_SESSION["duplicateEntry"] = "duplicateEntry";
-    header('Location: Register.php');
+    header('Location: ../views/Register.php');
     exit();
   } else {
     $_SESSION["unknownError"] = "unknownError";
-    header('Location: Register.php');
+    header('Location: ../views/Register.php');
     exit();
   }
 } else {
@@ -42,6 +42,6 @@ if (PEAR::isError($res)) {
     'psw' => $psw
   );
   $_SESSION["registerSuccess"] = $loginInfo;
-  header('Location: index.php');
+  header('Location: ../views/index.php');
   exit();
 }

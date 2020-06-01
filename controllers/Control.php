@@ -20,11 +20,11 @@ function login($username, $password) {
         //print("log in okay");
 
         $_SESSION["u"] = $username;
-        header('Location: Home.php');
+        header('Location: ../views/Home.php');
         exit();
     } else if ($i == 0) {
         $_SESSION["w"] = "wrong";
-        header('Location: index.php');
+        header('Location: ../views/index.php');
         exit();
         //print("no ok log in");
     }
