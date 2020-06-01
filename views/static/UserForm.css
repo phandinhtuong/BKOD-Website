@@ -1,6 +1,6 @@
 body {
-  font-family: Arial, Helvetica, sans-serif;
-  background-color: black;
+  background-color: white;
+  color: black;
 }
 
 * {
@@ -28,6 +28,11 @@ input[type="text"]:focus,
 input[type="password"]:focus {
   background-color: #ddd;
   outline: none;
+}
+
+input{
+  height: auto;
+  /*display:inline-block;*/
 }
 
 /* Overwrite default styles of hr */
