@@ -19,7 +19,8 @@ function checkValidLogin($username, $password) {
 //            print( "$row[$i]<br>");
 //    }
     $row = $result->fetchRow();
-    $hash256Password = strtoupper($hash256Password);
+//    echo '<script>console.log("Your stuff here")</script>';
+//    $hash256Password = strtoupper($hash256Password);
 //    print("<br>");
 //    print($row[1]);
 //    print("<br>");
@@ -29,8 +30,8 @@ function checkValidLogin($username, $password) {
 //    print("<br>");
 //    print($hash256Password);
 //    print("<br>");
-    
-    if (strcmp($row[1], $username) == 0 && strcmp($row[2], $hash256Password) == 0) {
+
+    if (strcmp($row[1], $username) == 0 && strcasecmp($row[2], $hash256Password) == 0) {
       //  print("OK");
         return 1;
     } else {
