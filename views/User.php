@@ -37,7 +37,7 @@ $user = getUsersInfo();
     <div class="container">
 
       <label for="fullName"><b>Full Name</b></label>
-      <input type="text" placeholder="Enter Full Name" name="fullName" id="fullName" value="<?php echo $user[1] ?>" required>
+      <input type="text" placeholder="Enter Full Name" name="fullName" id="fullName" value="<?php echo $user[3] ?>" required>
 
       <label for="school"><b>School</b></label>
       <input type="text" placeholder="Enter School" name="school" id="school" value="<?php echo $user[6] ?>">
