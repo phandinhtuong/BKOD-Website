@@ -23,23 +23,7 @@ if (!isset($_SESSION["u"])){
             <p><h1>Home Page</h1></p>
     </div>
 
-    <ul id="navbar">
-        <!--Home page-->
-        <li><a href="Home.php">Home</a></li>
-        <!--Tours-->
-        <li><a href="Tour.php">Tours</a></li>
-        <!--News-->
-        <li><a href="News.html">News</a></li>
-        <!--Message-->
-        <li><a href="Message.html">Message</a></li>
-        <!--Support-->
-        <li><a href="Support.html">Support</a></li>
-        <!--private info-->
-        <li><a href="User.html"><?php echo $_SESSION["u"]; ?></a></li>
-
-        <!--Log out-->
-        <li><a href="index.php">Log out</a></li>
-    </ul>
+    <?php include 'NavBar.php'; ?>
 
     <div id="main">
         <h1 align="center">Welcome to BKOD Website</h1>
