@@ -1,7 +1,7 @@
 <!DOCTYPE html>
-<?php include 'static/header.html'; ?>
+<script src="static/getHeader.js"></script>
 <style>
-  <?php include('static/UserForm.css'); ?>
+  @import url("static/UserForm.css");
 </style>
 <!--
 To change this license header, choose License Headers in Project Properties.
@@ -26,7 +26,7 @@ $user = getUsersInfo();
     </p>
   </div>
 
-  <?php include 'NavBar.php'; ?>
+  <script src="static/getNavBar.js"></script>
 
   <?php if (isset($_SESSION["updateUserInfoSuccess"])) {
     echo "<h2 align='center'>Updated successfully!</h2>";
@@ -66,4 +66,7 @@ $user = getUsersInfo();
     </div>
   </form>
 </body>
-<?php include 'static/footer.html'; ?>
+</html>
+
+<script>
+</script>

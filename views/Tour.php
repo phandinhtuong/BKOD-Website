@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<?php include 'static/header.html'; ?>
+<script src="static/getHeader.js"></script>
 <!--
 To change this license header, choose License Headers in Project Properties.
 To change this template file, choose Tools | Templates
@@ -20,7 +20,7 @@ if (!isset($_SESSION["u"])) {
         </p>
     </div>
 
-    <?php include 'NavBar.php'; ?>
+    <script src="static/getNavBar.js"></script>
 
     <div id="main">
 
@@ -28,4 +28,4 @@ if (!isset($_SESSION["u"])) {
 
     </div>
 </body>
-<?php include 'static/footer.html'; ?>
+</html>
