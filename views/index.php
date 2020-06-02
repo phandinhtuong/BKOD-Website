@@ -49,10 +49,11 @@ if (isset($_SESSION["registerSuccess"])) {
             session_destroy();
         }
         ?>
+        <h2 align='center' id="regSuccess" style="display: none">Registered successfully!</h2>
         <div id="main">
             <input type="hidden" value="login" name="message">
-            <input type="text" name="username" value="<?php echo $username ?>"><br>
-            <input type="password" name="password" value="<?php echo $password ?>"><br>
+            <input type="text" name="username" id="username" value="<?php echo $username ?>"><br>
+            <input type="password" name="password" id="psw" value="<?php echo $password ?>"><br>
             <input type="submit" value="Log in">
             <br />
             <div style="font-size: 14px">Does not have an account? Click <a href="Register.php">here</a> to register.</div>
@@ -63,3 +64,18 @@ if (isset($_SESSION["registerSuccess"])) {
 </body>
 
 </html>
+
+<script>
+    window.onload = () => {
+        if (localStorage.getItem('regSuccess')) {
+            let retrievedUser = localStorage.getItem('user');
+            if (retrievedUser) {
+                let user = JSON.parse(retrievedUser)
+                document.getElementById("username").value = user.username;
+                document.getElementById("psw").value = user.psw;
+                document.getElementById("regSuccess").style.display = "block";
+            }
+            localStorage.removeItem("regSuccess");
+        }
+    }
+</script>
