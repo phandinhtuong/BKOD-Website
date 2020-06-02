@@ -1,16 +1,11 @@
 <?php
 session_start();
 require '../utils/db_connection.php';
+header('Content-Type: application/json');
+$_POST = json_decode(file_get_contents('php://input'), true);
 
 $username = $_POST['username'];
 $psw = $_POST['psw'];
-$repeat_psw = $_POST['psw-repeat'];
-
-if ($psw != $repeat_psw) {
-  $_SESSION["mismatchPsw"] = "mismatchPsw";
-  header('Location: ../views/Register.php');
-  exit();
-}
 
 $fullName = $_POST['fullName'];
 $hash256Password = $psw . $username . "BKODv1Habvietio";
@@ -28,20 +23,14 @@ $res = &$db->execute($insertUserQuery, $data);
 if (PEAR::isError($res)) {
   $err = $res->getDebugInfo();
   if (strpos($err, 'Duplicate entry') !== false) {
-    $_SESSION["duplicateEntry"] = "duplicateEntry";
-    header('Location: ../views/Register.php');
-    exit();
+    echo json_encode("Username already existed!");
   } else {
-    $_SESSION["unknownError"] = "unknownError";
-    header('Location: ../views/Register.php');
-    exit();
+    echo json_encode("An unknown error occured!");
   }
 } else {
   $loginInfo = array(
     'username' => $username,
     'psw' => $psw
   );
-  $_SESSION["registerSuccess"] = $loginInfo;
-  header('Location: ../views/index.php');
-  exit();
+  echo json_encode($loginInfo);
 }
