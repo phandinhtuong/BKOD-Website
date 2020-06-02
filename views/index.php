@@ -56,7 +56,7 @@ if (isset($_SESSION["registerSuccess"])) {
             <input type="password" name="password" id="psw" value="<?php echo $password ?>"><br>
             <input type="submit" value="Log in">
             <br />
-            <div style="font-size: 14px">Does not have an account? Click <a href="Register.php">here</a> to register.</div>
+            <div style="font-size: 14px">Does not have an account? Click <a href="Register.html">here</a> to register.</div>
         </div>
     </form>
 

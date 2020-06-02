@@ -1,13 +1,10 @@
 <!DOCTYPE html>
-<?php
-session_start();
-?>
 <html>
 
 <head>
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <style>
-    <?php include('static/UserForm.css'); ?>
+    @import url("static/UserForm.css");
   </style>
 </head>
 
@@ -17,21 +14,6 @@ session_start();
     <div class="container">
       <h1>BKOD Account Registration</h1>
       <hr>
-      <?php
-      if (isset($_SESSION["duplicateEntry"])) {
-        echo "<h2 align='center'>Username already exists!</h2>";
-        unset($_SESSION["duplicateEntry"]);
-        session_destroy();
-      } else if (isset($_SESSION["mismatchPsw"])) {
-        echo "<h2 align='center'>Passwords do not match!</h2>";
-        unset($_SESSION["mismatchPsw"]);
-        session_destroy();
-      } else if (isset($_SESSION["unknownError"])) {
-        echo "<h2 align='center'>An unknown error occured! Please try again.</h2>";
-        unset($_SESSION["unknownError"]);
-        session_destroy();
-      }
-      ?>
       <h2 align='center' id="res" style="display: none"></h2>
 
       <label for="email"><b>Username</b></label>
