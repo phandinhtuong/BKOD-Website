@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<script src="static/getHeader.js"></script>
+<style>
+  @import url("static/UserForm.css");
+</style>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+
+<body>
+  <div id="header">
+    <p>
+      <h1>User's Information</h1>
+    </p>
+  </div>
+
+  <script src="static/getNavBar.js"></script>
+
+  <h2 align='center' style="display: none" id="res">Updated successfully!</h2>
+
+
+  <form onsubmit="event.preventDefault(); updateUserInfo();" >
+    <div class="container">
+
+      <label for="fullName"><b>Full Name</b></label>
+      <input type="text" placeholder="Enter Full Name" name="fullName" id="fullName" value="" required>
+
+      <label for="school"><b>School</b></label>
+      <input type="text" placeholder="Enter School" name="school" id="school" value="">
+
+      <label for="class"><b>Class</b></label>
+      <input type="text" placeholder="Enter Class" name="class" id="class" value="">
+
+      <label for="phone"><b>Phone Number</b></label>
+      <input type="text" placeholder="Enter Phone Number" name="phone" id="phone" value="">
+
+      <label for="birthday"><b>Birthday</b></label><br>
+      <input type="date" id="birthday" name="birthday" value=""><br /> <br>
+
+      <label for="gender"><b>Gender</b></label><br />
+      <input type="radio" id="male" name="gender" value="1" >
+      <label for="male">Male</label>
+      <input type="radio" id="female" name="gender" value="2" >
+      <label for="female">Female</label>
+      <input type="radio" id="other" name="gender" value="3" >
+      <label for="other">Other</label>
+      <input type="radio" id="unrevealed" name="gender" value="0" >
+      <label for="unrevealed">Unrevealed</label><br><br>
+
+      <div class="button-holder"><button class="save-btn">Save</button></div>
+
+    </div>
+  </form>
+</body>
+</html>
+
+<script>
+  if (!localStorage.getItem("currentUser"))
+    window.location.href = '../views/index.php';
+  let username = localStorage.getItem("currentUser");
+  let fullName = document.getElementById("fullName");
+  let school = document.getElementById("school");
+  let classEl = document.getElementById("class");
+  let phone = document.getElementById("phone");
+  let birthday = document.getElementById("birthday");
+  let male = document.getElementById("male");
+  let female = document.getElementById("female");
+  let other = document.getElementById("other");
+  let unrevealed = document.getElementById("unrevealed");
+  let resEl = document.getElementById("res");
+  async function getUserInfo() {
+    const rawResponse = await fetch('../controllers/getUserInfo.php', {
+        method: 'POST',
+        headers: {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({username: username})
+      });
+      let clone = rawResponse.clone();
+      await clone.json().then(res => {
+        if (res == "An unknown error occured!") {
+          resEl.style.display = 'block';
+          resEl.textContent = res;
+        } else {
+          fullName.value = res[3];
+          school.value = res[6];
+          classEl.value = res[7];
+          phone.value = res[8];
+          birthday.value = res[4];
+          if (res[5] == 0)
+            unrevealed.checked = true;
+          else if (res[5] == 1)
+            male.checked = true;
+          else if (res[5] == 2)
+            female.checked = true;
+          else other.checked = true;
+        }
+      })
+  }
+
+  async function updateUserInfo() {
+    let payload = {
+      username: username,
+      fullName: fullName.value,
+      school: school.value,
+      classVar: classEl.value,
+      phone: phone.value,
+      birthday: birthday.value,
+      gender: document.querySelector('input[name="gender"]:checked').value
+    }
+    const rawResponse = await fetch('../controllers/updateUserInfo.php', {
+        method: 'POST',
+        headers: {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(payload)
+      });
+      let clone = rawResponse.clone();
+      await clone.json().then(res => {
+        resEl.style.display = 'block';
+        resEl.textContent = res;
+        function hideResEl() {
+          resEl.style.display = 'none';
+}
+setTimeout(hideResEl, 3000);
+      })
+  }
+
+  getUserInfo();
+</script>
