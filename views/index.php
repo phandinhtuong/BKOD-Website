@@ -77,5 +77,6 @@ if (isset($_SESSION["registerSuccess"])) {
             }
             localStorage.removeItem("regSuccess");
         }
+        localStorage.removeItem("currentUser");
     }
 </script>
