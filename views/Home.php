@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<?php include 'static/header.html'; ?>
+<script src="static/getHeader.js"></script>
 
 <!--
 To change this license header, choose License Headers in Project Properties.
@@ -11,7 +11,8 @@ session_start();
 if (!isset($_SESSION["u"])) {
     header('Location: index.php');
     session_destroy();
-}
+} else
+$currentUser = $_SESSION["u"];
 ?>
 
 <body>
@@ -21,7 +22,7 @@ if (!isset($_SESSION["u"])) {
         </p>
     </div>
 
-    <?php include 'NavBar.php'; ?>
+    <script src="static/getNavBar.js"></script>
 
     <div id="main">
         <h1 align="center">Welcome to BKOD Website</h1>
@@ -29,4 +30,9 @@ if (!isset($_SESSION["u"])) {
 
     </div>
 </body>
-<?php include 'static/footer.html'; ?>
+</html>
+
+<script>
+    localStorage.setItem("currentUser", '<?php echo $currentUser;?>');
+    document.getElementById("nav-username").textContent = localStorage.getItem("currentUser");
+</script>
