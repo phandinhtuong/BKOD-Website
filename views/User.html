@@ -12,7 +12,7 @@ and open the template in the editor.
 <body>
   <div id="header">
     <p>
-      <h1>User's Information</h1>
+    <h1>User's Information</h1>
     </p>
   </div>
 
@@ -21,7 +21,7 @@ and open the template in the editor.
   <h2 align='center' style="display: none" id="res">Updated successfully!</h2>
 
 
-  <form onsubmit="event.preventDefault(); updateUserInfo();" >
+  <form onsubmit="event.preventDefault(); updateUserInfo();">
     <div class="container">
 
       <label for="fullName"><b>Full Name</b></label>
@@ -40,13 +40,13 @@ and open the template in the editor.
       <input type="date" id="birthday" name="birthday" value=""><br /> <br>
 
       <label for="gender"><b>Gender</b></label><br />
-      <input type="radio" id="male" name="gender" value="1" >
+      <input type="radio" id="male" name="gender" value="1">
       <label for="male">Male</label>
-      <input type="radio" id="female" name="gender" value="2" >
+      <input type="radio" id="female" name="gender" value="2">
       <label for="female">Female</label>
-      <input type="radio" id="other" name="gender" value="3" >
+      <input type="radio" id="other" name="gender" value="3">
       <label for="other">Other</label>
-      <input type="radio" id="unrevealed" name="gender" value="0" >
+      <input type="radio" id="unrevealed" name="gender" value="0">
       <label for="unrevealed">Unrevealed</label><br><br>
 
       <div class="button-holder"><button class="save-btn">Save</button></div>
@@ -54,6 +54,7 @@ and open the template in the editor.
     </div>
   </form>
 </body>
+
 </html>
 
 <script>
@@ -72,33 +73,33 @@ and open the template in the editor.
   let resEl = document.getElementById("res");
   async function getUserInfo() {
     const rawResponse = await fetch('../controllers/getUserInfo.php', {
-        method: 'POST',
-        headers: {
-          'Accept': 'application/json',
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({username: username})
-      });
-      let clone = rawResponse.clone();
-      await clone.json().then(res => {
-        if (res == "An unknown error occured!") {
-          resEl.style.display = 'block';
-          resEl.textContent = res;
-        } else {
-          fullName.value = res[3];
-          school.value = res[6];
-          classEl.value = res[7];
-          phone.value = res[8];
-          birthday.value = res[4];
-          if (res[5] == 0)
-            unrevealed.checked = true;
-          else if (res[5] == 1)
-            male.checked = true;
-          else if (res[5] == 2)
-            female.checked = true;
-          else other.checked = true;
-        }
-      })
+      method: 'POST',
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({ username: username })
+    });
+    let clone = rawResponse.clone();
+    await clone.json().then(res => {
+      if (res == "An unknown error occured!") {
+        resEl.style.display = 'block';
+        resEl.textContent = res;
+      } else {
+        fullName.value = res[3];
+        school.value = res[6];
+        classEl.value = res[7];
+        phone.value = res[8];
+        birthday.value = res[4];
+        if (res[5] == 0)
+          unrevealed.checked = true;
+        else if (res[5] == 1)
+          male.checked = true;
+        else if (res[5] == 2)
+          female.checked = true;
+        else other.checked = true;
+      }
+    })
   }
 
   async function updateUserInfo() {
@@ -112,22 +113,22 @@ and open the template in the editor.
       gender: document.querySelector('input[name="gender"]:checked').value
     }
     const rawResponse = await fetch('../controllers/updateUserInfo.php', {
-        method: 'POST',
-        headers: {
-          'Accept': 'application/json',
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(payload)
-      });
-      let clone = rawResponse.clone();
-      await clone.json().then(res => {
-        resEl.style.display = 'block';
-        resEl.textContent = res;
-        function hideResEl() {
-          resEl.style.display = 'none';
-}
-setTimeout(hideResEl, 3000);
-      })
+      method: 'POST',
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(payload)
+    });
+    let clone = rawResponse.clone();
+    await clone.json().then(res => {
+      resEl.style.display = 'block';
+      resEl.textContent = res;
+      function hideResEl() {
+        resEl.style.display = 'none';
+      }
+      setTimeout(hideResEl, 3000);
+    })
   }
 
   getUserInfo();
