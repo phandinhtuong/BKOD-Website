@@ -7,11 +7,28 @@
 <body>
   <div id="header">
     <p>
-    <h1>User management</h1>
+    <h1>User Management</h1>
     </p>
   </div>
 
   <script src="static/getNavBar.js"></script>
+
+  <div class="ant-table ant-table-scroll-position-left ant-table-default ant-table-bordered">
+    <div class="ant-table-content">
+      <div class="ant-table-scroll">
+        <div class="ant-table-body">
+          <table id="table" class="ant-table-fixed table-search-company">
+            <thead class="ant-table-thead">
+              <tr>
+              </tr>
+            </thead>
+            <tbody id="tbody" class="ant-table-tbody">
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
 
   <h2 align='center' style="display: none" id="res">Updated successfully!</h2>
 
@@ -24,8 +41,92 @@
     const rawResponse = await fetch('../controllers/getAllUsers.php');
     let clone = rawResponse.clone();
     await clone.json().then(res => {
-      console.log("RES", res);
+      let tr = document.getElementById('table').tHead.children[0];
+      for (prop in res[0]) {
+        let th = document.createElement('th');
+        th.innerHTML = prop.replace(/([A-Z])/g, ' $1')
+          .replace(/^./, function (str) { return str.toUpperCase(); });
+        tr.appendChild(th);
+      }
+
+      let tbody = document.getElementById('tbody');
+      res.map((user, index) => {
+        let tr = document.createElement('tr');
+        tbody.appendChild(tr)
+        for (prop in user) {
+          let td = document.createElement('td');
+          td.innerHTML = user[prop];
+          tr.appendChild(td);
+        }
+      })
+
     })
   }
   getAllUsers();
 </script>
+
+<style>
+  .ant-table {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    color: rgba(0, 0, 0, 0.65);
+    font-size: 14px;
+    font-variant: tabular-nums;
+    line-height: 1.5;
+    list-style: none;
+    font-feature-settings: 'tnum', "tnum";
+    position: relative;
+    clear: both;
+  }
+
+  thead {
+    display: table-header-group;
+    vertical-align: middle;
+    border-color: inherit;
+  }
+
+  .ant-table-bordered .ant-table-header>table,
+  .ant-table-bordered .ant-table-body>table,
+  .ant-table-bordered .ant-table-fixed-left table,
+  .ant-table-bordered .ant-table-fixed-right table {
+    border: 1px solid #e8e8e8;
+    border-right: 0;
+    border-bottom: 0;
+  }
+
+  .ant-table table {
+    width: 100%;
+    text-align: left;
+    border-radius: 4px 4px 0 0;
+    border-collapse: collapse;
+  }
+
+  .ant-table-scroll table {
+    width: auto;
+    min-width: 100%;
+  }
+
+  table {
+    display: table;
+    border-collapse: separate;
+    border-spacing: 2px;
+    border-color: grey;
+  }
+
+  .ant-table-bordered .ant-table-thead>tr>th,
+  .ant-table-bordered .ant-table-tbody>tr>td {
+    border-right: 1px solid #e8e8e8;
+  }
+
+  tbody {
+    display: table-row-group;
+    vertical-align: middle;
+    border-color: inherit;
+  }
+
+  .ant-table-bordered .ant-table-thead>tr>th,
+  .ant-table-bordered .ant-table-tbody>tr>td {
+    border-right: 1px solid #e8e8e8;
+  }
+</style>

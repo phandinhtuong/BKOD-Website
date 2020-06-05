@@ -21,8 +21,6 @@ if (PEAR::isError($res)) {
         $trueUser["userId"] = $value;
       else if ($key === 1)
       $trueUser["username"] = $value;
-      else if ($key === 2)
-      $trueUser["hashPassword"] = $value;
       else if ($key === 3)
       $trueUser["fullName"] = $value;
       else if ($key === 4)
