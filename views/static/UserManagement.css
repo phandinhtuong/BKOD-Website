@@ -1,86 +1,3 @@
-.ant-table {
-  box-sizing: border-box;
-  margin: 0;
-  padding: 0;
-  color: rgba(0, 0, 0, 0.65);
-  font-size: 14px;
-  font-variant: tabular-nums;
-  line-height: 1.5;
-  list-style: none;
-  font-feature-settings: 'tnum', "tnum";
-  position: relative;
-  clear: both;
-}
-
-thead {
-  display: table-header-group;
-  vertical-align: middle;
-  border-color: black;
-}
-
-.ant-table-thead>tr>th {
-  color: rgba(0, 0, 0, .85);
-  font-weight: 500;
-  text-align: left;
-  background: lightblue;
-  border-bottom: 1px solid black;
-  transition: background .3s ease;
-}
-
-.ant-table-bordered .ant-table-header>table,
-.ant-table-bordered .ant-table-body>table,
-.ant-table-bordered .ant-table-fixed-left table,
-.ant-table-bordered .ant-table-fixed-right table {
-  border: 1px solid black;
-  border-right: 0;
-  border-bottom: 0;
-}
-
-.ant-table table {
-  width: 100%;
-  text-align: left;
-  border-radius: 4px 4px 0 0;
-  border-collapse: collapse;
-}
-
-.ant-table-scroll table {
-  width: auto;
-  min-width: 100%;
-}
-
-table {
-  display: table;
-  border-collapse: separate;
-  border-spacing: 2px;
-  border-color: grey;
-}
-
-.ant-table-bordered .ant-table-thead>tr>th,
-.ant-table-bordered .ant-table-tbody>tr>td {
-  border-right: 1px solid black;
-}
-
-tbody {
-  display: table-row-group;
-  vertical-align: middle;
-  border-color: inherit;
-}
-
-.ant-table-bordered .ant-table-thead>tr>th,
-.ant-table-bordered .ant-table-tbody>tr>td {
-  border-right: 1px solid black;
-}
-
-ant-table.ant-table-bordered .ant-table-title {
-  padding-right: 16px;
-  padding-left: 16px;
-  border: 1px solid black !important;
-}
-
-.ant-table-tbody>tr:hover>td {
-  background: #e6f7ff;
-}
-
 .ant-btn {
   line-height: 1.499;
   position: relative;
@@ -89,9 +6,9 @@ ant-table.ant-table-bordered .ant-table-title {
   white-space: nowrap;
   text-align: center;
   background-image: none;
-  box-shadow: 0 2px 0 rgba(0, 0, 0, .015);
+  box-shadow: 0 2px 0 rgba(0, 0, 0, 0.015);
   cursor: pointer;
-  transition: all .3s cubic-bezier(.645, .045, .355, 1);
+  transition: all 0.3s cubic-bezier(0.645, 0.045, 0.355, 1);
   -webkit-user-select: none;
   -moz-user-select: none;
   -ms-user-select: none;
@@ -101,7 +18,7 @@ ant-table.ant-table-bordered .ant-table-title {
   padding: 0 15px;
   font-size: 14px;
   border-radius: 4px;
-  color: rgba(0, 0, 0, .65);
+  color: rgba(0, 0, 0, 0.65);
   background-color: #fff;
   border: 1px solid #d9d9d9;
   display: block;
@@ -112,8 +29,8 @@ ant-table.ant-table-bordered .ant-table-title {
   color: #fff;
   background-color: #ff4d4f;
   border-color: #ff4d4f;
-  text-shadow: 0 -1px 0 rgba(0, 0, 0, .12);
-  box-shadow: 0 2px 0 rgba(0, 0, 0, .045);
+  text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.12);
+  box-shadow: 0 2px 0 rgba(0, 0, 0, 0.045);
 }
 
 .ant-btn-danger:focus,
@@ -121,4 +38,84 @@ ant-table.ant-table-bordered .ant-table-title {
   color: #fff;
   background-color: #ff7875;
   border-color: #ff7875;
+}
+
+/* table */
+
+.table {
+  width: 100%;
+  margin-bottom: 1rem;
+  color: #212529;
+}
+
+table {
+  border-collapse: collapse;
+}
+
+table {
+  display: table;
+  border-spacing: 2px;
+  border-color: grey;
+}
+
+.table td,
+.table th {
+  padding: 0.75rem;
+  padding-top: 0.75rem;
+  padding-right: 0.75rem;
+  padding-bottom: 0.75rem;
+  padding-left: 0.75rem;
+  text-align: center;
+  border-top: 1px solid #dee2e6;
+  border-top-width: 1px;
+  border-top-style: solid;
+  border-top-color: rgb(222, 226, 230);
+}
+user agent stylesheet td {
+  display: table-cell;
+  vertical-align: inherit;
+}
+.table-hover tbody tr:hover {
+  color: #212529;
+  background-color: rgba(0, 0, 0, 0.075);
+}
+
+tbody {
+  display: table-row-group;
+  vertical-align: middle;
+  border-color: inherit;
+}
+
+tr {
+  display: table-row;
+  vertical-align: inherit;
+  border-color: inherit;
+}
+
+thead {
+  display: table-header-group;
+  vertical-align: middle;
+  border-color: inherit;
+}
+
+.table-bordered td,
+.table-bordered th {
+  border: 1px solid #dee2e6;
+}
+
+*,
+::after,
+::before {
+  box-sizing: border-box;
+}
+
+.table-sm td,
+.table-sm th {
+  padding: 0.3rem;
+}
+
+.table .thead-dark th {
+  color: #495057;
+  background-color: #e9ecef;
+  border-color: #dee2e6;
 }
