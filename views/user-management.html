@@ -1,8 +1,10 @@
 <!DOCTYPE html>
 <script src="static/getHeader.js"></script>
+<script src="static/alert/alert.js"></script>
 <style>
   @import url("static/UserForm.css");
   @import url("static/UserManagement.css");
+  @import url("static/alert/alert.css");
 </style>
 
 <body>
@@ -42,6 +44,26 @@
     console.log(user);
   }
 
+  function JSalert(){
+	swal({   title: "Your account will be deleted permanently!",
+    text: "Are you sure to proceed?",
+    type: "warning",
+    showCancelButton: true,
+    confirmButtonColor: "#DD6B55",
+    confirmButtonText: "Yes, Remove My Account!",
+    cancelButtonText: "No, I am not sure!",
+    closeOnConfirm: false,
+    closeOnCancel: false },
+    function(isConfirm){
+        if (isConfirm)
+    {
+        swal("Account Removed!", "Your account is removed permanently!", "success");
+        }
+        else {
+            swal("Hurray", "Account is not removed!", "error");
+            } });
+}
+
   let getAllUsers = async () => {
     const rawResponse = await fetch('../controllers/getAllUsers.php');
     let clone = rawResponse.clone();
@@ -80,7 +102,7 @@
         btn.value = "Delete";
         btn.onclick = (entry => {
           return () => {
-            handleRemoval(entry);
+            JSalert();
           }
         })(user);
         tdAction.appendChild(btn);
