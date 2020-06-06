@@ -34,5 +34,8 @@ $currentUser = $_SESSION["u"];
 
 <script>
     localStorage.setItem("currentUser", '<?php echo $currentUser;?>');
-    document.getElementById("nav-username").textContent = localStorage.getItem("currentUser");
+    let currentUser = localStorage.getItem("currentUser");
+    document.getElementById("nav-username").textContent = currentUser;
+    if (currentUser === "admin")
+        document.getElementById("user-management").style.display = "block";
 </script>

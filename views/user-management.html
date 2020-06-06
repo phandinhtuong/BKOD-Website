@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<script src="static/getHeader.js"></script>
+<script src="static/alert/alert.js"></script>
+<style>
+  @import url("static/UserForm.css");
+  @import url("static/UserManagement.css");
+  @import url("static/alert/alert.css");
+</style>
+
+<body>
+  <div id="header">
+    <p>
+    <h1>User Management</h1>
+    </p>
+  </div>
+
+  <script src="static/getNavBar.js"></script>
+
+  <div style="padding: 5px" class="ant-table ant-table-scroll-position-left ant-table-default ant-table-bordered">
+    <div class="ant-table-content">
+      <div class="ant-table-scroll">
+        <div class="ant-table-body">
+          <table border=1 frame=void rules=all id="table" class="ant-table-fixed table-search-company">
+            <thead class="ant-table-thead">
+              <tr>
+              </tr>
+            </thead>
+            <tbody id="tbody" class="ant-table-tbody">
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <h2 align='center' style="display: none" id="res">Updated successfully!</h2>
+
+</body>
+
+</html>
+
+<script>
+  // Function for adjust values in the first column of the table after deleting a user
+  let incrementCellValues = row => {
+    var table = document.getElementById('table');
+    for (var r = 0, n = table.rows.length; r < n; r++) {
+      for (var c = 0, m = table.rows[r].cells.length; c < m; c++) {
+        if (r >= row && c === 0) {
+          console.log("here");
+
+          table.rows[r].cells[c].innerHTML = table.rows[r].cells[c].innerHTML - 1;
+        }
+      }
+    }
+  }
+
+  // Function for calling API deleteUser
+  let handleRemoval = async user => {
+    let deleted = false;
+    const rawResponse = await fetch('../controllers/deleteUser.php', {
+      method: 'POST',
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({ username: user.username })
+    });
+    let clone = rawResponse.clone();
+    await clone.json().then(res => {
+      if (res == "An unknown error occured!") deleted = false;
+      else deleted = true;
+    });
+    return deleted;
+  }
+
+  let openConfirmBox = user => {
+    if (user.username === "admin")
+      swal("Error", "Admin account cannot be deleted!", "error");
+    else
+      swal({
+        title: `Account ${user.username} will be deleted permanently!`,
+        text: "Are you sure to proceed?",
+        type: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#DD6B55",
+        confirmButtonText: "Yes, Remove This Account!",
+        cancelButtonText: "No, I am not sure!",
+        closeOnConfirm: false,
+        closeOnCancel: false
+      },
+        function (isConfirm) {
+          let handleDeletion = async () => {
+            let deleted = await handleRemoval(user);
+            if (deleted) {
+              document.getElementById("table").deleteRow(user.no);
+              incrementCellValues(user.no);
+              swal("Account Removed!", `Account ${user.username} is removed permanently!`, "success");
+            }
+            else
+              swal("Error", "An unknown error occured!", "error");
+          }
+          if (isConfirm) {
+            handleDeletion();
+          }
+          else {
+            swal("Cancelled", "Account is not removed!", "error");
+          }
+        });
+  }
+
+  let getAllUsers = async () => {
+    const rawResponse = await fetch('../controllers/getAllUsers.php');
+    let clone = rawResponse.clone();
+    await clone.json().then(res => {
+
+      // Add columns' headers
+      let tr = document.getElementById('table').tHead.children[0];
+      for (prop in res[0]) {
+        let th = document.createElement('th');
+        th.innerHTML = prop.replace(/([A-Z])/g, ' $1')
+          .replace(/^./, function (str) { return str.toUpperCase(); });
+        tr.appendChild(th);
+      }
+
+      // Add action column header
+      let thAction = document.createElement('th');
+      thAction.innerHTML = "Action";
+      tr.appendChild(thAction);
+
+      // Add columns' body rows
+      let tbody = document.getElementById('tbody');
+      res.map((user, index) => {
+        let tr = document.createElement('tr');
+        tbody.appendChild(tr)
+        for (prop in user) {
+          let td = document.createElement('td');
+          td.innerHTML = user[prop];
+          tr.appendChild(td);
+        }
+
+        // Add action button
+        let tdAction = document.createElement('td');
+        let btn = document.createElement('input');
+        btn.type = "button";
+        btn.className = "ant-btn ant-btn-danger";
+        btn.value = "Delete";
+        btn.onclick = (entry => {
+          return () => {
+            openConfirmBox(entry)
+          }
+        })(user);
+        tdAction.appendChild(btn);
+        tr.appendChild(tdAction);
+      })
+
+    })
+  }
+
+  getAllUsers();
+</script>
