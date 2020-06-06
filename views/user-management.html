@@ -13,11 +13,11 @@
 
   <script src="static/getNavBar.js"></script>
 
-  <div class="ant-table ant-table-scroll-position-left ant-table-default ant-table-bordered">
+  <div style="padding: 5px" class="ant-table ant-table-scroll-position-left ant-table-default ant-table-bordered">
     <div class="ant-table-content">
       <div class="ant-table-scroll">
         <div class="ant-table-body">
-          <table id="table" class="ant-table-fixed table-search-company">
+          <table border=1 frame=void rules=all id="table" class="ant-table-fixed table-search-company">
             <thead class="ant-table-thead">
               <tr>
               </tr>
@@ -83,14 +83,23 @@
   thead {
     display: table-header-group;
     vertical-align: middle;
-    border-color: inherit;
+    border-color: black;
   }
+
+  .ant-table-thead>tr>th {
+    color: rgba(0,0,0,.85);
+    font-weight: 500;
+    text-align: left;
+    background: lightblue;
+    border-bottom: 1px solid black;
+    transition: background .3s ease;
+}
 
   .ant-table-bordered .ant-table-header>table,
   .ant-table-bordered .ant-table-body>table,
   .ant-table-bordered .ant-table-fixed-left table,
   .ant-table-bordered .ant-table-fixed-right table {
-    border: 1px solid #e8e8e8;
+    border: 1px solid black;
     border-right: 0;
     border-bottom: 0;
   }
@@ -116,7 +125,7 @@
 
   .ant-table-bordered .ant-table-thead>tr>th,
   .ant-table-bordered .ant-table-tbody>tr>td {
-    border-right: 1px solid #e8e8e8;
+    border-right: 1px solid black;
   }
 
   tbody {
@@ -127,6 +136,12 @@
 
   .ant-table-bordered .ant-table-thead>tr>th,
   .ant-table-bordered .ant-table-tbody>tr>td {
-    border-right: 1px solid #e8e8e8;
+    border-right: 1px solid black;
   }
+
+  ant-table.ant-table-bordered .ant-table-title {
+    padding-right: 16px;
+    padding-left: 16px;
+    border: 1px solid black !important;
+}
 </style>
