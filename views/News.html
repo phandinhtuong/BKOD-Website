@@ -1,6 +1,8 @@
 <!DOCTYPE html>
 <script src="static/getHeader.js"></script>
 <style>
+  @import url("static/News.css");
+  @import url("static/spacing.css");
 </style>
 
 <body>
@@ -12,6 +14,61 @@
 
   <script src="static/getNavBar.js"></script>
 
-</body>
+  <ul class="list-unstyled" id="news-list">
+    <!-- <li class="media">
+      <img src="..." class="mr-3" alt="...">
+      <div class="media-body">
+        <h5 class="mt-0 mb-1">List-based media object</h5>
+        Cras sit amet nibh libero, in gravida nulla. Nulla vel metus scelerisque ante sollicitudin. Cras purus odio, vestibulum in vulputate at, tempus viverra turpis. Fusce condimentum nunc ac nisi vulputate fringilla. Donec lacinia congue felis in faucibus.
+      </div>
+    </li>
+    <li class="media my-4">
+      <img src="..." class="mr-3" alt="...">
+      <div class="media-body">
+        <h5 class="mt-0 mb-1">List-based media object</h5>
+        Cras sit amet nibh libero, in gravida nulla. Nulla vel metus scelerisque ante sollicitudin. Cras purus odio, vestibulum in vulputate at, tempus viverra turpis. Fusce condimentum nunc ac nisi vulputate fringilla. Donec lacinia congue felis in faucibus.
+      </div>
+    </li>
+    <li class="media">
+      <img src="..." class="mr-3" alt="...">
+      <div class="media-body">
+        <h5 class="mt-0 mb-1">List-based media object</h5>
+        Cras sit amet nibh libero, in gravida nulla. Nulla vel metus scelerisque ante sollicitudin. Cras purus odio, vestibulum in vulputate at, tempus viverra turpis. Fusce condimentum nunc ac nisi vulputate fringilla. Donec lacinia congue felis in faucibus.
+      </div>
+    </li> -->
+  </ul>
 
+</body>
 </html>
+
+<script>
+  let getAllNews = async user => {
+    const rawResponse = await fetch('../controllers/getAllNews.php');
+    let clone = rawResponse.clone();
+    await clone.json().then(res => {
+      console.log("res", res);
+      let ul = document.getElementById('news-list');
+      res.map((news, index) => {
+        let li = document.createElement('li');
+        li.className = `media${index != res.length -1 ? ' my-4' : ''}`;
+
+        let img = document.createElement("img");
+        img.setAttribute("src", news.imageUrl);
+        img.className = "mr-3";
+
+        let div = document.createElement("div");
+        div.className = "media-body";
+        let h5 = document.createElement("h5");
+        h5.className = "mt-0 mb-1";
+        h5.innerHTML = news.title;
+        div.appendChild(h5);
+        div.insertAdjacentText('beforeend', news.summary);
+
+        li.appendChild(img);
+        li.appendChild(div);
+        ul.appendChild(li);
+      })
+    })
+  }
+  getAllNews();
+</script>

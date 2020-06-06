@@ -2,46 +2,35 @@
 require '../utils/db_connection.php';
 header('Content-Type: application/json');
 
-$getAllUsersQuery = $db->prepare("SELECT * FROM user");
-if (PEAR::isError($getAllUsersQuery)) {
+$getAllNewsQuery = $db->prepare("SELECT * FROM news");
+if (PEAR::isError($getAllNewsQuery)) {
   echo "Bad query detected!";
 }
 
-$res = &$db->execute($getAllUsersQuery);
+$res = &$db->execute($getAllNewsQuery);
 
 if (PEAR::isError($res)) {
   $err = $res->getDebugInfo();
   echo json_encode("An unknown error occured!");
 } else {
-  $allUsers = array();
-  $count = 0;
-  while (($user = $res->fetchRow())) {
-    $count++;
-    $trueUser = array();
-    $trueUser["no"] = $count;
-    foreach ($user as $key=>$value) {
+  $allNews = array();
+  while (($news = $res->fetchRow())) {
+    $trueNews = array();
+    foreach ($news as $key=>$value) {
       if ($key === 0)
-        $trueUser["userId"] = $value;
+        $trueNews["newsId"] = $value;
       else if ($key === 1)
-      $trueUser["username"] = $value;
+      $trueNews["imageUrl"] = $value;
+      else if ($key === 2)
+      $trueNews["title"] = $value;
       else if ($key === 3)
-      $trueUser["fullName"] = $value;
+      $trueNews["url"] = $value;
       else if ($key === 4)
-      $trueUser["birthday"] = $value;
+      $trueNews["summary"] = $value;
       else if ($key === 5)
-      $trueUser["gender"] = $value;
-      else if ($key === 6)
-      $trueUser["school"] = $value;
-      else if ($key === 7)
-      $trueUser["class"] = $value;
-      else if ($key === 8)
-      $trueUser["phoneNumber"] = $value;
-      else if ($key === 9)
-      $trueUser["isCounselor"] = $value;
-      else if ($key === 10)
-      $trueUser["state"] = $value;
+      $trueNews["isShowing"] = $value;
     }
-    $allUsers[] = $trueUser;
+    $allNews[] = $trueNews;
   }
-  echo json_encode($allUsers);
+  echo json_encode($allNews);
 }

@@ -1,0 +1,58 @@
+/* unset styles inherited from PageModel.css */
+ul.list-unstyled {
+  list-style-type: unset;
+  margin: unset;
+  padding: unset;
+  overflow: unset;
+  background-color: unset;
+}
+
+li.media {
+  float: unset;
+}
+
+li.media a {
+  display: unset;
+  /*color: white;*/
+  text-align: unset;
+  padding: unset;
+  text-decoration: unset;
+}
+
+.list-unstyled {
+  padding-left: 0;
+  list-style: none;
+}
+
+.media {
+  display: -ms-flexbox;
+  display: flex;
+  -ms-flex-align: start;
+  align-items: flex-start;
+}
+
+.media-body {
+  -ms-flex: 1;
+  flex: 1;
+}
+
+.h5,
+h5 {
+  font-size: 1.25rem;
+}
+
+ul.list-unstyled {
+  display: block;
+  list-style-type: disc;
+  margin-block-start: 1em;
+  margin-block-end: 1em;
+  margin-inline-start: 0px;
+  margin-inline-end: 0px;
+  padding-inline-start: 40px;
+}
+
+*,
+::after,
+::before {
+  box-sizing: border-box;
+}
