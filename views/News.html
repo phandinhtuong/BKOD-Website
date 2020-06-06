@@ -46,22 +46,34 @@
     const rawResponse = await fetch('../controllers/getAllNews.php');
     let clone = rawResponse.clone();
     await clone.json().then(res => {
-      console.log("res", res);
       let ul = document.getElementById('news-list');
-      res.map((news, index) => {
+      let showingImgList = res.filter(img => img.isShowing);
+      // Iteratively add each li corresponding to each news retrieved from the API
+      showingImgList.map((news, index) => {
         let li = document.createElement('li');
         li.className = `media${index != res.length -1 ? ' my-4' : ''}`;
 
         let img = document.createElement("img");
+        let altImageUrl = 'https://scontent.fhan5-7.fna.fbcdn.net/v/t31.0-8/21122550_930977190373638_6448461248229799488_o.jpg?_nc_cat=100&_nc_sid=09cbfe&_nc_ohc=ow2MFrVp_uEAX9em0Oe&_nc_ht=scontent.fhan5-7.fna&oh=345aa702fba8da69577b7de46e288ce8&oe=5F00FBB8';
         img.setAttribute("src", news.imageUrl);
+        img.setAttribute("id", `news-img-${index}`)
+        img.style.width = "100px";
+        img.style.height = "100px";
+        img.onerror = () => {
+          document.getElementById(`news-img-${index}`).src = altImageUrl;
+        }
         img.className = "mr-3";
 
         let div = document.createElement("div");
         div.className = "media-body";
-        let h5 = document.createElement("h5");
-        h5.className = "mt-0 mb-1";
-        h5.innerHTML = news.title;
-        div.appendChild(h5);
+
+        let a = document.createElement("a");
+        a.className = "mt-0 mb-1 news";
+        a.setAttribute("href", news.url)
+        a.innerHTML = news.title;
+
+        div.appendChild(a);
+        div.appendChild(document.createElement("br"));
         div.insertAdjacentText('beforeend', news.summary);
 
         li.appendChild(img);

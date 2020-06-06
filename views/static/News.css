@@ -36,8 +36,7 @@ li.media a {
   flex: 1;
 }
 
-.h5,
-h5 {
+a.news {
   font-size: 1.25rem;
 }
 
