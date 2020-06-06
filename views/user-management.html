@@ -46,8 +46,6 @@
     for (var r = 0, n = table.rows.length; r < n; r++) {
       for (var c = 0, m = table.rows[r].cells.length; c < m; c++) {
         if (r >= row && c === 0) {
-          console.log("here");
-
           table.rows[r].cells[c].innerHTML = table.rows[r].cells[c].innerHTML - 1;
         }
       }
@@ -67,8 +65,7 @@
     });
     let clone = rawResponse.clone();
     await clone.json().then(res => {
-      if (res == "An unknown error occured!") deleted = false;
-      else deleted = true;
+      if (res === "Deleted successfully!") deleted = true;
     });
     return deleted;
   }
