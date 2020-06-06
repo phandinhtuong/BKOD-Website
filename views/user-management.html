@@ -40,29 +40,71 @@
 </html>
 
 <script>
-  let handleRemoval = async user => {
-    console.log(user);
+  let incrementCellValues = row => {
+    var table = document.getElementById('table');
+    for (var r = 0, n = table.rows.length; r < n; r++) {
+      for (var c = 0, m = table.rows[r].cells.length; c < m; c++) {
+        if (r >= row && c === 0) {
+          console.log("here");
+
+          table.rows[r].cells[c].innerHTML = table.rows[r].cells[c].innerHTML - 1;
+        }
+      }
+    }
   }
 
-  function JSalert(){
-	swal({   title: "Your account will be deleted permanently!",
-    text: "Are you sure to proceed?",
-    type: "warning",
-    showCancelButton: true,
-    confirmButtonColor: "#DD6B55",
-    confirmButtonText: "Yes, Remove My Account!",
-    cancelButtonText: "No, I am not sure!",
-    closeOnConfirm: false,
-    closeOnCancel: false },
-    function(isConfirm){
-        if (isConfirm)
-    {
-        swal("Account Removed!", "Your account is removed permanently!", "success");
-        }
-        else {
-            swal("Hurray", "Account is not removed!", "error");
-            } });
-}
+  let handleRemoval = async user => {
+    let deleted = false;
+    const rawResponse = await fetch('../controllers/deleteUser.php', {
+      method: 'POST',
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({ username: user.username })
+    });
+    let clone = rawResponse.clone();
+    await clone.json().then(res => {
+      if (res == "An unknown error occured!") deleted = false;
+      else deleted = true;
+    });
+    return deleted;
+  }
+
+  let openConfirmBox = user => {
+    if (user.username === "admin")
+      swal("Error", "Admin account cannot be deleted!", "error");
+    else
+      swal({
+        title: `Account ${user.username} will be deleted permanently!`,
+        text: "Are you sure to proceed?",
+        type: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#DD6B55",
+        confirmButtonText: "Yes, Remove This Account!",
+        cancelButtonText: "No, I am not sure!",
+        closeOnConfirm: false,
+        closeOnCancel: false
+      },
+        function (isConfirm) {
+          let handleDeletion = async () => {
+            let deleted = await handleRemoval(user);
+            if (deleted) {
+              document.getElementById("table").deleteRow(user.no);
+              incrementCellValues(user.no);
+              swal("Account Removed!", `Account ${user.username} is removed permanently!`, "success");
+            }
+            else
+              swal("Error", "An unknown error occured!", "error");
+          }
+          if (isConfirm) {
+            handleDeletion();
+          }
+          else {
+            swal("Cancelled", "Account is not removed!", "error");
+          }
+        });
+  }
 
   let getAllUsers = async () => {
     const rawResponse = await fetch('../controllers/getAllUsers.php');
@@ -102,7 +144,7 @@
         btn.value = "Delete";
         btn.onclick = (entry => {
           return () => {
-            JSalert();
+            openConfirmBox(entry)
           }
         })(user);
         tdAction.appendChild(btn);
@@ -111,5 +153,6 @@
 
     })
   }
+
   getAllUsers();
 </script>

@@ -14,8 +14,11 @@ if (PEAR::isError($res)) {
   echo json_encode("An unknown error occured!");
 } else {
   $allUsers = array();
+  $count = 0;
   while (($user = $res->fetchRow())) {
+    $count++;
     $trueUser = array();
+    $trueUser["no"] = $count;
     foreach ($user as $key=>$value) {
       if ($key === 0)
         $trueUser["userId"] = $value;
