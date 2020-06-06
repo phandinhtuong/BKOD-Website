@@ -2,6 +2,7 @@
 <script src="static/getHeader.js"></script>
 <style>
   @import url("static/UserForm.css");
+  @import url("static/UserManagement.css");
 </style>
 
 <body>
@@ -37,10 +38,16 @@
 </html>
 
 <script>
+  let handleRemoval = async user => {
+    console.log(user);
+  }
+
   let getAllUsers = async () => {
     const rawResponse = await fetch('../controllers/getAllUsers.php');
     let clone = rawResponse.clone();
     await clone.json().then(res => {
+
+      // Add columns' headers
       let tr = document.getElementById('table').tHead.children[0];
       for (prop in res[0]) {
         let th = document.createElement('th');
@@ -49,6 +56,12 @@
         tr.appendChild(th);
       }
 
+      // Add action column header
+      let thAction = document.createElement('th');
+      thAction.innerHTML = "Action";
+      tr.appendChild(thAction);
+
+      // Add columns' body rows
       let tbody = document.getElementById('tbody');
       res.map((user, index) => {
         let tr = document.createElement('tr');
@@ -58,90 +71,23 @@
           td.innerHTML = user[prop];
           tr.appendChild(td);
         }
+
+        // Add action button
+        let tdAction = document.createElement('td');
+        let btn = document.createElement('input');
+        btn.type = "button";
+        btn.className = "ant-btn ant-btn-danger";
+        btn.value = "Delete";
+        btn.onclick = (entry => {
+          return () => {
+            handleRemoval(entry);
+          }
+        })(user);
+        tdAction.appendChild(btn);
+        tr.appendChild(tdAction);
       })
 
     })
   }
   getAllUsers();
 </script>
-
-<style>
-  .ant-table {
-    box-sizing: border-box;
-    margin: 0;
-    padding: 0;
-    color: rgba(0, 0, 0, 0.65);
-    font-size: 14px;
-    font-variant: tabular-nums;
-    line-height: 1.5;
-    list-style: none;
-    font-feature-settings: 'tnum', "tnum";
-    position: relative;
-    clear: both;
-  }
-
-  thead {
-    display: table-header-group;
-    vertical-align: middle;
-    border-color: black;
-  }
-
-  .ant-table-thead>tr>th {
-    color: rgba(0,0,0,.85);
-    font-weight: 500;
-    text-align: left;
-    background: lightblue;
-    border-bottom: 1px solid black;
-    transition: background .3s ease;
-}
-
-  .ant-table-bordered .ant-table-header>table,
-  .ant-table-bordered .ant-table-body>table,
-  .ant-table-bordered .ant-table-fixed-left table,
-  .ant-table-bordered .ant-table-fixed-right table {
-    border: 1px solid black;
-    border-right: 0;
-    border-bottom: 0;
-  }
-
-  .ant-table table {
-    width: 100%;
-    text-align: left;
-    border-radius: 4px 4px 0 0;
-    border-collapse: collapse;
-  }
-
-  .ant-table-scroll table {
-    width: auto;
-    min-width: 100%;
-  }
-
-  table {
-    display: table;
-    border-collapse: separate;
-    border-spacing: 2px;
-    border-color: grey;
-  }
-
-  .ant-table-bordered .ant-table-thead>tr>th,
-  .ant-table-bordered .ant-table-tbody>tr>td {
-    border-right: 1px solid black;
-  }
-
-  tbody {
-    display: table-row-group;
-    vertical-align: middle;
-    border-color: inherit;
-  }
-
-  .ant-table-bordered .ant-table-thead>tr>th,
-  .ant-table-bordered .ant-table-tbody>tr>td {
-    border-right: 1px solid black;
-  }
-
-  ant-table.ant-table-bordered .ant-table-title {
-    padding-right: 16px;
-    padding-left: 16px;
-    border: 1px solid black !important;
-}
-</style>
