@@ -2,7 +2,6 @@
 <script src="static/getHeader.js"></script>
 <script src="static/alert/alert.js"></script>
 <style>
-  @import url("static/UserForm.css");
   @import url("static/UserManagement.css");
   @import url("static/alert/alert.css");
 </style>
@@ -16,21 +15,15 @@
 
   <script src="static/getNavBar.js"></script>
 
-  <div style="padding: 5px" class="ant-table ant-table-scroll-position-left ant-table-default ant-table-bordered">
-    <div class="ant-table-content">
-      <div class="ant-table-scroll">
-        <div class="ant-table-body">
-          <table border=1 frame=void rules=all id="table" class="ant-table-fixed table-search-company">
-            <thead class="ant-table-thead">
-              <tr>
-              </tr>
-            </thead>
-            <tbody id="tbody" class="ant-table-tbody">
-            </tbody>
-          </table>
-        </div>
-      </div>
-    </div>
+  <div style="padding: 5px" class="">
+    <table id="table" class="table table-hover table-bordered table-sm">
+      <thead class="thead-dark">
+        <tr>
+        </tr>
+      </thead>
+      <tbody id="tbody">
+      </tbody>
+    </table>
   </div>
 
   <h2 align='center' style="display: none" id="res">Updated successfully!</h2>
@@ -114,6 +107,7 @@
       let tr = document.getElementById('table').tHead.children[0];
       for (prop in res[0]) {
         let th = document.createElement('th');
+        th.setAttribute("scope", "col");
         th.innerHTML = prop.replace(/([A-Z])/g, ' $1')
           .replace(/^./, function (str) { return str.toUpperCase(); });
         tr.appendChild(th);
