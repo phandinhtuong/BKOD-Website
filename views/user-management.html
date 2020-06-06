@@ -40,6 +40,7 @@
 </html>
 
 <script>
+  // Function for adjust values in the first column of the table after deleting a user
   let incrementCellValues = row => {
     var table = document.getElementById('table');
     for (var r = 0, n = table.rows.length; r < n; r++) {
@@ -53,6 +54,7 @@
     }
   }
 
+  // Function for calling API deleteUser
   let handleRemoval = async user => {
     let deleted = false;
     const rawResponse = await fetch('../controllers/deleteUser.php', {
