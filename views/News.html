@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<script src="static/getHeader.js"></script>
+<style>
+  @import url("static/News.css");
+  @import url("static/spacing.css");
+</style>
+
+<body>
+  <div id="header">
+    <p>
+    <h1>News</h1>
+    </p>
+  </div>
+
+  <script src="static/getNavBar.js"></script>
+
+  <ul class="list-unstyled" id="news-list">
+    <!-- <li class="media">
+      <img src="..." class="mr-3" alt="...">
+      <div class="media-body">
+        <h5 class="mt-0 mb-1">List-based media object</h5>
+        Cras sit amet nibh libero, in gravida nulla. Nulla vel metus scelerisque ante sollicitudin. Cras purus odio, vestibulum in vulputate at, tempus viverra turpis. Fusce condimentum nunc ac nisi vulputate fringilla. Donec lacinia congue felis in faucibus.
+      </div>
+    </li>
+    <li class="media my-4">
+      <img src="..." class="mr-3" alt="...">
+      <div class="media-body">
+        <h5 class="mt-0 mb-1">List-based media object</h5>
+        Cras sit amet nibh libero, in gravida nulla. Nulla vel metus scelerisque ante sollicitudin. Cras purus odio, vestibulum in vulputate at, tempus viverra turpis. Fusce condimentum nunc ac nisi vulputate fringilla. Donec lacinia congue felis in faucibus.
+      </div>
+    </li>
+    <li class="media">
+      <img src="..." class="mr-3" alt="...">
+      <div class="media-body">
+        <h5 class="mt-0 mb-1">List-based media object</h5>
+        Cras sit amet nibh libero, in gravida nulla. Nulla vel metus scelerisque ante sollicitudin. Cras purus odio, vestibulum in vulputate at, tempus viverra turpis. Fusce condimentum nunc ac nisi vulputate fringilla. Donec lacinia congue felis in faucibus.
+      </div>
+    </li> -->
+  </ul>
+
+</body>
+</html>
+
+<script>
+  let getAllNews = async user => {
+    const rawResponse = await fetch('../controllers/getAllNews.php');
+    let clone = rawResponse.clone();
+    await clone.json().then(res => {
+      let ul = document.getElementById('news-list');
+      let showingImgList = res.filter(img => img.isShowing);
+      // Iteratively add each li corresponding to each news retrieved from the API
+      showingImgList.map((news, index) => {
+        let li = document.createElement('li');
+        li.className = `media${index != res.length -1 ? ' my-4' : ''}`;
+
+        let img = document.createElement("img");
+        let altImageUrl = 'https://scontent.fhan5-7.fna.fbcdn.net/v/t31.0-8/21122550_930977190373638_6448461248229799488_o.jpg?_nc_cat=100&_nc_sid=09cbfe&_nc_ohc=ow2MFrVp_uEAX9em0Oe&_nc_ht=scontent.fhan5-7.fna&oh=345aa702fba8da69577b7de46e288ce8&oe=5F00FBB8';
+        img.setAttribute("src", news.imageUrl);
+        img.setAttribute("id", `news-img-${index}`)
+        img.style.width = "100px";
+        img.style.height = "100px";
+        img.onerror = () => {
+          document.getElementById(`news-img-${index}`).src = altImageUrl;
+        }
+        img.className = "mr-3";
+
+        let div = document.createElement("div");
+        div.className = "media-body";
+
+        let a = document.createElement("a");
+        a.className = "mt-0 mb-1 news";
+        a.setAttribute("href", news.url)
+        a.innerHTML = news.title;
+
+        div.appendChild(a);
+        div.appendChild(document.createElement("br"));
+        div.insertAdjacentText('beforeend', news.summary);
+
+        li.appendChild(img);
+        li.appendChild(div);
+        ul.appendChild(li);
+      })
+    })
+  }
+  getAllNews();
+</script>
