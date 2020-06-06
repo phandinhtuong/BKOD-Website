@@ -3,18 +3,13 @@ require '../utils/db_connection.php';
 header('Content-Type: application/json');
 
 $getAllNewsQuery = $db->prepare("SELECT * FROM news");
-if (PEAR::isError($getAllNewsQuery)) {
-  echo "Bad query detected!";
-}
 
-$res = &$db->execute($getAllNewsQuery);
+$success = $getAllNewsQuery->execute();
 
-if (PEAR::isError($res)) {
-  $err = $res->getDebugInfo();
-  echo json_encode("An unknown error occured!");
-} else {
+if( $success !== false ) {
+  $res = $getAllNewsQuery->get_result();
   $allNews = array();
-  while (($news = $res->fetchRow())) {
+  while (($news = $res->fetch_row())) {
     $trueNews = array();
     foreach ($news as $key=>$value) {
       if ($key === 0)
@@ -33,4 +28,6 @@ if (PEAR::isError($res)) {
     $allNews[] = $trueNews;
   }
   echo json_encode($allNews);
+}else {
+  echo json_encode("An unknown error occured!");
 }

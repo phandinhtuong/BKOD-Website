@@ -6,19 +6,22 @@ function checkValidLogin($username, $password) {
     $hash256Password = hash("sha256", $hash256Password);
     //print($hash256Password);
     //$sql = "select * from user where username = '$username' and password = '$hash256Password';"; // SQL Injection by ' or 1=1;#
-    $sql = 'select * from user where username = ? and password = ?';
+    $sql = $db->prepare('select * from user where username = ? and password = ?');
+    $sql->bind_param("ss", $username, $hash256Password);
 //    print("<br>");
 //    print($sql);
 //    print("<br>");
     //$result = $db->query($sql);
-    $data = array($username, $hash256Password);
     //$data = $username;
-    $result = & $db->query($sql, $data);
+    $sql->execute();
 //    while ($row = $result->fetchRow()) {
 //        for ($i = 0; $i < count($row); $i++)
 //            print( "$row[$i]<br>");
 //    }
-    $row = $result->fetchRow();
+    $result = $sql->get_result();
+
+
+    $row = $result->fetch_row();
 //    echo '<script>console.log("Your stuff here")</script>';
 //    $hash256Password = strtoupper($hash256Password);
 //    print("<br>");
