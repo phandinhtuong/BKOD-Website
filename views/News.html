@@ -21,6 +21,8 @@
 </html>
 
 <script>
+  if (!localStorage.getItem("currentUser"))
+    window.location.href = '../views/index.php';
   let getAllNews = async user => {
     const rawResponse = await fetch('../controllers/getAllNews.php');
     let clone = rawResponse.clone();
