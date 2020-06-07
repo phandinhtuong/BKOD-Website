@@ -1,4 +1,5 @@
 <!DOCTYPE html>
+<script src="static/routeGuard.js"></script>
 <script src="static/getHeader.js"></script>
 <style>
   @import url("static/UserForm.css");
@@ -58,8 +59,6 @@ and open the template in the editor.
 </html>
 
 <script>
-  if (!localStorage.getItem("currentUser"))
-    window.location.href = '../views/index.php';
   let username = localStorage.getItem("currentUser");
   let fullName = document.getElementById("fullName");
   let school = document.getElementById("school");

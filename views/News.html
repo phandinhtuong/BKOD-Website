@@ -1,4 +1,5 @@
 <!DOCTYPE html>
+<script src="static/routeGuard.js"></script>
 <script src="static/getHeader.js"></script>
 <style>
   @import url("static/News.css");
@@ -21,8 +22,6 @@
 </html>
 
 <script>
-  if (!localStorage.getItem("currentUser"))
-    window.location.href = '../views/index.php';
   let getAllNews = async user => {
     const rawResponse = await fetch('../controllers/getAllNews.php');
     let clone = rawResponse.clone();

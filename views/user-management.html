@@ -1,4 +1,5 @@
 <!DOCTYPE html>
+<script src="static/routeGuard.js"></script>
 <script src="static/getHeader.js"></script>
 <script src="static/alert/alert.js"></script>
 <style>
@@ -33,8 +34,6 @@
 </html>
 
 <script>
-  if (!localStorage.getItem("currentUser"))
-    window.location.href = '../views/index.php';
   // Function for adjust values in the first column of the table after deleting a user
   let incrementCellValues = row => {
     var table = document.getElementById('table');
