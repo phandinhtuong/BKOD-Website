@@ -48,7 +48,7 @@
   // Function for calling API deleteUser
   let handleRemoval = async user => {
     let deleted = false;
-    const rawResponse = await fetch('../controllers/DeleteUser.php', {
+    const rawResponse = await fetch('../controllers/deleteUser.php', {
       method: 'POST',
       headers: {
         'Accept': 'application/json',

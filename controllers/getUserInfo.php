@@ -1,20 +1,21 @@
 <?php
 require '../utils/db_connection.php';
-header('Content-type:application/json');
+header('Content-Type: application/json');
 
 $_POST = json_decode(file_get_contents('php://input'), true);
 $username = $_POST['username'];
 
 $getUsersInfoQuery = $db->prepare("SELECT * FROM user where username = ?");
-$getUsersInfoQuery->bind_param("s", $username);
+if (PEAR::isError($getUsersInfoQuery)) {
+  echo "Bad query detected!";
+}
 
-$success = $getUsersInfoQuery->execute();
+$res = &$db->execute($getUsersInfoQuery, $username);
 
-if( $success !== false ) {
-  $res = $getUsersInfoQuery->get_result();
-
-  $user = $res->fetch_row();
-  echo json_encode($user);
-} else {
+if (PEAR::isError($res)) {
+  $err = $res->getDebugInfo();
   echo json_encode("An unknown error occured!");
+} else {
+  $user = $res->fetchRow();
+  echo json_encode($user);
 }
