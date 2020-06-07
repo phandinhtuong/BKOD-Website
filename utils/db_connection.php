@@ -1,21 +1,10 @@
 <?php
+$url = parse_url(getenv("CLEARDB_DATABASE_URL"));
 
-require_once 'DB.php';
-# parameters for connecting to the "business_service" 
-$usernameDB = "root";
-$passwordDB = "";
-$hostspec = "localhost";
-$database = "bkod";
-// $dbtype = 'pgsql';
-// $dbtype = 'oci8';
-$dbtype = 'mysqli';
+$server = "localhost";
+$usrname = "root";
+$pswd = "";
+$dbname = "bkod";
 
-# DSN constructed from parameters 
-$dsn = "$dbtype://$usernameDB:$passwordDB@$hostspec/$database";
-
-# Establish the connection
-$db = DB::connect($dsn);
-if (DB::isError($db)) {
-    die($db->getMessage());
-}
-?> 
+$db = new mysqli($server, $usrname, $pswd, $dbname);
+?>

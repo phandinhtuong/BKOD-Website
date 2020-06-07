@@ -3,19 +3,14 @@ require '../utils/db_connection.php';
 header('Content-Type: application/json');
 
 $getAllUsersQuery = $db->prepare("SELECT * FROM user");
-if (PEAR::isError($getAllUsersQuery)) {
-  echo "Bad query detected!";
-}
 
-$res = &$db->execute($getAllUsersQuery);
+$success = $getAllUsersQuery->execute();
 
-if (PEAR::isError($res)) {
-  $err = $res->getDebugInfo();
-  echo json_encode("An unknown error occured!");
-} else {
+if( $success !== false ) {
+  $res = $getAllUsersQuery->get_result();
   $allUsers = array();
   $count = 0;
-  while (($user = $res->fetchRow())) {
+  while (($user = $res->fetch_row())) {
     $count++;
     $trueUser = array();
     $trueUser["no"] = $count;
@@ -44,4 +39,6 @@ if (PEAR::isError($res)) {
     $allUsers[] = $trueUser;
   }
   echo json_encode($allUsers);
+}else {
+  echo json_encode("An unknown error occured!");
 }

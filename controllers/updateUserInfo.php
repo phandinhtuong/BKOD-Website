@@ -11,26 +11,23 @@ $phone = $_POST["phone"];
 $birthday = $_POST["birthday"];
 $gender = $_POST["gender"];
 
-require '../utils/db_connection.php';
-global $fullName, $school, $class, $phone, $birthday, $gender, $username;
-
 $updateUserInfoQuery = $db->prepare("UPDATE user
   SET fullName=?, school=?, class=?, phoneNumber=?, birthday=?, gender=?
   WHERE username=? ");
 
-if (PEAR::isError($updateUserInfoQuery)) {
-  echo "Bad query detected!";
+if ($db -> connect_errno) {
+  echo "Failed to connect to MySQL: " . $mysqli -> connect_error;
+  exit();
 }
 
-$data = array($fullName, $school, $class, $phone, $birthday, $gender, $username);
+$updateUserInfoQuery->bind_param("sssssss", $fullName, $school, $class, $phone, $birthday, $gender, $username);
 
-$res = &$db->execute($updateUserInfoQuery, $data);
+$success = $updateUserInfoQuery->execute();
 
-if (PEAR::isError($res)) {
-  $err = $res->getDebugInfo();
-  echo json_encode("An unknown error occured!");
-} else {
+if( $success !== false ) {
   echo json_encode("Updated successfully!");
+} else {
+  echo json_encode("An unknown error occured!");
 }
 
 ?>
