@@ -5,16 +5,23 @@ header('Content-Type: application/json');
 $_POST = json_decode(file_get_contents('php://input'), true);
 $username = $_POST['username'];
 
-$deleteUserQuery = $db->prepare("DELETE FROM user WHERE username=?");
+require '../utils/db_connection.php';
 
-$deleteUserQuery->bind_param("s", $username);
+$deleteUserQuery = $db->prepare("DELETE FROM user WHERE username=?;");
 
-$success = $deleteUserQuery->execute();
+if (PEAR::isError($deleteUserQuery)) {
+  echo "Bad query detected!";
+}
 
-if( $success !== false ) {
-  echo json_encode("Deleted successfully!");
+$data = $username;
+
+$res = &$db->execute($deleteUserQuery, $username);
+
+if (PEAR::isError($res)) {
+  $err = $res->getDebugInfo();
+  echo json_encode($err);
 } else {
-  echo json_encode("An unknown error occured!");
+  echo json_encode("Deleted successfully!");
 }
 
 ?>
