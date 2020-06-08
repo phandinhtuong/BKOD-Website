@@ -1,6 +1,8 @@
 <!DOCTYPE html>
 <script src="static/getHeader.js"></script>
-
+<?php
+//include "../controllers/getAllUsers.php";
+?>
 <html>
     <head>
         <title>MY Chat view</title>
@@ -49,20 +51,20 @@
     <div id="leftcol">User
         <script type="text/javascript">
             // show all messages
-            xmlhttp = new XMLHttpRequest();
-            xmlhttp.open("GET", "../controllers/getAllUsers.php", true);
-            xmlhttp.send();
-            xmlhttp.onreadystatechange = function () {
-                if (xmlhttp.readyState == 4) {
-                    document.getElementById("leftcol").innerHTML = xmlhttp.responseText;
-                }
+            var xmlhttp1 = new XMLHttpRequest();
+            xmlhttp1.open("GET", "../controllers/getMessengerUsers.php", true);
+            xmlhttp1.send();
+            xmlhttp1.onreadystatechange = function () {
+                if (xmlhttp1.readyState == 4) {
+                    document.getElementById("leftcol").innerHTML = xmlhttp1.responseText;
+                } 
             }
         </script>
     </div>
     <div id="content">Message Section
         <script type="text/javascript">
             // show all messages
-            xmlhttp = new XMLHttpRequest();
+            var xmlhttp = new XMLHttpRequest();
             xmlhttp.open("GET", "../controllers/getAllMessages.php", true);
             xmlhttp.send();
             xmlhttp.onreadystatechange = function () {
@@ -75,7 +77,7 @@
     <div id="footer" align="center">Sending messages
         <form action="/test.php" method="POST">
             <input type="text" name="message" size="150" value="Enter your message here.">
-                <input type="submit" value="Send">
+            <input type="submit" value="Send">
         </form>
 
     </div>
