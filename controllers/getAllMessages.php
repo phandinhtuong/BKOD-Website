@@ -32,15 +32,15 @@ if (PEAR::isError($res)) {
         $allMessages[] = $trueMessage;
     }
 //    echo json_encode($allMessages);
-    echo "<table border='0'>";
+    echo "<table border='1'>";
     foreach ($allMessages as $row) {
 //while ($row = mysqli_fetch_array($res)) {
         echo "<tr>";
         echo "<td>" . $row['senderId'] . "</td>";
         echo "<td>" . $row['recieverId'] . "</td>";
         echo "<td>" . $row['mContent'] . "</td>";
+        echo "<td>" . $row['messageId'] . "</td>";
         echo "<td>" . $row['time'] . "</td>";
-
         echo "</tr>";
     }
     echo "</table>";
