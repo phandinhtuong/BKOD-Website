@@ -1,6 +1,26 @@
 <?php
-class DBSystem2{
-    function checkValidLogin($username, $password) {
+function login($username, $password) {
+//        print($username);
+//        print('<br>');
+//        print($password);
+//        print('<br>');
+    $i = checkValidLogin($username, $password);
+    if (is_null($i)) {
+        print("CheckValidLogin Null!");
+    } else if ($i == 1) {
+        //print("log in okay");
+
+        $_SESSION["u"] = $username;
+        header('Location: ../views/Home.php');
+        exit();
+    } else if ($i == 0) {
+        $_SESSION["w"] = "wrong";
+        header('Location: ../views/index.php');
+        exit();
+        //print("no ok log in");
+    }
+}
+function checkValidLogin($username, $password) {
     require '../utils/db_connection.php';
     $hash256Password = $password . $username . "BKODv1Habvietio";
     $hash256Password = hash("sha256", $hash256Password);
@@ -19,7 +39,8 @@ class DBSystem2{
 //            print( "$row[$i]<br>");
 //    }
     $row = $result->fetchRow();
-    $hash256Password = strtoupper($hash256Password);
+//    echo '<script>console.log("Your stuff here")</script>';
+//    $hash256Password = strtoupper($hash256Password);
 //    print("<br>");
 //    print($row[1]);
 //    print("<br>");
@@ -30,15 +51,13 @@ class DBSystem2{
 //    print($hash256Password);
 //    print("<br>");
 
-    if (strcmp($row[1], $username) == 0 && strcmp($row[2], $hash256Password) == 0) {
+    if (strcmp($row[1], $username) == 0 && strcasecmp($row[2], $hash256Password) == 0) {
       //  print("OK");
         return 1;
     } else {
        // print("NO");
         return 0;
     }
-}
-
 }
 
 ?>
