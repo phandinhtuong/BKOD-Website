@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <script src="static/getHeader.js"></script>
+<script src="Tour.js"></script>
 <!--
 To change this license header, choose License Headers in Project Properties.
 To change this template file, choose Tools | Templates
@@ -21,29 +22,20 @@ if (!isset($_SESSION["u"])) {
 </div>
 
 <script src="static/getNavBar.js"></script>
+<span id="name"> 1s</span>
 <div id="main">
+    <form>
     <script type="text/javascript">
-//           function showTours(){
-        xmlhttp = new XMLHttpRequest();
-        $q = "getAllTours";
-        xmlhttp.open("GET", "../controllers/tourController.php?q="+$q, true);
-        xmlhttp.send();
-//               document.getElementById("main").innerHTML = 1;
-        xmlhttp.onreadystatechange = function () {
-            if (xmlhttp.readyState == 4) {
-                document.getElementById("main").innerHTML = xmlhttp.responseText;
-            }
-        }
-
-//               xmlhttp.onreadystatechange = function(){
-//                   if (xmlhttp.readyState == 4){
-//                       
-//                   }
-//               }
-//           }
+        displayAllTours();
 //           showTour();
     </script>
-    
+<!--        <select name="users" onchange="displayAllTours()">
+            <option value="1">Peter Griffin</option>
+            <option value="2">Lois Griffin</option>
+            <option value="3">Glenn Quagmire</option>
+            <option value="4">Joseph Swanson</option>
+        </select>-->
+    </form>
 
 </div>
 </body>
