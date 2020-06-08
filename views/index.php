@@ -28,7 +28,7 @@ if (isset($_SESSION["registerSuccess"])) {
 
 <body>
 
-    <form action="../controllers/Control.php" method="post">
+    <form action="../controllers/loginController.php" method="post">
         <div id="header">
             <p>
                 <h1>Log in to BKOD</h1>

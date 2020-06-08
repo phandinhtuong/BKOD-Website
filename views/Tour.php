@@ -25,7 +25,8 @@ if (!isset($_SESSION["u"])) {
     <script type="text/javascript">
 //           function showTours(){
         xmlhttp = new XMLHttpRequest();
-        xmlhttp.open("GET", "../controllers/getAllTours.php", true);
+        $q = "getAllTours";
+        xmlhttp.open("GET", "../controllers/tourController.php?q="+$q, true);
         xmlhttp.send();
 //               document.getElementById("main").innerHTML = 1;
         xmlhttp.onreadystatechange = function () {
