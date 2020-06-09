@@ -50,6 +50,26 @@ class UserModel
       return json_encode($user);
     }
   }
+  public function getUserId($username)
+  {
+    require '../utils/db_connection.php';
+    $getUsersInfoQuery = $db->prepare("SELECT * FROM user where username = ?");
+    if (PEAR::isError($getUsersInfoQuery)) {
+      return "Bad query detected!";
+    }
+    $res = &$db->execute($getUsersInfoQuery, $username);
+
+    if (PEAR::isError($res)) {
+      $err = $res->getDebugInfo();
+      return json_encode("An unknown error occured!");
+    } else {
+      $user = $res->fetchRow();
+        foreach ($user as $key=>$value) {
+          if ($key === 0)
+          return $value;
+        }
+    }
+  }
 
   public function updateUserInfo($fullName, $school, $class, $phone, $birthday, $gender, $username){
     require '../utils/db_connection.php';

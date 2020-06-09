@@ -1,7 +1,6 @@
 <!DOCTYPE html>
 <script src="static/getHeader.js"></script>
 <?php
-//include "../controllers/getAllUsers.php";
 ?>
 <html>
     <head>
@@ -65,8 +64,9 @@
         <script type="text/javascript">
             // show all messages
             var xmlhttp = new XMLHttpRequest();
-            xmlhttp.open("GET", "../controllers/getAllMessages.php", true);
-            xmlhttp.send();
+            xmlhttp.open("POST", "../controllers/getMessages.php", true);
+            xmlhttp.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+            xmlhttp.send("userName=" + localStorage.getItem("currentUser"));
             xmlhttp.onreadystatechange = function () {
                 if (xmlhttp.readyState == 4) {
                     document.getElementById("content").innerHTML = xmlhttp.responseText;
