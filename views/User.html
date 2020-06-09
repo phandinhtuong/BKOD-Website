@@ -71,13 +71,13 @@ and open the template in the editor.
   let unrevealed = document.getElementById("unrevealed");
   let resEl = document.getElementById("res");
   async function getUserInfo() {
-    const rawResponse = await fetch('../controllers/getUserInfo.php', {
+    const rawResponse = await fetch('../controllers/UserController.php', {
       method: 'POST',
       headers: {
         'Accept': 'application/json',
         'Content-Type': 'application/json'
       },
-      body: JSON.stringify({ username: username })
+      body: JSON.stringify({ username: username, action: "getUserInfo" })
     });
     let clone = rawResponse.clone();
     await clone.json().then(res => {
@@ -109,9 +109,10 @@ and open the template in the editor.
       classVar: classEl.value,
       phone: phone.value,
       birthday: birthday.value,
-      gender: document.querySelector('input[name="gender"]:checked').value
+      gender: document.querySelector('input[name="gender"]:checked').value,
+      action: "updateUserInfo"
     }
-    const rawResponse = await fetch('../controllers/updateUserInfo.php', {
+    const rawResponse = await fetch('../controllers/UserController.php', {
       method: 'POST',
       headers: {
         'Accept': 'application/json',
