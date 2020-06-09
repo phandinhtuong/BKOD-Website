@@ -75,7 +75,8 @@
         </script>
     </div>
     <div id="footer" align="center">Sending messages
-        <form action="/test.php" method="POST">
+        <form action="../controllers/sendMessage.php" method="POST">
+            <input type="text" name="receiverId" size="20" value="Enter your recipient ID.">
             <input type="text" name="message" size="150" value="Enter your message here.">
             <input type="submit" value="Send">
         </form>
