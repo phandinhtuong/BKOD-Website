@@ -21,7 +21,9 @@ public function respondMissingFields(...$fields) {
 public function validateInput(&...$fields)
 {
   foreach ($fields as &$value) {
+    $value = trim($value);
     $value = strip_tags($value);
+    $value = htmlspecialchars($value);
   }
 }
 
