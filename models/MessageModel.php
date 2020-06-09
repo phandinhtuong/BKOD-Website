@@ -2,21 +2,20 @@
 
 class MessageModel {
 
+    public static $currentUserId;
     public $receiverId;
-    public $senderId;
 
-    public function __construct($receiverId) {
-        $this->receiverId = $receiverId;
+    public function setCurrentUserId($currentUserId) {
+        self::$currentUserId = $currentUserId;
     }
 
     public function getAllMessages() {
         require '../utils/db_connection.php';
-
         $allMessages = array();
         $trueMessage = array();
 
 //        $getAllMessagesQuery = $db->prepare("SELECT * FROM message");
-        $getAllMessagesQuery = $db->prepare("SELECT * FROM message WHERE recieverId = '" . $this->receiverId . "'");
+        $getAllMessagesQuery = $db->prepare("SELECT * FROM message WHERE recieverId = '" . self::$currentUserId . "'");
 
         if (PEAR::isError($getAllMessagesQuery)) {
             echo "Bad query detected!";
@@ -59,9 +58,30 @@ class MessageModel {
         }
     }
 
-    public function getMessagesById() {
+    public function sendMessage($receiverId, $message) {
+        $this->receiverId = $receiverId;
         require '../utils/db_connection.php';
-        $getMessagesByIdQuery = $db->prepare("SELECT * FROM message WHERE recieverId = '" . $receiverId . "'");
+        $messageId = time();
+        $time = time();
+        $insertMessageQuery = $db->prepare("INSERT INTO message (SenderId, RecieverId, messageId, mContent, Time) VALUES (?, ?, ?, ?, ?)");
+        if (PEAR::isError($insertMessageQuery)) {
+            return "Bad query detected!";
+        }
+        echo self::$currentUserId . ", " . $receiverId . ", " .  $messageId . ", " .  $message . ", " .  $time;
+        $data = array(self::$currentUserId, $receiverId, $messageId, $message, $time);
+        $res = &$db->execute($insertMessageQuery, $data);
+
+        if (PEAR::isError($res)) {
+            $err = $res->getDebugInfo();
+            if (strpos($err, 'Duplicate entry') !== false) {
+                return json_encode("Message already existed!");
+            } else {
+                echo "An unknown error occured!";
+            }
+        } else {
+            echo 'Sent successfully';
+        }
     }
+
 
 }
