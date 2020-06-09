@@ -5,6 +5,8 @@
     $username = $_POST['username'];
     $fullName = $_POST["fullName"];
     $psw = $_POST['psw'];
-    $userController->registerUser($username, $psw, $fullName);
-  }
+    $userController->validateInput($username, $fullName, $psw);
+    $userController->registerUser($username, $fullName, $psw);
+  } else
+    $userController->respondMissingFields("username", "fullName", "psw");
 ?>

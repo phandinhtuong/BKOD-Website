@@ -53,8 +53,6 @@ class UserController extends Controller
       echo json_encode("Application error:" . $e->getMessage());
     }
   }
-
-
 }
 
 include ("../../models/UserModel.php");
