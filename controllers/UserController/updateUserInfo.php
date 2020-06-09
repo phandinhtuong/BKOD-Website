@@ -9,6 +9,8 @@
     $phone = $_POST["phone"];
     $birthday = $_POST["birthday"];
     $gender = $_POST["gender"];
+    $userController->validateInput($fullName, $school, $class, $phone, $birthday, $gender, $username);
     $userController->updateUserInfo($fullName, $school, $class, $phone, $birthday, $gender, $username);
-  }
+  } else
+    $userController->respondMissingFields("fullName", "school", "class", "phone", "birthday", "username");
 ?>
