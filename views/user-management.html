@@ -49,13 +49,13 @@
   // Function for calling API deleteUser
   let handleRemoval = async user => {
     let deleted = false;
-    const rawResponse = await fetch('../controllers/UserController.php', {
+    const rawResponse = await fetch('../controllers/UserController/deleteUser.php', {
       method: 'POST',
       headers: {
         'Accept': 'application/json',
         'Content-Type': 'application/json'
       },
-      body: JSON.stringify({ username: user.username, action: "deleteUser" })
+      body: JSON.stringify({ username: user.username})
     });
     let clone = rawResponse.clone();
     await clone.json().then(res => {
@@ -100,14 +100,7 @@
   }
 
   let getAllUsers = async () => {
-    const rawResponse = await fetch('../controllers/UserController.php', {
-      method: 'POST',
-      headers: {
-        'Accept': 'application/json',
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({ action: "getAllUsers" })
-    });
+    const rawResponse = await fetch('../controllers/UserController/getAllUsers.php');
     let clone = rawResponse.clone();
     await clone.json().then(res => {
 

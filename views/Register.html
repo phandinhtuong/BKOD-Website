@@ -56,10 +56,9 @@
         username: username,
         psw: psw,
         psw_repeat: psw_repeat,
-        fullName: fullName,
-        action: "registerUser"
+        fullName: fullName
       }
-      const rawResponse = await fetch('../controllers/UserController.php', {
+      const rawResponse = await fetch('../controllers/UserController/registerUser.php', {
         method: 'POST',
         headers: {
           'Accept': 'application/json',

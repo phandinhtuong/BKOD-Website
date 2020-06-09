@@ -3,7 +3,7 @@
 class UserModel {
 
     public function registerUser($username, $psw, $fullName) {
-        require '../utils/db_connection.php';
+        require '../../utils/db_connection.php';
 
         $hash256Password = $psw . $username . "BKODv1Habvietio";
         $hash256Password = hash("sha256", $hash256Password);
@@ -33,7 +33,7 @@ class UserModel {
     }
 
     public function getUserInfo($username) {
-        require '../utils/db_connection.php';
+        require '../../utils/db_connection.php';
 
         $getUsersInfoQuery = $db->prepare("SELECT * FROM user where username = ?");
         if (PEAR::isError($getUsersInfoQuery)) {
@@ -70,8 +70,8 @@ class UserModel {
         }
     }
 
-    public function updateUserInfo($fullName, $school, $class, $phone, $birthday, $gender, $username) {
-        require '../utils/db_connection.php';
+  public function updateUserInfo($fullName, $school, $class, $phone, $birthday, $gender, $username){
+    require '../../utils/db_connection.php';
 
         $updateUserInfoQuery = $db->prepare("UPDATE user
       SET fullName=?, school=?, class=?, phoneNumber=?, birthday=?, gender=?
@@ -90,8 +90,8 @@ class UserModel {
         }
     }
 
-    public function getAllUsers() {
-        require '../utils/db_connection.php';
+  public function getAllUsers() {
+    require '../../utils/db_connection.php';
 
         $getAllUsersQuery = $db->prepare("SELECT * FROM user");
         if (PEAR::isError($getAllUsersQuery)) {
@@ -137,8 +137,8 @@ class UserModel {
         }
     }
 
-    public function deleteUser($username) {
-        require '../utils/db_connection.php';
+  public function deleteUser($username) {
+    require '../../utils/db_connection.php';
 
         $deleteUserQuery = $db->prepare("DELETE FROM user WHERE username=?;");
         if (PEAR::isError($deleteUserQuery)) {
