@@ -17,6 +17,7 @@
   <script src="static/getNavBar.js"></script>
 
   <ul class="list-unstyled" id="news-list">
+
   </ul>
 
 </body>
@@ -24,12 +25,28 @@
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@9"></script>
 
 <script>
+  let isAdmin = localStorage.getItem("currentUser") == "admin";
   let getAllNews = async user => {
     const rawResponse = await fetch('../controllers/NewsController/getAllNews.php');
     let clone = rawResponse.clone();
     await clone.json().then(res => {
       let ul = document.getElementById('news-list');
       let showingImgList = res.filter(img => img.isShowing);
+
+      if (isAdmin) {
+        let li = document.createElement("li");
+        li.className = "media";
+        li.setAttribute("id", "add-news");
+
+        let addBtn = document.createElement("button");
+        addBtn.className = "ant-btn ant-btn-primary my-4";
+        addBtn.style.margin = "unset";
+        addBtn.textContent = "Add news";
+        addBtn.onclick = () => openEditBox({});
+
+        li.appendChild(addBtn);
+        ul.appendChild(li);
+      }
       // Iteratively add each li corresponding to each news retrieved from the API
       showingImgList.map((news, index) => {
         let li = document.createElement('li');
@@ -79,7 +96,7 @@
 
         li.appendChild(img);
         li.appendChild(div);
-        if (localStorage.getItem("currentUser") === "admin") {
+        if (isAdmin) {
           li.appendChild(editBtn);
           li.appendChild(deleteBtn);
         }
@@ -89,31 +106,40 @@
   }
 
   let openEditBox = async news => {
+    let editingNews = news.newsId ? news : {
+      title: "",
+      summary: "",
+      url: "",
+      imageUrl: ""
+    }
     const vals = await Swal.fire({
       title: 'Update News',
       html:
         '<div style="text-align: left">Title</div>' +
-        `<input id="news-title" value="${news.title}" class="swal2-input">` +
+        `<input maxlength="300" id="news-title" value="${editingNews.title}" class="swal2-input">` +
         '<div style="text-align: left">Summary</div>' +
-        `<input maxlength="100" id="news-summary" value="${news.summary}" class="swal2-input">` +
+        `<input maxlength="300" id="news-summary" value="${editingNews.summary}" class="swal2-input">` +
+        '<div style="text-align: left">URL</div>' +
+        `<input maxlength="300" id="news-url" value="${editingNews.url}" class="swal2-input">` +
         '<div style="text-align: left">Image URL</div>' +
-        `<input id="news-img-url" value="${news.imageUrl}" class="swal2-input">`,
+        `<input maxlength="300" id="news-img-url" value="${editingNews.imageUrl}" class="swal2-input">`,
       focusConfirm: false,
       showCancelButton: true,
       preConfirm: () => {
         let title = document.getElementById('news-title').value,
         summary = document.getElementById('news-summary').value,
-        imageURL = document.getElementById('news-img-url').value;
-        if (!title || !summary || !imageURL)
+        imageURL = document.getElementById('news-img-url').value,
+        url = document.getElementById('news-url').value;
+        if (!title || !summary || !imageURL || !url)
           Swal.showValidationMessage('You have to input all the required fields');
         else
           return [
-            title, summary, imageURL
+            title, summary, url, imageURL
           ]
       }
     });
     let handleUpdateNews = async news => {
-      let updated = await updateNews(news);
+      let updated = await addOrUpdateNews(news);
       if (updated) {
         document.getElementById("news-list").innerHTML = "";
         getAllNews();
@@ -128,10 +154,11 @@
 
     if (vals.value !== undefined) {
       let values = vals.value;
-      news.title = values[0];
-      news.summary = values[1];
-      news.imageUrl = values[2];
-      handleUpdateNews(news);
+      editingNews.title = values[0];
+      editingNews.summary = values[1];
+      editingNews.url = values[2];
+      editingNews.imageUrl = values[3];
+      handleUpdateNews(editingNews);
     }
   }
 
@@ -172,7 +199,7 @@
     })
   }
 
-  let updateNews = async news => {
+  let addOrUpdateNews = async news => {
     let updated = false;
 
     let payload = {
@@ -180,8 +207,11 @@
       title: news.title,
       summary: news.summary,
       imageURL: news.imageUrl,
+      url: news.url
     };
-    const rawResponse = await fetch('../controllers/NewsController/updateNews.php', {
+
+    let APIEndpoint = news.newsId ? "updateNews" : "addNews";
+    const rawResponse = await fetch(`../controllers/NewsController/${APIEndpoint}.php`, {
       method: 'POST',
       headers: {
         'Accept': 'application/json',
@@ -191,7 +221,7 @@
     });
     let clone = rawResponse.clone();
     await clone.json().then(res => {
-      if (res === "Updated successfully!") updated = true;
+      if (["Updated successfully!", "Added successfully!"].includes(res)) updated = true;
     });
     return updated;
   }
