@@ -54,6 +54,8 @@ if (isset($_SESSION["registerSuccess"])) {
             <input type="hidden" value="login" name="message">
             <input type="text" name="username" id="username" value="<?php echo $username ?>"><br>
             <input type="password" name="password" id="psw" value="<?php echo $password ?>"><br>
+            <input onchange="handleCheckboxChange(this)" type="checkbox" id="admin-login" name="admin-login" value="admin" style="height: unset;">
+            <label for="admin-login"> Login as admin</label><br>
             <input type="submit" value="Log in">
             <br />
             <div style="font-size: 14px">Does not have an account? Click <a href="Register.html">here</a> to register.</div>
@@ -78,5 +80,16 @@ if (isset($_SESSION["registerSuccess"])) {
             localStorage.removeItem("regSuccess");
         }
         localStorage.removeItem("currentUser");
+    }
+
+    let handleCheckboxChange = ele => {
+        let usernameEle = document.getElementById("username")
+        if (ele.checked) {
+            usernameEle.value = "admin";
+            usernameEle.setAttribute("readonly", true);
+        } else {
+            usernameEle.value = "a@a.a";
+            usernameEle.removeAttribute("readonly");
+        }
     }
 </script>
