@@ -1,7 +1,33 @@
 <!DOCTYPE html>
 <script src="static/getHeader.js"></script>
-<?php
-?>
+<script src="http://code.jquery.com/jquery-3.1.1.js"></script>
+<script type="text/javascript">
+    function submitChat() {
+        if (form1.receiverId.value == '' || form1.message.value == '') {
+            alert('ALL FIELDS ARE MANDATORY!!');
+            return;
+        }
+        var receiverId = form1.receiverId.value;
+        var message = form1.message.value;
+        var xmlhttp2 = new XMLHttpRequest();
+
+        xmlhttp2.onreadystatechange = function () {
+            if (xmlhttp2.readyState == 4 && xmlhttp2.status == 200) {
+                document.getElementById('chatlogs').innerHTML = xmlhttp2.responseText;
+            }
+        }
+        xmlhttp2.open('POST', "../controllers/sendMessage.php?receiverId=" + receiverId + '&message=' + message + '&username=' + localStorage.getItem("currentUser"))
+        xmlhttp2.send();
+    }
+
+    function doRefresh(){
+        $("#chatlogs").load("../controllers/getMessages.php?username=" + localStorage.getItem('currentUser'));
+    }
+    $(function() {
+        setInterval(doRefresh, 1000);
+    });
+</script>
+
 <html>
     <head>
         <title>MY Chat view</title>
@@ -49,36 +75,36 @@
     <script src="static/getNavBar.js"></script>
     <div id="leftcol">User
         <script type="text/javascript">
-            // show all messages
-            var xmlhttp1 = new XMLHttpRequest();
-            xmlhttp1.open("GET", "../controllers/getMessengerUsers.php", true);
-            xmlhttp1.send();
-            xmlhttp1.onreadystatechange = function () {
-                if (xmlhttp1.readyState == 4) {
-                    document.getElementById("leftcol").innerHTML = xmlhttp1.responseText;
-                } 
-            }
+    // show all messages
+    var xmlhttp1 = new XMLHttpRequest();
+    xmlhttp1.open("GET", "../controllers/getMessengerUsers.php", true);
+    xmlhttp1.send();
+    xmlhttp1.onreadystatechange = function () {
+        if (xmlhttp1.readyState == 4) {
+            document.getElementById("leftcol").innerHTML = xmlhttp1.responseText;
+        }
+    }
         </script>
     </div>
-    <div id="content">Message Section
+    <div id="chatlogs">Message Section
         <script type="text/javascript">
             // show all messages
             var xmlhttp = new XMLHttpRequest();
-            xmlhttp.open("POST", "../controllers/getMessages.php", true);
-            xmlhttp.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
-            xmlhttp.send("userName=" + localStorage.getItem("currentUser"));
+            xmlhttp.open("POST", "../controllers/getMessages.php?username=" + localStorage.getItem("currentUser"));
+            xmlhttp.send();
             xmlhttp.onreadystatechange = function () {
                 if (xmlhttp.readyState == 4) {
-                    document.getElementById("content").innerHTML = xmlhttp.responseText;
+                    document.getElementById("chatlogs").innerHTML = xmlhttp.responseText;
                 }
             }
         </script>
     </div>
     <div id="footer" align="center">Sending messages
-        <form action="../controllers/sendMessage.php" method="POST">
+
+        <form name=form1>
             <input type="text" name="receiverId" size="20" value="Enter your recipient ID.">
             <input type="text" name="message" size="150" value="Enter your message here.">
-            <input type="submit" value="Send">
+            <a href="#" onclick="submitChat()"> Send</a> <br>
         </form>
 
     </div>

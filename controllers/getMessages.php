@@ -2,14 +2,13 @@
 
 header('Content-Type: application/json');
 include ("../models/MessageModel.php");
-$userName = $_POST['userName'];
+$username = $_REQUEST['username'];
 include ("../models/UserModel.php");
 $userModel = new UserModel();
-$userId = $userModel->getUserId($userName);
+$userId = $userModel->getUserId($username);
 
 $messageModel = new MessageModel();
-$messageModel->setCurrentUserId($userId);
 
-echo $messageModel->getAllMessages();
+echo $messageModel->getAllMessages($userId);
 
 ?>
