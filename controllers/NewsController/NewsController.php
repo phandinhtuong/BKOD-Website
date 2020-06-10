@@ -18,9 +18,27 @@ class NewsController extends Controller
     }
   }
 
-  public function updateNews($newsId, $title, $summary, $imageURL) {
+  public function updateNews($newsId, $url, $title, $summary, $imageURL) {
     try {
-      $res = $this->_model->updateNews($newsId, $title, $summary, $imageURL);
+      $res = $this->_model->updateNews($newsId, $url, $title, $summary, $imageURL);
+      echo $res;
+    } catch (Exception $e) {
+      echo json_encode("Application error:" . $e->getMessage());
+    }
+  }
+
+  public function deleteNews($newsId) {
+    try {
+      $res = $this->_model->deleteNews($newsId);
+      echo $res;
+    } catch (Exception $e) {
+      echo json_encode("Application error:" . $e->getMessage());
+    }
+  }
+
+  public function addNews($title, $summary, $url, $imageURL) {
+    try {
+      $res = $this->_model->addNews($title, $summary, $url, $imageURL);
       echo $res;
     } catch (Exception $e) {
       echo json_encode("Application error:" . $e->getMessage());
