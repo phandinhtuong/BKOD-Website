@@ -113,7 +113,7 @@
       imageUrl: ""
     }
     const vals = await Swal.fire({
-      title: 'Update News',
+      title: news.newsId ? 'Update News' : "Add News",
       html:
         '<div style="text-align: left">Title</div>' +
         `<input maxlength="300" id="news-title" value="${editingNews.title}" class="swal2-input">` +
