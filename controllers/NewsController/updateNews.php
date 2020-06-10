@@ -6,7 +6,7 @@
     $title = $_POST["title"];
     $summary = $_POST["summary"];
     $imageURL = $_POST["imageURL"];
-    $newsController->validateInput($newsId, $title, $summary, $imageURL);
+    $newsController->validateInput($newsId, $title, $summary);
     $newsController->updateNews($newsId, $title, $summary, $imageURL);
   } else
     $newsController->respondMissingFields("newsId", "title", "summary", "imageURL");

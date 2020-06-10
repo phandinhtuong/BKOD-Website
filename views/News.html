@@ -69,24 +69,24 @@
 
         li.appendChild(img);
         li.appendChild(div);
-        li.appendChild(editBtn);
+        if (localStorage.getItem("currentUser") === "admin") li.appendChild(editBtn);
         ul.appendChild(li);
       })
     })
   }
 
   let openEditBox = async news => {
-    console.log("news", news);
     const vals = await Swal.fire({
       title: 'Update News',
       html:
         '<div style="text-align: left">Title</div>' +
         `<input id="news-title" value="${news.title}" class="swal2-input">` +
         '<div style="text-align: left">Summary</div>' +
-        `<input id="news-summary" value="${news.summary}" class="swal2-input">` +
+        `<input maxlength="100" id="news-summary" value="${news.summary}" class="swal2-input">` +
         '<div style="text-align: left">Image URL</div>' +
         `<input id="news-img-url" value="${news.imageUrl}" class="swal2-input">`,
       focusConfirm: false,
+      showCancelButton: true,
       preConfirm: () => {
         return [
           document.getElementById('news-title').value,
@@ -95,12 +95,57 @@
         ]
       }
     });
+    let handleUpdateNews = async news => {
+      let updated = await updateNews(news);
+      if (updated) {
+        document.getElementById("news-list").innerHTML = "";
+        getAllNews();
+        Swal.fire({
+          icon: 'success',
+          title: 'Updated successfully!'
+        })
+      }
+      else
+        Swal.fire({
+          icon: 'error',
+          title: 'Oops...',
+          text: 'Something went wrong!'
+        })
+    }
 
-    if (vals) {
-      console.log("vals", vals.value);
-
+    if (vals.value !== undefined) {
+      let values = vals.value;
+      news.title = values[0];
+      news.summary = values[1];
+      news.imageUrl = values[2];
+      handleUpdateNews(news);
     }
 
   }
+
+  let updateNews = async news => {
+    let updated = false;
+
+    let payload = {
+      newsId: news.newsId,
+      title: news.title,
+      summary: news.summary,
+      imageURL: news.imageUrl,
+    };
+    const rawResponse = await fetch('../controllers/NewsController/updateNews.php', {
+      method: 'POST',
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(payload)
+    });
+    let clone = rawResponse.clone();
+    await clone.json().then(res => {
+      if (res === "Updated successfully!") updated = true;
+    });
+    return updated;
+  }
+
   getAllNews();
 </script>

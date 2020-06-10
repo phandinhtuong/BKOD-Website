@@ -54,7 +54,7 @@ class NewsModel
 
     if (PEAR::isError($res)) {
       $err = $res->getDebugInfo();
-      return json_encode("An unknown error occured!");
+      return json_encode("An unknown error occured!". $res->getDebugInfo());
     } else {
       return json_encode("Updated successfully!");
     }
