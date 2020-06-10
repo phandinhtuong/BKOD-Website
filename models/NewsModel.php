@@ -39,4 +39,24 @@ class NewsModel
     }
 
   }
+
+  public function updateNews($newsId, $title, $summary, $imageURL){
+    require '../../utils/db_connection.php';
+
+    $updateNewsQuery = $db->prepare("UPDATE news
+      SET title=?, summary=?, imageUrl=?
+      WHERE newsId=? ");
+    if (PEAR::isError($updateNewsQuery)) {
+        return "Bad query detected!";
+    }
+    $data = array($title, $summary, $imageURL, $newsId);
+    $res = &$db->execute($updateNewsQuery, $data);
+
+    if (PEAR::isError($res)) {
+      $err = $res->getDebugInfo();
+      return json_encode("An unknown error occured!");
+    } else {
+      return json_encode("Updated successfully!");
+    }
+  }
 }
