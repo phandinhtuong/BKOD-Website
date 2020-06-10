@@ -16,12 +16,13 @@
                 document.getElementById('chatlogs').innerHTML = xmlhttp2.responseText;
             }
         }
-        xmlhttp2.open('POST', "../controllers/sendMessage.php?receiverId=" + receiverId + '&message=' + message + '&username=' + localStorage.getItem("currentUser"))
+        xmlhttp2.open('POST', "../controllers/MessageController/sendMessage.php?receiverId=" + receiverId + '&message=' + message + '&username=' + localStorage.getItem("currentUser"))
         xmlhttp2.send();
     }
 
     function doRefresh() {
-        $("#chatlogs").load("../controllers/getMessages.php?username=" + localStorage.getItem('currentUser'));
+        $("#chatlogs").load("../controllers/MessageController/getMessages.php?username=" + localStorage.getItem('currentUser') +"&selectedUserId=" + document.getElementById("user").value);
+            document.getElementById("receiver").value = document.getElementById("user").value;
     }
     $(function () {
         setInterval(doRefresh, 1000);
@@ -77,7 +78,7 @@
         <script type="text/javascript">
     // show all messages
     var xmlhttp1 = new XMLHttpRequest();
-    xmlhttp1.open("GET", "../controllers/getMessengerUsers.php", true);
+    xmlhttp1.open("GET", "../controllers/MessageController/getMessengerUsers.php", true);
     xmlhttp1.send();
     xmlhttp1.onreadystatechange = function () {
         if (xmlhttp1.readyState == 4) {
@@ -90,7 +91,7 @@
         <script type="text/javascript">
             // show all messages
             var xmlhttp = new XMLHttpRequest();
-            xmlhttp.open("POST", "../controllers/getMessages.php?username=" + localStorage.getItem("currentUser"));
+            xmlhttp.open("POST", "../controllers/MessageController/getMessages.php?username=" + localStorage.getItem("currentUser") +"&selectedUserId=" + document.getElementById("user").value);
             xmlhttp.send();
             xmlhttp.onreadystatechange = function () {
                 if (xmlhttp.readyState == 4) {
@@ -102,8 +103,8 @@
     <div id="footer" align="center">Sending messages
 
         <form name=form1>
-            <input type="text" name="receiverId" size="20" value="Enter your recipient ID.">
-            <input type="text" name="message" size="150" value="Enter your message here.">
+            <input id="receiver" type="text" name="receiverId" size="10" value="Enter your recipient ID.">
+            <input type="text" name="message" size="100" value="Enter your message here.">
             <a href="#" onclick="submitChat()"> Send</a> <br>
         </form>
 
