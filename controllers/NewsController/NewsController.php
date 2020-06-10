@@ -26,6 +26,15 @@ class NewsController extends Controller
       echo json_encode("Application error:" . $e->getMessage());
     }
   }
+
+  public function deleteNews($newsId) {
+    try {
+      $res = $this->_model->deleteNews($newsId);
+      echo $res;
+    } catch (Exception $e) {
+      echo json_encode("Application error:" . $e->getMessage());
+    }
+  }
 }
 
 include ("../../models/NewsModel.php");

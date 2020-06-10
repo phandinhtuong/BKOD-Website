@@ -33,6 +33,7 @@
       // Iteratively add each li corresponding to each news retrieved from the API
       showingImgList.map((news, index) => {
         let li = document.createElement('li');
+        li.setAttribute("id", `news-${news.newsId}`)
         li.className = `media${index != res.length -1 ? ' my-4' : ''}`;
 
         let img = document.createElement("img");
@@ -67,9 +68,21 @@
           }
         })(news);
 
+        let deleteBtn = document.createElement("button");
+        deleteBtn.textContent = "Delete";
+        deleteBtn.className = "ml-1 ant-btn ant-btn-danger";
+        deleteBtn.onclick = (entry => {
+          return () => {
+            openConfirmBox(entry)
+          }
+        })(news);
+
         li.appendChild(img);
         li.appendChild(div);
-        if (localStorage.getItem("currentUser") === "admin") li.appendChild(editBtn);
+        if (localStorage.getItem("currentUser") === "admin") {
+          li.appendChild(editBtn);
+          li.appendChild(deleteBtn);
+        }
         ul.appendChild(li);
       })
     })
@@ -110,11 +123,7 @@
         })
       }
       else
-        Swal.fire({
-          icon: 'error',
-          title: 'Oops...',
-          text: 'Something went wrong!'
-        })
+        showErrorMessage();
     }
 
     if (vals.value !== undefined) {
@@ -124,6 +133,43 @@
       news.imageUrl = values[2];
       handleUpdateNews(news);
     }
+  }
+
+  let openConfirmBox = news => {
+    Swal.fire({
+      title: 'Are you sure?',
+      text: "You won't be able to revert this!",
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Yes, delete it!'
+    }).then(async result => {
+      if (result.value) {
+        const rawResponse = await fetch('../controllers/NewsController/deleteNews.php', {
+          method: 'POST',
+          headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({ newsId: news.newsId})
+        });
+        let clone = rawResponse.clone();
+        await clone.json().then(res => {
+          if (res === "Deleted successfully!") {
+            let li = document.getElementById(`news-${news.newsId}`);
+            li.parentNode.removeChild(li);
+            Swal.fire(
+            'Deleted!',
+            'News has been deleted.',
+            'success'
+            )
+          }
+          else
+            showErrorMessage();
+        });
+      }
+    })
   }
 
   let updateNews = async news => {
@@ -148,6 +194,14 @@
       if (res === "Updated successfully!") updated = true;
     });
     return updated;
+  }
+
+  let showErrorMessage = () => {
+    Swal.fire({
+      icon: 'error',
+      title: 'Oops...',
+      text: 'Something went wrong!'
+    })
   }
 
   getAllNews();

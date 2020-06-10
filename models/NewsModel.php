@@ -59,4 +59,21 @@ class NewsModel
       return json_encode("Updated successfully!");
     }
   }
+
+  public function deleteNews($newsId) {
+    require '../../utils/db_connection.php';
+
+        $deleteNewsQuery = $db->prepare("DELETE FROM news WHERE newsId=?;");
+        if (PEAR::isError($deleteNewsQuery)) {
+            return "Bad query detected!";
+        }
+        $res = &$db->execute($deleteNewsQuery, $newsId);
+
+        if (PEAR::isError($res)) {
+            $err = $res->getDebugInfo();
+            return json_encode($err);
+        } else {
+            return json_encode("Deleted successfully!");
+        }
+    }
 }
