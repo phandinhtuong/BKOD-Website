@@ -147,6 +147,7 @@
         getAllNews();
         Swal.fire({
           icon: 'success',
+          timer: 2000,
           title: 'Updated successfully!'
         })
       }
@@ -188,11 +189,11 @@
           if (res === "Deleted successfully!") {
             let li = document.getElementById(`news-${news.newsId}`);
             li.parentNode.removeChild(li);
-            Swal.fire(
-            'Deleted!',
-            'News has been deleted.',
-            'success'
-            )
+            Swal.fire({
+              icon: 'success',
+              timer: 2000,
+              title: `News deleted successfully!`
+            })
           }
           else
             showErrorMessage();
@@ -232,6 +233,7 @@
     Swal.fire({
       icon: 'error',
       title: 'Oops...',
+      timer: 2000,
       text: 'Something went wrong!'
     })
   }
