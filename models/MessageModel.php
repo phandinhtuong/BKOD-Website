@@ -2,20 +2,23 @@
 
 class MessageModel {
 
-
-    public function getAllMessages($currentUserId) {
-        require '../utils/db_connection.php';
+    public function getAllMessages($currentUserId, $selectedUserId) {
+        require '../../utils/db_connection.php';
         $allMessages = array();
         $trueMessage = array();
-        
+
 //        $getAllMessagesQuery = $db->prepare("SELECT * FROM message");
-        $getAllMessagesQuery = $db->prepare("SELECT * FROM message WHERE recieverId = '" . $currentUserId . "'" . "ORDER by messageId DESC");
+//        $getAllMessagesQuery = $db->prepare("SELECT * FROM message WHERE recieverId = '" . $currentUserId . "' AND senderId = '" . $selectedUserId . "' " . "ORDER by messageId DESC");
+
+        $getAllMessagesQuery = $db->prepare("SELECT * FROM message WHERE ( recieverId = ?  AND senderId = ? ) OR (recieverId = ? AND  senderId = ?) ORDER by messageId DESC");
 
         if (PEAR::isError($getAllMessagesQuery)) {
             echo "Bad query detected!";
         }
 
-        $res = &$db->execute($getAllMessagesQuery);
+        $data = array($currentUserId, $selectedUserId, $selectedUserId, $currentUserId);
+
+        $res = &$db->execute($getAllMessagesQuery, $data);
 
         if (PEAR::isError($res)) {
             $err = $res->getDebugInfo();
@@ -53,7 +56,7 @@ class MessageModel {
     }
 
     public function sendMessage($senderId, $receiverId, $message) {
-        require '../utils/db_connection.php';
+        require '../../utils/db_connection.php';
         $messageId = time();
         $time = time();
         $insertMessageQuery = $db->prepare("INSERT INTO message (SenderId, RecieverId, messageId, mContent, Time) VALUES (?, ?, ?, ?, ?)");
@@ -72,7 +75,7 @@ class MessageModel {
                 echo "An unknown error occured!";
             }
         } else {
-            echo $this->getAllMessages($senderId);
+            echo $this->getAllMessages($senderId, $receiverId);
         }
     }
 

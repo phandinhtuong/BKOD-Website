@@ -51,7 +51,7 @@ class UserModel {
     }
 
     public function getUserId($username) {
-        require '../utils/db_connection.php';
+        require '../../utils/db_connection.php';
         $getUsersInfoQuery = $db->prepare("SELECT * FROM user where username = ?");
         if (PEAR::isError($getUsersInfoQuery)) {
             return "Bad query detected!";
