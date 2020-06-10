@@ -25,7 +25,7 @@
 
 <script>
   let getAllNews = async user => {
-    const rawResponse = await fetch('../controllers/NewsController.php');
+    const rawResponse = await fetch('../controllers/NewsController/getAllNews.php');
     let clone = rawResponse.clone();
     await clone.json().then(res => {
       let ul = document.getElementById('news-list');

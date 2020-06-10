@@ -1,6 +1,6 @@
 <?php
 header('Content-Type: application/json');
-include ("Controller.php");
+include ("../Controller.php");
 
 class NewsController extends Controller
 {
@@ -19,8 +19,7 @@ class NewsController extends Controller
   }
 }
 
-include ("../models/NewsModel.php");
+include ("../../models/NewsModel.php");
 $newsController = new NewsController(new NewsModel());
-$newsController->getAllNews();
 
 ?>

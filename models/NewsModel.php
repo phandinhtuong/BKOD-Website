@@ -4,7 +4,7 @@ class NewsModel
 {
   public function getAllNews()
   {
-    require '../utils/db_connection.php';
+    require '../../utils/db_connection.php';
 
     $getAllNewsQuery = $db->prepare("SELECT * FROM news");
     if (PEAR::isError($getAllNewsQuery)) {
