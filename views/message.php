@@ -20,10 +20,10 @@
         xmlhttp2.send();
     }
 
-    function doRefresh(){
+    function doRefresh() {
         $("#chatlogs").load("../controllers/getMessages.php?username=" + localStorage.getItem('currentUser'));
     }
-    $(function() {
+    $(function () {
         setInterval(doRefresh, 1000);
     });
 </script>
