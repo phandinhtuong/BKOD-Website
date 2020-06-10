@@ -2,20 +2,14 @@
 
 class MessageModel {
 
-    public static $currentUserId;
-    public $receiverId;
 
-    public function setCurrentUserId($currentUserId) {
-        self::$currentUserId = $currentUserId;
-    }
-
-    public function getAllMessages() {
+    public function getAllMessages($currentUserId) {
         require '../utils/db_connection.php';
         $allMessages = array();
         $trueMessage = array();
-
+        
 //        $getAllMessagesQuery = $db->prepare("SELECT * FROM message");
-        $getAllMessagesQuery = $db->prepare("SELECT * FROM message WHERE recieverId = '" . self::$currentUserId . "'");
+        $getAllMessagesQuery = $db->prepare("SELECT * FROM message WHERE recieverId = '" . $currentUserId . "'" . "ORDER by messageId DESC");
 
         if (PEAR::isError($getAllMessagesQuery)) {
             echo "Bad query detected!";
@@ -58,8 +52,7 @@ class MessageModel {
         }
     }
 
-    public function sendMessage($receiverId, $message) {
-        $this->receiverId = $receiverId;
+    public function sendMessage($senderId, $receiverId, $message) {
         require '../utils/db_connection.php';
         $messageId = time();
         $time = time();
@@ -67,8 +60,8 @@ class MessageModel {
         if (PEAR::isError($insertMessageQuery)) {
             return "Bad query detected!";
         }
-        echo self::$currentUserId . ", " . $receiverId . ", " .  $messageId . ", " .  $message . ", " .  $time;
-        $data = array(self::$currentUserId, $receiverId, $messageId, $message, $time);
+//        echo MessageModel::$currentUserId . ", " . $receiverId . ", " .  $messageId . ", " .  $message . ", " .  $time;
+        $data = array($senderId, $receiverId, $messageId, $message, $time);
         $res = &$db->execute($insertMessageQuery, $data);
 
         if (PEAR::isError($res)) {
@@ -79,9 +72,8 @@ class MessageModel {
                 echo "An unknown error occured!";
             }
         } else {
-            echo 'Sent successfully';
+            echo $this->getAllMessages($senderId);
         }
     }
-
 
 }

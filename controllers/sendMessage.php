@@ -2,10 +2,18 @@
 
 header('Content-Type: application/json');
 include ("../models/MessageModel.php");
-$receiverId = $_POST['receiverId'];
-$message = $_POST['message'];
+
+$receiverId = $_REQUEST['receiverId'];
+$message = $_REQUEST['message'];
+$username = $_REQUEST['username'];
+
+include ("../models/UserModel.php");
+$userModel = new UserModel();
+$senderId = $userModel->getUserId($username);
+
+//echo $userId;
 
 $messageModel = new MessageModel();
-$messageModel->sendMessage($receiverId, $message);
+$messageModel->sendMessage($senderId, $receiverId, $message);
 
 ?>
