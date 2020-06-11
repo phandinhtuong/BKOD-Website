@@ -1,10 +1,7 @@
 <?php
 
 function getAllTours() {
-//    header("Cache-Control: no-cache, must-revalidate");
-//A date in the past
-//    header("Expires: Mon, 26 Jul 1997 05:00:00 GMT");
-    require '../utils/db_connection.php';
+    require '../../utils/db_connection.php';
     $sql = 'select * from tour;';
     $result = &$db->query($sql);
     $allTours = array();
