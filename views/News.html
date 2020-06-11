@@ -1,8 +1,10 @@
 <!DOCTYPE html>
+<script src="static/routeGuard.js"></script>
 <script src="static/getHeader.js"></script>
 <style>
   @import url("static/News.css");
   @import url("static/spacing.css");
+  @import url("static/UserManagement.css");
 </style>
 
 <body>
@@ -15,21 +17,40 @@
   <script src="static/getNavBar.js"></script>
 
   <ul class="list-unstyled" id="news-list">
+
   </ul>
 
 </body>
 </html>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@9"></script>
 
 <script>
+  let isAdmin = localStorage.getItem("currentUser") == "admin";
   let getAllNews = async user => {
-    const rawResponse = await fetch('../controllers/getAllNews.php');
+    const rawResponse = await fetch('../controllers/NewsController/getAllNews.php');
     let clone = rawResponse.clone();
     await clone.json().then(res => {
       let ul = document.getElementById('news-list');
       let showingImgList = res.filter(img => img.isShowing);
+
+      if (isAdmin) {
+        let li = document.createElement("li");
+        li.className = "media";
+        li.setAttribute("id", "add-news");
+
+        let addBtn = document.createElement("button");
+        addBtn.className = "ant-btn ant-btn-primary my-4";
+        addBtn.style.margin = "unset";
+        addBtn.textContent = "Add news";
+        addBtn.onclick = () => openEditBox({});
+
+        li.appendChild(addBtn);
+        ul.appendChild(li);
+      }
       // Iteratively add each li corresponding to each news retrieved from the API
       showingImgList.map((news, index) => {
         let li = document.createElement('li');
+        li.setAttribute("id", `news-${news.newsId}`)
         li.className = `media${index != res.length -1 ? ' my-4' : ''}`;
 
         let img = document.createElement("img");
@@ -55,11 +76,177 @@
         div.appendChild(document.createElement("br"));
         div.insertAdjacentText('beforeend', news.summary);
 
+        let editBtn = document.createElement("button");
+        editBtn.textContent = "Edit";
+        editBtn.className = "ant-btn ant-btn-primary";
+        editBtn.onclick = (entry => {
+          return () => {
+            openEditBox(entry)
+          }
+        })(news);
+
+        let deleteBtn = document.createElement("button");
+        deleteBtn.textContent = "Delete";
+        deleteBtn.className = "ml-1 ant-btn ant-btn-danger";
+        deleteBtn.onclick = (entry => {
+          return () => {
+            openConfirmBox(entry)
+          }
+        })(news);
+
         li.appendChild(img);
         li.appendChild(div);
+        if (isAdmin) {
+          li.appendChild(editBtn);
+          li.appendChild(deleteBtn);
+        }
         ul.appendChild(li);
       })
     })
   }
+
+  let openEditBox = async news => {
+    let editingNews = news.newsId ? news : {
+      title: "",
+      summary: "",
+      url: "",
+      imageUrl: ""
+    }
+    const vals = await Swal.fire({
+      title: news.newsId ? 'Update News' : "Add News",
+      html:
+        '<div style="text-align: left">Title</div>' +
+        `<input maxlength="300" id="news-title" value="${editingNews.title}" class="swal2-input">` +
+        '<div style="text-align: left">Summary</div>' +
+        `<input maxlength="300" id="news-summary" value="${editingNews.summary}" class="swal2-input">` +
+        '<div style="text-align: left">URL</div>' +
+        `<input maxlength="300" id="news-url" value="${editingNews.url}" class="swal2-input">` +
+        '<div style="text-align: left">Image URL</div>' +
+        `<input maxlength="300" id="news-img-url" value="${editingNews.imageUrl}" class="swal2-input">`,
+      focusConfirm: false,
+      showCancelButton: true,
+      preConfirm: () => {
+        let title = document.getElementById('news-title').value,
+        summary = document.getElementById('news-summary').value,
+        imageURL = document.getElementById('news-img-url').value,
+        url = document.getElementById('news-url').value;
+        if (!title || !summary || !imageURL || !url)
+          Swal.showValidationMessage('You have to input all the required fields');
+        else if (!validURL(url) || !validURL(imageURL)) {
+          Swal.showValidationMessage('Invalid urls! Please input valid ones.');
+        } else
+          return [
+            title, summary, url, imageURL
+          ]
+      }
+    });
+    let handleUpdateNews = async news => {
+      let updated = await addOrUpdateNews(news);
+      if (updated) {
+        document.getElementById("news-list").innerHTML = "";
+        getAllNews();
+        Swal.fire({
+          icon: 'success',
+          timer: 2000,
+          title: 'Updated successfully!'
+        })
+      }
+      else
+        showErrorMessage();
+    }
+
+    if (vals.value !== undefined) {
+      let values = vals.value;
+      editingNews.title = values[0];
+      editingNews.summary = values[1];
+      editingNews.url = values[2];
+      editingNews.imageUrl = values[3];
+      handleUpdateNews(editingNews);
+    }
+  }
+
+  let openConfirmBox = news => {
+    Swal.fire({
+      title: 'Are you sure?',
+      text: "You won't be able to revert this!",
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Yes, delete it!'
+    }).then(async result => {
+      if (result.value) {
+        const rawResponse = await fetch('../controllers/NewsController/deleteNews.php', {
+          method: 'POST',
+          headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({ newsId: news.newsId})
+        });
+        let clone = rawResponse.clone();
+        await clone.json().then(res => {
+          if (res === "Deleted successfully!") {
+            let li = document.getElementById(`news-${news.newsId}`);
+            li.parentNode.removeChild(li);
+            Swal.fire({
+              icon: 'success',
+              timer: 2000,
+              title: `News deleted successfully!`
+            })
+          }
+          else
+            showErrorMessage();
+        });
+      }
+    })
+  }
+
+  let addOrUpdateNews = async news => {
+    let updated = false;
+
+    let payload = {
+      newsId: news.newsId,
+      title: news.title,
+      summary: news.summary,
+      imageURL: news.imageUrl,
+      url: news.url
+    };
+
+    let APIEndpoint = news.newsId ? "updateNews" : "addNews";
+    const rawResponse = await fetch(`../controllers/NewsController/${APIEndpoint}.php`, {
+      method: 'POST',
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(payload)
+    });
+    let clone = rawResponse.clone();
+    await clone.json().then(res => {
+      if (["Updated successfully!", "Added successfully!"].includes(res)) updated = true;
+    });
+    return updated;
+  }
+
+  let showErrorMessage = () => {
+    Swal.fire({
+      icon: 'error',
+      title: 'Oops...',
+      timer: 2000,
+      text: 'Something went wrong!'
+    })
+  }
+
+  let validURL = str => {
+    var pattern = new RegExp('^(https?:\\/\\/)?'+ // protocol
+      '((([a-z\\d]([a-z\\d-]*[a-z\\d])*)\\.)+[a-z]{2,}|'+ // domain name
+      '((\\d{1,3}\\.){3}\\d{1,3}))'+ // OR ip (v4) address
+      '(\\:\\d+)?(\\/[-a-z\\d%_.~+]*)*'+ // port and path
+      '(\\?[;&a-z\\d%_.~+=-]*)?'+ // query string
+      '(\\#[-a-z\\d_]*)?$','i'); // fragment locator
+    return !!pattern.test(str);
+  }
+
   getAllNews();
 </script>

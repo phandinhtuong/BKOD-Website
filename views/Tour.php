@@ -1,9 +1,11 @@
 <!DOCTYPE html>
+
 <head>
     <script src="static/getHeader.js"></script>
     <script src="Tour.js"></script>
     <link rel=stylesheet href="static/Tour.css" type="text/css">
 </head>
+
 <body>
     <?php
     session_start();
@@ -19,8 +21,10 @@
 </div>
 
 <script src="static/getNavBar.js"></script>
+<span id="name"> 1s</span>
 <div id="main">
     <form>
+
         <script type="text/javascript">
             displayAllTours();
         </script>

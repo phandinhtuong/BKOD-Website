@@ -1,4 +1,5 @@
 <!DOCTYPE html>
+<script src="static/routeGuard.js"></script>
 <script src="static/getHeader.js"></script>
 <style>
   @import url("static/UserForm.css");
@@ -58,8 +59,6 @@ and open the template in the editor.
 </html>
 
 <script>
-  if (!localStorage.getItem("currentUser"))
-    window.location.href = '../views/index.php';
   let username = localStorage.getItem("currentUser");
   let fullName = document.getElementById("fullName");
   let school = document.getElementById("school");
@@ -72,13 +71,13 @@ and open the template in the editor.
   let unrevealed = document.getElementById("unrevealed");
   let resEl = document.getElementById("res");
   async function getUserInfo() {
-    const rawResponse = await fetch('../controllers/getUserInfo.php', {
+    const rawResponse = await fetch('../controllers/UserController/getUserInfo.php', {
       method: 'POST',
       headers: {
         'Accept': 'application/json',
         'Content-Type': 'application/json'
       },
-      body: JSON.stringify({ username: username })
+      body: JSON.stringify({ username: username})
     });
     let clone = rawResponse.clone();
     await clone.json().then(res => {
@@ -112,7 +111,7 @@ and open the template in the editor.
       birthday: birthday.value,
       gender: document.querySelector('input[name="gender"]:checked').value
     }
-    const rawResponse = await fetch('../controllers/updateUserInfo.php', {
+    const rawResponse = await fetch('../controllers/UserController/updateUserInfo.php', {
       method: 'POST',
       headers: {
         'Accept': 'application/json',

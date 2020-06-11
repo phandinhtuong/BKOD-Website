@@ -14,11 +14,13 @@ function displayAllTours() {
         return;
     }
     $q = "getAllTours";
+
     xmlHttp.onreadystatechange = function () {
         if (xmlHttp.readyState == 4) {
             //Response Text
 //                document.getElementById("main").innerHTML = xmlHttp.responseText;
             //Response XML
+
             var xmlDoc = xmlHttp.responseXML;
 
 //            document.getElementById("name").innerHTML =
@@ -87,6 +89,7 @@ function displayAllTours() {
 ////            li.setAttribute('class', 'item');
 //            ul.appendChild(li);
 //            li.innerHTML = "111";
+
 //            document.getElementById("name").innerHTML =
 //                    xmlDoc.getElementsByTagName("name")[0].childNodes[0].nodeValue;
         }
@@ -94,9 +97,11 @@ function displayAllTours() {
     xmlHttp.open("GET", "../controllers/tourController.php?q=" + $q, true);
     xmlHttp.send();
 }
+
 function displayOneTour(){
     alert('TODO: Display one tour');
 }
+
 function GetXmlHttpObject()
 {
     var objXMLHttp = null;

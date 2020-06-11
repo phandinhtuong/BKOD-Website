@@ -1,9 +1,8 @@
 <!DOCTYPE html>
+<script src="static/routeGuard.js"></script>
 <script src="static/getHeader.js"></script>
-<script src="static/alert/alert.js"></script>
 <style>
   @import url("static/UserManagement.css");
-  @import url("static/alert/alert.css");
 </style>
 
 <body>
@@ -31,6 +30,7 @@
 </body>
 
 </html>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@9"></script>
 
 <script>
   // Function for adjust values in the first column of the table after deleting a user
@@ -48,13 +48,13 @@
   // Function for calling API deleteUser
   let handleRemoval = async user => {
     let deleted = false;
-    const rawResponse = await fetch('../controllers/deleteUser.php', {
+    const rawResponse = await fetch('../controllers/UserController/deleteUser.php', {
       method: 'POST',
       headers: {
         'Accept': 'application/json',
         'Content-Type': 'application/json'
       },
-      body: JSON.stringify({ username: user.username })
+      body: JSON.stringify({ username: user.username})
     });
     let clone = rawResponse.clone();
     await clone.json().then(res => {
@@ -65,41 +65,49 @@
 
   let openConfirmBox = user => {
     if (user.username === "admin")
-      swal("Error", "Admin account cannot be deleted!", "error");
+      Swal.fire({
+        icon: 'error',
+        title: 'Error',
+        timer: 2000,
+        text: 'Admin account cannot be deleted!'
+      })
     else
-      swal({
-        title: `Account ${user.username} will be deleted permanently!`,
-        text: "Are you sure to proceed?",
-        type: "warning",
+      Swal.fire({
+        title: `Are you sure to delete account ${user.username}?`,
+        text: "You won't be able to revert this!",
+        icon: 'warning',
         showCancelButton: true,
-        confirmButtonColor: "#DD6B55",
-        confirmButtonText: "Yes, Remove This Account!",
-        cancelButtonText: "No, I am not sure!",
-        closeOnConfirm: false,
-        closeOnCancel: false
-      },
-        function (isConfirm) {
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Yes, delete it!'
+      }).then(async result => {
+        if (result.value) {
           let handleDeletion = async () => {
             let deleted = await handleRemoval(user);
             if (deleted) {
               document.getElementById("table").deleteRow(user.no);
               incrementCellValues(user.no);
-              swal("Account Removed!", `Account ${user.username} is removed permanently!`, "success");
+              Swal.fire({
+                icon: 'success',
+                timer: 2000,
+                title: `Account ${user.username} was deleted successfully!`
+              })
             }
             else
-              swal("Error", "An unknown error occured!", "error");
+            Swal.fire({
+              icon: 'error',
+              title: 'Error',
+              timer: 2000,
+              text: 'An unknown error occured!'
+            })
           }
-          if (isConfirm) {
-            handleDeletion();
-          }
-          else {
-            swal("Cancelled", "Account is not removed!", "error");
-          }
-        });
+          handleDeletion();
+        }
+      })
   }
 
   let getAllUsers = async () => {
-    const rawResponse = await fetch('../controllers/getAllUsers.php');
+    const rawResponse = await fetch('../controllers/UserController/getAllUsers.php');
     let clone = rawResponse.clone();
     await clone.json().then(res => {
 

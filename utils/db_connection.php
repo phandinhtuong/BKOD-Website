@@ -18,4 +18,4 @@ $db = DB::connect($dsn);
 if (DB::isError($db)) {
     die($db->getMessage());
 }
-?> 
+?>
