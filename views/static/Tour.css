@@ -10,15 +10,25 @@
     float: none;
     text-align: left;
     margin: 20px 0 40px 0;
-    cursor : pointer;
     background-color: aquamarine;
+}
+.tourName{
+    cursor : pointer;
+}
+.addButton{
+    float: none;
+    text-align: left;
+    /*margin: 20px 0 40px 0;*/
+    /*cursor : pointer;*/
+    background-color: white;
 }
 .button{
     float: none;
-    text-align: left;
+    text-align: right;
     margin: 20px 0 40px 0;
-    cursor : pointer;
-    background-color: brown;
+    /*cursor : pointer;*/
+    /*background-color: brown;*/
+    align-content: right
 }
 /*div#main {
     float: left;

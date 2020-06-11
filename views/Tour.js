@@ -34,11 +34,13 @@ function displayAllTours() {
             let isAdmin = localStorage.getItem("currentUser") == "admin";
             if (isAdmin) {
                 var li = document.createElement("li");
-                li.setAttribute('class', 'tour');
+                li.setAttribute('class', 'addButton');
                 ul.appendChild(li);
-                
+
                 var addBtn = document.createElement("button");
+                addBtn.setAttribute('class', 'button');
                 addBtn.textContent = "Add tour";
+                addBtn.onclick=addOneTour;
                 li.appendChild(addBtn);
             }
             //display all tours
@@ -52,12 +54,6 @@ function displayAllTours() {
 //            li.innerHTML = "111";
 //                li.innerHTML = xmlDoc.getElementsByTagName("name")[i].childNodes[0].nodeValue;
 
-                //click on one tour to display 
-                li.onclick = editOneTour();
-
-                //change cursor when point to the tour
-//                li.style.cursor = "pointer";
-                //li.setAttribute('onclick',displayOneTour());
 
                 //map image of tour
                 var p = document.createElement("img");
@@ -70,48 +66,50 @@ function displayAllTours() {
                 li.appendChild(p);
 
                 //name of tour
-                var t = document.createElement("span");
-                t.innerHTML = xmlDoc.getElementsByTagName("name")[i].childNodes[0].nodeValue;
-                li.appendChild(t);
-//                li.addEventListener('click',displayOneTour());
-//                p.innerHTML = "e";
-//                var ctx = p.getContext("2d");
+                var tourName = document.createElement("span");
+                tourName.innerHTML = xmlDoc.getElementsByTagName("name")[i].childNodes[0].nodeValue;
+                tourName.setAttribute('class', 'tourName');
+                //click on one tour to display 
+                tourName.onclick = displayOneTour;
 
+                li.appendChild(tourName);
+
+                if (isAdmin) {
+                    var editBtn = document.createElement("button");
+                    editBtn.textContent = "Edit tour";
+                    editBtn.setAttribute('class', 'button');
+                    editBtn.onclick = editOneTour;
+                    li.appendChild(editBtn);
+
+                    var deleteButton = document.createElement("button");
+                    deleteButton.setAttribute('class', 'button');
+                    deleteButton.textContent = "Delete tour";
+                    deleteButton.onclick=deleteOneTour;
+                    li.appendChild(deleteButton);
+                }
                 //test link of map image
 //                var link = document.createElement("li");
 //                link.setAttribute('class','tour');
 //                ul.appendChild(link);
 //                link.innerHTML = xmlDoc.getElementsByTagName("mapImageUrl")[i].childNodes[0].nodeValue;
 
-
             }
-
-//            var li = document.createElement("li");
-//            li.setAttribute('class','tour');
-////            li.setAttribute("id","new");
-////            li.setAttribute('class', 'item');
-//            ul.appendChild(li);
-//            li.innerHTML = "111";
-//            li = document.createElement("li");
-//            li.setAttribute('class','tour');
-////            li.setAttribute("id","new");
-////            li.setAttribute('class', 'item');
-//            ul.appendChild(li);
-//            li.innerHTML = "111";
-
-//            document.getElementById("name").innerHTML =
-//                    xmlDoc.getElementsByTagName("name")[0].childNodes[0].nodeValue;
         }
     }
     xmlHttp.open("GET", "../controllers/TourController/tourController.php?q=" + $q, true);
     xmlHttp.send();
 }
-
+function addOneTour(){
+    alert('TODO: Add one tour');
+}
 function displayOneTour() {
     alert('TODO: Display one tour');
 }
 function editOneTour() {
-
+    alert('TODO: Edit one tour');
+}
+function deleteOneTour() {
+    alert('TODO: Delete one tour');
 }
 function GetXmlHttpObject()
 {
