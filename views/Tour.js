@@ -94,7 +94,7 @@ function displayAllTours() {
 //                    xmlDoc.getElementsByTagName("name")[0].childNodes[0].nodeValue;
         }
     }
-    xmlHttp.open("GET", "../controllers/tourController.php?q=" + $q, true);
+    xmlHttp.open("GET", "../controllers/TourController/tourController.php?q=" + $q, true);
     xmlHttp.send();
 }
 
