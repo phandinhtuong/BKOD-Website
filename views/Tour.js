@@ -20,7 +20,6 @@ function displayAllTours() {
             //Response Text
 //                document.getElementById("main").innerHTML = xmlHttp.responseText;
             //Response XML
-
             var xmlDoc = xmlHttp.responseXML;
 
 //            document.getElementById("name").innerHTML =
@@ -31,7 +30,17 @@ function displayAllTours() {
             ul.setAttribute('id', 'tours-list');
 //            ul.setAttribute('id','tours-list')
             document.getElementById('main').appendChild(ul);
-            
+
+            let isAdmin = localStorage.getItem("currentUser") == "admin";
+            if (isAdmin) {
+                var li = document.createElement("li");
+                li.setAttribute('class', 'tour');
+                ul.appendChild(li);
+                
+                var addBtn = document.createElement("button");
+                addBtn.textContent = "Add tour";
+                li.appendChild(addBtn);
+            }
             //display all tours
             for (i = 0; i < xmlDoc.getElementsByTagName("tour").length; i++) {
 //                var li = document.createElement("li");
@@ -42,24 +51,24 @@ function displayAllTours() {
                 ul.appendChild(li);
 //            li.innerHTML = "111";
 //                li.innerHTML = xmlDoc.getElementsByTagName("name")[i].childNodes[0].nodeValue;
-                
+
                 //click on one tour to display 
-                li.onclick = displayOneTour;
-                
+                li.onclick = editOneTour();
+
                 //change cursor when point to the tour
 //                li.style.cursor = "pointer";
                 //li.setAttribute('onclick',displayOneTour());
-                
+
                 //map image of tour
                 var p = document.createElement("img");
                 p.setAttribute('width', 70);
                 p.setAttribute('height', 70);
 //                p.setAttribute('src', 'http://htqt.hust.edu.vn/imgs/maphnen.jpg');
                 p.setAttribute('src', xmlDoc.getElementsByTagName("mapImageUrl")[i].childNodes[0].nodeValue);
-                
+
 //                p.onclick = displayOneTour();
                 li.appendChild(p);
-                
+
                 //name of tour
                 var t = document.createElement("span");
                 t.innerHTML = xmlDoc.getElementsByTagName("name")[i].childNodes[0].nodeValue;
@@ -73,7 +82,7 @@ function displayAllTours() {
 //                link.setAttribute('class','tour');
 //                ul.appendChild(link);
 //                link.innerHTML = xmlDoc.getElementsByTagName("mapImageUrl")[i].childNodes[0].nodeValue;
-                
+
 
             }
 
@@ -98,10 +107,12 @@ function displayAllTours() {
     xmlHttp.send();
 }
 
-function displayOneTour(){
+function displayOneTour() {
     alert('TODO: Display one tour');
 }
+function editOneTour() {
 
+}
 function GetXmlHttpObject()
 {
     var objXMLHttp = null;

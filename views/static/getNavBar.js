@@ -5,6 +5,5 @@ document.body.innerHTML += ajax.responseText;
 document.getElementById("nav-username").textContent = localStorage.getItem("currentUser");
 if (localStorage.getItem("currentUser") === "admin") {
     document.getElementById("user-management").style.display = "block";
-    document.getElementById("tour-management").style.display = "block";
 }
        
