@@ -30,3 +30,20 @@ AND c.ClassroomId = b2c.ClassroomId
 AND b2c.BuildingId = b.BuildingId;");
 
 define("getToursIDSQL" ,"select TourID, Name from tour"); 
+
+define("getTimesheetSQL", "
+SELECT StartTime, TimesheetID, EndTime
+FROM Timesheet
+;");
+
+define("getBuildingSQL", "
+SELECT BuildingID, Name, SubName
+FROM Building
+;");
+
+define("getClassroomByBuildingID_SQL", "
+SELECT c.classroomId, c.Name
+FROM classroom as c, building2classroom as b2c
+WHERE c.classroomid = b2c.classroomid 
+AND b2c.buildingid = ?
+;");

@@ -62,7 +62,7 @@ function displayAllTours() {
 //                p.setAttribute('src', 'http://htqt.hust.edu.vn/imgs/maphnen.jpg');
                 p.setAttribute('src', xmlDoc.getElementsByTagName("mapImageUrl")[i].childNodes[0].nodeValue);
 
-//                p.onclick = displayOneTour();
+            //    p.onclick = displayOneTour();
                 li.appendChild(p);
 
                 //name of tour
@@ -103,8 +103,12 @@ function addOneTour(){
     alert('TODO: Add one tour');
 }
 function displayOneTour() {
-    alert('TODO: Display one tour');
+    // console.log("WHY?");
+    // alert('TODO: Display one tour');
+    window.location.href = "../test/display_map.php";
+    // alert("after redirection");
 }
+
 function editOneTour() {
     alert('TODO: Edit one tour');
 }

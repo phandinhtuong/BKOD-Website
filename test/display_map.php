@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <title>test map</title>
+        <title>test display map</title>
         <script type="text/javascript">
         // function foo() {
         //     alert("fooooo");
