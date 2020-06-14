@@ -21,40 +21,33 @@
             array_push($times, $x);
         }
     }
-    // print_r( $foo->getTime() );
-    // echo '<br/>';
+
     $buildings = $foo->getAllBuildings();
-    // print_r( $foo->getBuilding() );
-    // echo '<br/>';
-    // $classrooms = $foo->getClassroom(38);
-    // print_r( $foo->getClassroom(38) );
-    // echo '<br/>';
-    // $foo->addMap(1, 0, 0, 0, 0);
     ?>
         <form action="add_map.php"><table>
             <?php TableHeader(); ?>
             <tr>
                 <td>1</td>
                 <td>
-                <select name="start_time" id="start_time" onchange="updateEndTime(this.value)">
+                <select name="StartTime" id="StartTime" onchange="updateEndTime()">
                     <?php 
                     foreach ($times as $time) {
-                        $id = $time['id'];
-                        $start = $time['start_time'];
+                        $id = $time['TimesheetID'];
+                        $start = $time['StartTime'];
                         print("<option value=$id>$start</option>");
                     }
                     ?>
                 </select>
                 </td>
                 <td>
-                    <div id="end_time" name="end_time" value=""></div>
+                    <div id="endtime" name="endtime" value=""></div>
                 </td>
                 <td>
                 <select name="building" id="building" onchange="get_class_by_building(this.value)">
                     <?php 
                     foreach ($buildings as $building) {
-                        $id = $building['id'];
-                        $name = $building['name'];
+                        $id = $building['BuildingID'];
+                        $name = $building['Name'];
                         print("<option value=$id>$name</option>");
                     }
                     ?>

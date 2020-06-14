@@ -7,7 +7,7 @@
     print_r($_REQUEST);
     $tourid = $_REQUEST['tour'];
     $classid = $_REQUEST['class'];
-    $timeid = $_REQUEST['start_time'];
+    $timeid = $_REQUEST['StartTime'];
     $buildingid = $_REQUEST['building'];
     
     // echo $tourid . $classid . $timeid . $buildingid;
