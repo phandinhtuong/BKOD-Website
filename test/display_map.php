@@ -34,24 +34,16 @@
 
     // Map Object
     $foo = new Map;
-    // print_r( get_class_methods('Map') );
-    echo '<br/>';
-
-    // print_r( $foo->getAllMaps() );
-    // echo '<hr/>';
-    // print_r( $foo->getMap(1) );
-    // echo '<hr/>';
-    // print_r( $foo->getToursID() );
-    // echo '<hr/>';
 
     // get all tours id and name
     $tours = $foo->getTours() ;
     print("Choose your tour: ");    
     
     // create buttons to show timeline of each tour
+    // print_r($tours);
     foreach ($tours as $tour) {
-        $id = $tour['id'];
-        $name = $tour['name'];
+        $id = $tour['TourID'];
+        $name = $tour['Name'];
         
         print( "<button type='button' ". "onclick=" ."\"" . "toggleDiv($id)" . "\"" .">$name</button>");
     }
@@ -59,8 +51,8 @@
     // Timeline of chosen tour
     foreach ($tours as $tour) {        
         print('<br/>');
-        $id = $tour['id'];
-        $name = $tour['name'];
+        $id = $tour['TourID'];
+        $name = $tour['Name'];
 
         print("<div id=myDIV$id style=\"display: none\"> Timeline of <b>$name</b>: ");
         $res = $foo->getMap($id) ;
@@ -73,10 +65,6 @@
             $classroomID = $b["ClassroomId"];
             $classroom = $b["classroomName"];
             $building = $b["buildingName"];
-            
-            // print($classroom);
-            // echo '<br/>';
-            // print($building);
              
             print("<li><div style=\"color:blue\" onclick=\"showMap('$classroom', '$building', $buildingID)\">$start_time - $end_time</div></li>");
             
@@ -87,8 +75,3 @@
 ?>
     </body>
 </html>
-<!-- <img src='map.gif' usemap='#mapmap' style='width:auto;' />
-<map name='mapmap'>
-<!-- <area shape="rect" coords="200,130,400,160" href="https://vi.wikipedia.org/wiki/T%E1%BA%ADp_tin:Nh%C3%A0_C1_%C4%90%E1%BA%A1i_h%E1%BB%8Dc_B%C3%A1ch_Khoa_H%C3%A0_N%E1%BB%99i.jpg" /> -->
-<!-- <area shape="rect" coords="200,130,400,160" href="foos.png"/>
-</map> -->

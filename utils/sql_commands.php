@@ -55,6 +55,17 @@ WHERE t.TimesheetId = t2s.TimesheetId
 AND t2s.TourId = ?
 ;");
 
+define("getBuildingAndClassroomsByTimeAndTourID_SQL", "
+SELECT c.ClassroomId, b.BuildingId, 
+c.Name as classroomName, b.Name as buildingName
+FROM timesheet2classroom as ti2c,
+classroom as c, building2classroom as b2c, building as b
+WHERE ? = ti2c.TimesheetId
+AND ti2c.ClassroomId = c.ClassroomId
+AND c.ClassroomId = b2c.ClassroomId
+AND b2c.BuildingId = b.BuildingId;
+;");
+
 define("addtour2timesheet_SQL", "
 insert into tour2timesheet (tourid, timesheetid)
 values (?, ?)
