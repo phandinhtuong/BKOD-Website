@@ -16,6 +16,23 @@
                 
                 x.value = foo.toString() + foo2;
             }
+            function myFunc2(id)
+{
+        console.log("in function 1");
+    var x = new XMLHttpRequest();
+
+    x.onreadystatechange = function () {
+        console.log("in function 2");
+        // everything is working fine
+        if (this.readyState === 4 && this.status === 200) {
+            console.log(this.responseText);
+            document.getElementById("class").innerHTML = this.responseText;
+        }
+    };
+
+    x.open("GET", "get_class_by_building.php?q=" + id, true);
+    x.send();
+}
         </script>
     </head>
     <body>
@@ -35,15 +52,8 @@
     echo '<br/>';
     // $foo->addMap(1, 0, 0, 0, 0);
     ?>
-        <form>
-        <table>
-        <tr>
-            <th>Tour ID</th>
-            <th>Start Time</th>
-            <th>End Time</th>
-            <th>Building</th>
-            <th>Classroom</th>
-            </tr>
+        <form><table>
+            <?php TableHeader(); ?>
             <tr>
                 <td>1</td>
                 <td>
@@ -62,20 +72,37 @@
                     <input type="text" id="end_time" name="end_time" value="" readonly><br><br>
                 </td>
                 <td>
-                <select name="building" id="building" onChange="myFunc2()">
+                <select name="building" id="building" onChange="myFunc2(this.value)">
                     <?php 
                     foreach ($buildings as $building) {
                         $id = $building['id'];
                         $name = $building['name'];
-                        print("<option value=$name>$name</option>");
+                        print("<option value=$id>$name</option>");
                     }
                     ?>
                 </select>
                 </td>
                 <td>
+                <select name="class" id="class"></select>
                 </td>
             </tr>
         </table>
     </form>  
     </body>
 </html>
+
+<?php
+function TableHeader() {
+    print(
+        "
+        <tr>
+            <th>Tour ID</th>
+            <th>Start Time</th>
+            <th>End Time</th>
+            <th>Building</th>
+            <th>Classroom</th>
+            </tr>
+        "
+    );
+}
+?>
