@@ -2,73 +2,58 @@
 <script src="static/getHeader.js"></script>
 <!--<script src="http://code.jquery.com/jquery-3.1.1.js"></script>-->
 <script type="text/javascript">
-    $(document).ready(function () {
-        setInterval(function () {
-            $("#here").load(window.location.href + " #here");
-        }, 3000);
-    });
 
-    $(document).ready(function () {
-        setInterval(function () {
-            $("#chatlogs").load("../controllers/MessageController/getMessages.php?username=" + localStorage.getItem('currentUser') + "&selectedUserId=" + document.getElementById("user").value);
-            document.getElementById("receiver").value = document.getElementById("user").value;
-        }, 1000);
-    });
-
-
-    var doSth = function () {
-            $("#chatlogs").load("../controllers/MessageController/getMessages.php?username=" + localStorage.getItem('currentUser') + "&selectedUserId=" + document.getElementById("user").value);
-            document.getElementById("receiver").value = document.getElementById("user").value;
-    };
-    setInterval(doSth, 1000);//1000 is miliseconds
-
-
-//  This function implements reloading of message section
-//  setInterval = 1000 = 1second
-    function load()
-    {
-        var req = new XMLHttpRequest();
-        req.open("POST", "../controllers/MessageController/getMessages.php?username=" + localStorage.getItem("currentUser") + "&selectedUserId=" + document.getElementById("user").value);
-        req.send();
-        req.onreadystatechange = function () {
-            if (req.readyState == 0) {
-                document.getElementById("chatlogs").innerHTML = 0;
-
-            }
-            if (req.readyState == 1) {
-                document.getElementById("chatlogs").innerHTML = 1;
-
-            }
-            if (req.readyState == 2) {
-                document.getElementById("chatlogs").innerHTML = 2;
-
-            }
-
-//          Somehow sometimes its readyState is 3, not sure why. But messages are displayed perfectly nonetheless
-            if (req.readyState == 3 || req.readyState == 4) {
-//                document.getElementById("chatlogs").innerHTML = 3;
-                document.getElementById("chatlogs").innerHTML = req.responseText;
-                document.getElementById("receiver").value = document.getElementById("user").value;
-
-
-        }
-    }
-    ;
+//    function load()
+//    {
+//        var req = new XMLHttpRequest();
+//        req.open("POST", "../controllers/MessageController/getMessages.php?username=" + localStorage.getItem("currentUser") + "&selectedUserId=" + document.getElementById("user").value);
+//        req.send();
+//        document.getElementById("chatlogs").innerHTML = 0;
+//
+//        req.onreadystatechange = function () {
+//            if (req.readyState == 0) {
+//                document.getElementById("chatlogs").innerHTML = 0;
+//
+//            }
+//            if (req.readyState == 1) {
+//                document.getElementById("chatlogs").innerHTML = 1;
+//
+//            }
+//            if (req.readyState == 2) {
+//                document.getElementById("chatlogs").innerHTML = 2;
+//
+//            }
+//
+//            if (req.readyState == 3 || req.readyState == 4) {
+////                document.getElementById("chatlogs").innerHTML = 3;
+//                document.getElementById("chatlogs").innerHTML = req.responseText;
+//                document.getElementById("receiver").value = document.getElementById("user").value;
+//            }
+//        }
+//    }
+//    ;
+//    setInterval(load, 10000);
     setInterval(load, 1000);
 
-    
+    function load() {
+        var xhttp = new XMLHttpRequest();
+        xhttp.onreadystatechange = function () {
+            if (this.readyState == 4 && this.status == 200) {
+                document.getElementById("chatlogs").innerHTML = this.responseText;
+                document.getElementById("receiver").value = document.getElementById("user").value;
+            }
+        };
+        xhttp.open("POST", "../controllers/MessageController/getMessages.php?username=" + localStorage.getItem("currentUser") + "&selectedUserId=" + document.getElementById("user").value);
+        xhttp.send();
+    }
+
     function submitChat() {
-        // Field must not be empty
         if (form1.receiverId.value == '' || form1.message.value == '') {
             alert('ALL FIELDS ARE MANDATORY!!');
             return;
         }
-        
-        
         var receiverId = form1.receiverId.value;
-        
         var message = form1.message.value;
-        
         var xmlhttp2 = new XMLHttpRequest();
 
         xmlhttp2.onreadystatechange = function () {
@@ -76,21 +61,11 @@
                 document.getElementById('chatlogs').innerHTML = xmlhttp2.responseText;
             }
         }
-        
-        xmlhttp2.open('POST', "../controllers/MessageController/sendMessage.php?receiverId=" + receiverId + '&message=' + message + '&username=' + localStorage.getItem("currentUser"))        
+        xmlhttp2.open('POST', "../controllers/MessageController/sendMessage.php?receiverId=" + receiverId + '&message=' + message + '&username=' + localStorage.getItem("currentUser"))
         xmlhttp2.send();
     }
 
-    function doRefresh() {
-        $("#chatlogs").load("../controllers/MessageController/getMessages.php?username=" + localStorage.getItem('currentUser') + "&selectedUserId=" + document.getElementById("user").value);
-        
-        document.getElementById("receiver").value = document.getElementById("user").value;
-    }
-    $(function () {
-        setInterval(doRefresh, 1000);
-    });
 </script>
-
 
 <html>
     <head>
@@ -140,13 +115,9 @@
     <div id="leftcol">User
         <script type="text/javascript">
     // show all messages
-   
     var xmlhttp1 = new XMLHttpRequest();
-    
     xmlhttp1.open("GET", "../controllers/MessageController/getMessengerUsers.php", true);
-    
     xmlhttp1.send();
-   
     xmlhttp1.onreadystatechange = function () {
         if (xmlhttp1.readyState == 4) {
             document.getElementById("leftcol").innerHTML = xmlhttp1.responseText;
@@ -157,36 +128,33 @@
     <div id="chatlogs">Message Section
         <script type="text/javascript">
             // show all messages
-            var xmlhttp = new XMLHttpRequest();
-            
-            xmlhttp.open("POST", "../controllers/MessageController/getMessages.php?username=" + localStorage.getItem("currentUser") + "&selectedUserId=" + document.getElementById("user").value);
-           
-            xmlhttp.send();
-          
-            xmlhttp.onreadystatechange = function () {
-                if (xmlhttp.readyState == 4) {
-                    document.getElementById("chatlogs").innerHTML = xmlhttp.responseText;
-                    document.getElementById("chatlogs").innerHTML = 4;
-                }
-                if (xmlhttp.readyState == 0) {
-                    document.getElementById("chatlogs").innerHTML = 0;
-
-                }
-                if (xmlhttp.readyState == 1) {
-                    document.getElementById("chatlogs").innerHTML = 1;
-
-                }
-                if (xmlhttp.readyState == 2) {
-                    document.getElementById("chatlogs").innerHTML = 2;
-
-                }
-
-                if (xmlhttp.readyState == 3) {
-                    document.getElementById("chatlogs").innerHTML = 3;
-
-                }
-
-            }
+//            var xmlhttp = new XMLHttpRequest();
+//            xmlhttp.open("POST", "../controllers/MessageController/getMessages.php?username=" + localStorage.getItem("currentUser") + "&selectedUserId=" + document.getElementById("user").value);
+//            xmlhttp.send();
+//            xmlhttp.onreadystatechange = function () {
+//                if (xmlhttp.readyState == 4) {
+//                    document.getElementById("chatlogs").innerHTML = xmlhttp.responseText;
+//                    document.getElementById("chatlogs").innerHTML = 4;
+//                }
+//                if (xmlhttp.readyState == 0) {
+//                    document.getElementById("chatlogs").innerHTML = 0;
+//
+//                }
+//                if (xmlhttp.readyState == 1) {
+//                    document.getElementById("chatlogs").innerHTML = 1;
+//
+//                }
+//                if (xmlhttp.readyState == 2) {
+//                    document.getElementById("chatlogs").innerHTML = 2;
+//
+//                }
+//
+//                if (xmlhttp.readyState == 3) {
+//                    document.getElementById("chatlogs").innerHTML = 3;
+//
+//                }
+//
+//            }
         </script>
     </div>
     <div id="footer" align="center">Sending messages
