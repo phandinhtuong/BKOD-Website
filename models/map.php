@@ -14,27 +14,6 @@ class Map extends Model{
 
     public function getAllTimes() { return $this->getAll(getTimesheetSQL); }
 
-    public function getAll($sql_cmd) {
-        $db = $this->_db;
-
-        $query = $db->prepare($sql_cmd);
-        if ( $this->sqlCommandIsError($query) ) 
-            return 1;
-    
-        $res = &$db->execute($query);
-        if ( $this->queryIsError($res) ) 
-        return 1;
-    
-        // $tour is the result array
-        $res_arr = array();
-        
-        while ( $re = $res->fetchRow( DB_FETCHMODE_ASSOC ) ) {
-            array_push($res_arr, $re);
-        }
-        
-        return $res_arr;
-    }
-
     public function getTime($id) { return $this->getById(getTimeByTourID_SQL, $id); }
 
     /** return all maps of a given tour id */
@@ -42,28 +21,6 @@ class Map extends Model{
 
     public function getClassroom($id) { return $this->getById(getClassroomByBuildingID_SQL, $id); }
     
-    public function getById ($sql_cmd, $id) {
-        $db = $this->_db;
-
-        $query = $db->prepare($sql_cmd);
-        if ( $this->sqlCommandIsError($query) ) 
-            return 1;
-    
-        $res = &$db->execute($query, $id);
-        if ( $this->queryIsError($res) ) 
-        return 1;
-    
-        // $tour is the result array
-        $res_arr = array();
-        
-        while ( $re = $res->fetchRow( DB_FETCHMODE_ASSOC ) ) {
-            array_push($res_arr, $re);
-        }
-        
-        return $res_arr;
-    }
-    
-   
     /** add a new map
      * $id : tour id
      * $start : starting time
