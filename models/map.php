@@ -83,74 +83,8 @@ class Map extends Model{
             
             return $tours;
         }
-
-    /** add a new map
-     * $id : tour id
-     * $start : starting time
-     * $end : ending time
-     * $class : classroom visited
-     * $building : building containing $class
-     */
-    public function addMap($id, $start, $end, $class, $building) {
-        $db = $this->_db;
-
-        // Create an unique timesheet id
-        $timesheet_id = abs( crc32( uniqid() ) );
-
-        $start = time();
-        $end = time() + 60*60; // now + 1 hour
-        
-        $foo1 = array($timesheet_id, $start, $end);
-
-        // add a new timesheet row
-        $query = $db->prepare(addTimesheet);
-        if ( $this->sqlCommandIsError($query) ) 
-            return 1;
-            
-        $res = &$db->execute($query, $foo1);
-        if ( $this->queryIsError($res) ) 
-            return 1;
-        
-
-        $foo2 = array($id, $timesheet_id);
-
-        $query = $db->prepare(addTour2Timesheet);
-        if ( $this->sqlCommandIsError($query) ) 
-            return 1;
-            
-        $res = &$db->execute($query, $foo2);
-        if ( $this->queryIsError($res) ) 
-            return 1;
-    }
-
-    public function getTime () {
-        $db = $this->_db;
-
-        $query = $db->prepare(getTimesheetSQL);
-        if ( $this->sqlCommandIsError($query) ) 
-            return 1;
-
-        $res = &$db->execute($query);
-        if ( $this->queryIsError($res) ) 
-        return 1;
-
-        // $tour is the result array
-        $times = array();
-        while ( $time = $res->fetchRow() ) {
-            $start = $time[0];
-            $id = $time[1];
-            $end = $time[2];
-            
-            // $tour saves the id and name of each row in result set
-            $timee = ['id' => $id, 'start' => $start, 'end' => $end];
-            array_push($times, $timee);
-        }
-        
-        return $times;
-
-    }
     
-    public function getBuilding () {
+    public function getAllBuildings () {
         $db = $this->_db;
 
         $query = $db->prepare(getBuildingSQL);
@@ -200,6 +134,90 @@ class Map extends Model{
         }
         
         return $classrooms;
+    }
+    
+    public function getTime($id) {
+        $db = $this->_db;
 
+        $query = $db->prepare(getTimeByTourID_SQL);
+        if ( $this->sqlCommandIsError($query) ) 
+            return 1;
+
+        $res = &$db->execute($query, $id);
+        if ( $this->queryIsError($res) ) 
+        return 1;
+
+        // $tour is the result array
+        $classrooms = array();
+        while ( $classroom = $res->fetchRow() ) {
+            $id = $classroom[0];
+            $start_time = $classroom[1];
+            
+            // $tour saves the id and name of each row in result set
+            $timee = ['id' => $id, 'start_time' => $start_time];
+            array_push($classrooms, $timee);
+        }
+        
+        return $classrooms;
+    }
+    
+    public function getAllTimes() {
+        $db = $this->_db;
+    
+        $query = $db->prepare(getTimesheetSQL);
+        if ( $this->sqlCommandIsError($query) ) 
+            return 1;
+    
+        $res = &$db->execute($query);
+        if ( $this->queryIsError($res) ) 
+        return 1;
+    
+        // $tour is the result array
+        $classrooms = array();
+        while ( $classroom = $res->fetchRow() ) {
+            $id = $classroom[0];
+            $start_time = $classroom[1];
+            
+            // $tour saves the id and name of each row in result set
+            $timee = ['id' => $id, 'start_time' => $start_time];
+            array_push($classrooms, $timee);
+        }
+        
+        return $classrooms;
+    }
+
+    /** add a new map
+     * $id : tour id
+     * $start : starting time
+     * $end : ending time
+     * $class : classroom visited
+     * $building : building containing $class
+     */
+    
+    public function addMap($tourid, $timeid, $classid, $buildingid) {
+        $db = $this->_db;
+
+        $array1 = array($tourid, $timeid);
+        $array2 = array($timeid, $classid, rand(1, 5) );
+        $array3 = array($buildingid, $classid);
+        
+
+        $query1 = $db->prepare(addtour2timesheet_SQL);
+        $query2 = $db->prepare(addtimesheet2classroom_SQL);
+        $query3 = $db->prepare(addbuilding2classroom_SQL);
+
+        if ( $this->sqlCommandIsError($query1) ) return 1;
+        if ( $this->sqlCommandIsError($query2) ) return 1;
+        if ( $this->sqlCommandIsError($query3) ) return 1;
+    
+
+        $res1 = &$db->execute($query1, $array1);
+        if ( $this->queryIsError($res1) ) return 1;
+        $res2 = &$db->execute($query2, $array2);
+        if ( $this->queryIsError($res2) ) return 1;
+        $res3 = &$db->execute($query3, $array3);
+        if ( $this->queryIsError($res3) ) return 1;
+    
+        return 0;
     }
 }

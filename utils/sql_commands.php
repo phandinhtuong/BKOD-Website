@@ -32,7 +32,7 @@ AND b2c.BuildingId = b.BuildingId;");
 define("getToursIDSQL" ,"select TourID, Name from tour"); 
 
 define("getTimesheetSQL", "
-SELECT StartTime, TimesheetID, EndTime
+SELECT TimesheetID, StartTime, EndTime
 FROM Timesheet
 ;");
 
@@ -47,3 +47,26 @@ FROM classroom as c, building2classroom as b2c
 WHERE c.classroomid = b2c.classroomid 
 AND b2c.buildingid = ?
 ;");
+
+define("getTimeByTourID_SQL", "
+SELECT t.TimesheetId, t.StartTime
+FROM timesheet as t, tour2timesheet as t2s
+WHERE t.TimesheetId = t2s.TimesheetId 
+AND t2s.TourId = ?
+;");
+
+define("addtour2timesheet_SQL", "
+insert into tour2timesheet (tourid, timesheetid)
+values (?, ?)
+;");
+
+define("addtimesheet2classroom_SQL", "
+insert into timesheet2classroom
+values (?, ?, ?)
+;");
+
+define("addbuilding2classroom_SQL", "
+insert into building2classroom (buildingid, classroomid)
+values (?, ?)
+;");
+
