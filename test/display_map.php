@@ -2,7 +2,7 @@
 <html>
     <head>
         <title>test display map</title>
-        <script src="display_map.js"></script>
+        <script src="js/display_map.js"></script>
     </head>
     <body>
     <?php
@@ -27,7 +27,7 @@
         
         print("<div id=myDIV$id style=\"display: none\"> Timeline of <b>$name</b>: ");
         $res = $foo->getMap($id) ;
-        
+
         print("<ol>");
         foreach( $res as $b ) {
             $start_time = $b["StartTime"];
