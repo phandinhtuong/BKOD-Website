@@ -49,7 +49,7 @@ AND b2c.buildingid = ?
 ;");
 
 define("getTimeByTourID_SQL", "
-SELECT t.TimesheetId, t.StartTime
+SELECT t.TimesheetId, t.StartTime, t.EndTime
 FROM timesheet as t, tour2timesheet as t2s
 WHERE t.TimesheetId = t2s.TimesheetId 
 AND t2s.TourId = ?
