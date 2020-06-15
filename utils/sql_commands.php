@@ -96,3 +96,7 @@ insert into building2classroom (buildingid, classroomid)
 values (?, ?)
 ;");
 
+define("deleteMapSQL", "
+DELETE FROM tour2timesheet 
+WHERE TourId = ? AND TimesheetId = ?
+;");

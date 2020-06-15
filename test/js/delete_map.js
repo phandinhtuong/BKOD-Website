@@ -12,7 +12,7 @@ function display(id) {
     x1.innerHTML = foo.toString() + foo2;
 }
 
-function building(tourid, timeid)
+function buildingfunc(tourid, timeid)
 {
     var x = new XMLHttpRequest();
 
@@ -20,6 +20,8 @@ function building(tourid, timeid)
         // everything is working fine
         if (this.readyState === 4 && this.status === 200) {
             document.getElementById("building").innerHTML = this.responseText;
+            console.log(this.responseText);
+            // document.getElementById("input_building").value = this.responseText.getElementById("building").value;
         }
     };
 

@@ -82,4 +82,18 @@ class Map extends Model{
         
         return $res_arr;
     }
+
+    public function deleteMap($tourid, $timeid) {
+        $db = $this->_db;
+
+        $id = array($tourid, $timeid);
+
+        $query = $db->prepare(deleteMapSQL);
+        if ( $this->sqlCommandIsError($query) ) 
+            return 1;
+
+        $res = &$db->execute($query, $id);
+        if ( $this->queryIsError($res) ) 
+        return 1;
+    }
 }

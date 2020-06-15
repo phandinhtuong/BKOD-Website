@@ -21,8 +21,8 @@
     $buildings = array();
     $classes = array();
     foreach ($res as $re) {
-        array_push($buildings, $re['buildingName']);
-        array_push($classes, $re['classroomName']);
+        array_push($buildings, $re['BuildingId']);
+        array_push($classes, $re['ClassroomId']);
     }
 
     echo '</br/>';
@@ -36,15 +36,14 @@
             <tr>
                 <td>1</td>
                 <td>
-                <select name="StartTime" id="StartTime" onchange="display(this.id); 
-                building(<?php echo $tour_id ?>, this.value);
+                <select name="StartTime" id="StartTime" onchange="display(); 
+                buildingfunc(<?php echo $tour_id ?>, this.value);
                 classroom(<?php echo $tour_id ?>, this.value);
                 ">
                     <?php 
                     $counter = 0;
                     foreach ($times as $time) {
                         $num = $counter++;
-                        // print("<input type='hidden' id='tour' name='tour' value=''>");
                         $id = $time['TimesheetId'];
                         $start = $time['StartTime'];
                         print("<option id=$num value=$id>$start</option>");

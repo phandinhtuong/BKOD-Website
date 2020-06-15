@@ -11,8 +11,6 @@
     $id_arr = array($tourid, $timeid);
     $classes = $foo->getMap2($id_arr);
     
-    foreach ($classes as $class) {
-        $id = $class['ClassroomId'];
-        $name = $class['classroomName'];
-        print("<option value=$id>$name</option>");
-    }
+    $id = $classes[0]['ClassroomId'];
+    $name = $classes[0]['classroomName'];
+    print("<option value=$id>$name</option>");
