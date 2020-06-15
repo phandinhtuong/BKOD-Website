@@ -1,7 +1,5 @@
 <?php
-
-require_once 'DB.php';
-# parameters for connecting to the "business_service" 
+require_once 'DB.php'; //Database from ???
 $usernameDB = "root";
 $passwordDB = "";
 $hostspec = "localhost";

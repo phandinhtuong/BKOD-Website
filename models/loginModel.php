@@ -1,63 +1,38 @@
 <?php
-function login($username, $password) {
-//        print($username);
-//        print('<br>');
-//        print($password);
-//        print('<br>');
-    $i = checkValidLogin($username, $password);
+function login($username, $password) { //main function to login
+//    input: username and password
+//    direct to home page if check login successfully, or back to index if invalid username or password
+    $i = checkValidLogin($username, $password); //main function to check login
     if (is_null($i)) {
         print("CheckValidLogin Null!");
-    } else if ($i == 1) {
-        //print("log in okay");
-
+    } else if ($i == 1) { // logged in successfully
         $_SESSION["u"] = $username;
         header('Location: ../views/Home.php');
         exit();
-    } else if ($i == 0) {
+    } else if ($i == 0) { // invalid username or password
         $_SESSION["w"] = "wrong";
         header('Location: ../views/index.php');
         exit();
-        //print("no ok log in");
     }
 }
-function checkValidLogin($username, $password) {
-    require '../utils/db_connection.php';
-    $hash256Password = $password . $username . "BKODv1Habvietio";
-    $hash256Password = hash("sha256", $hash256Password);
-    //print($hash256Password);
+function checkValidLogin($username, $password) { //main function to check login
+    // input: username and password
+    // output: 1 if valid username and password, 0 otherwise
+    require '../utils/db_connection.php'; //require database connection
+    $passwordString = $password . $username . "BKODv1Habvietio"; // password string to hash for security
+    $hash256Password = hash("sha256", $passwordString);
+    
     //$sql = "select * from user where username = '$username' and password = '$hash256Password';"; // SQL Injection by ' or 1=1;#
-    $sql = 'select * from user where username = ? and password = ?';
-//    print("<br>");
-//    print($sql);
-//    print("<br>");
     //$result = $db->query($sql);
+    
+    $sql = 'select * from user where username = ? and password = ?'; // avoid SQL Injection
     $data = array($username, $hash256Password);
-    //$data = $username;
     $result = & $db->query($sql, $data);
-//    while ($row = $result->fetchRow()) {
-//        for ($i = 0; $i < count($row); $i++)
-//            print( "$row[$i]<br>");
-//    }
     $row = $result->fetchRow();
-//    echo '<script>console.log("Your stuff here")</script>';
-//    $hash256Password = strtoupper($hash256Password);
-//    print("<br>");
-//    print($row[1]);
-//    print("<br>");
-//    print($username);
-//    print("<br>");
-//    print($row[2]);
-//    print("<br>");
-//    print($hash256Password);
-//    print("<br>");
-
-    if (strcmp($row[1], $username) == 0 && strcasecmp($row[2], $hash256Password) == 0) {
-      //  print("OK");
+    if (strcmp($row[1], $username) == 0 && strcasecmp($row[2], $hash256Password) == 0) { //check if the username and password are valid
         return 1;
     } else {
-       // print("NO");
         return 0;
     }
 }
-
 ?>

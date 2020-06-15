@@ -1,9 +1,10 @@
 <?php
-function getAllTours() {
-    require '../../utils/db_connection.php';
-    $sql = 'select * from tour;';
-    $result = &$db->query($sql);
-    $allTours = array();
+
+function getAllTours() { // get all tours to display 
+    require '../../utils/db_connection.php'; // database connection
+    $sql = 'select * from tour;'; //SQL statement
+    $result = &$db->query($sql); // query from databases
+    $allTours = array(); // array of tours
     while ($tourRow = $result->fetchRow()) {
         $tour = array();
         foreach ($tourRow as $key => $value) {
@@ -25,6 +26,7 @@ function getAllTours() {
         }
         $allTours[] = $tour;
     }
+    //return XML
     header('Content-Type: text/xml');
     echo '<?xml version="1.0" encoding="ISO-8859-1"?>
     <tours>';
@@ -37,8 +39,8 @@ function getAllTours() {
             <name>" . $row['name'] . "</name>";
         echo "
             <state>" . $row['state'] . "</state>";
-//        echo "
-//            <imageUrl>" . $row['imageUrl'] . "</imageUrl>";
+        echo "
+            <imageUrl>" . $row['imageUrl'] . "</imageUrl>";
         echo "
             <date>" . $row['date'] . "</date>";
         echo "
@@ -49,16 +51,11 @@ function getAllTours() {
     echo "
         </tours>";
 }
-function editTour($tourID){
+
+function getOneTourToEdit($tourID) { //get one specific tour to edit
     require '../../utils/db_connection.php';
-    
-//    $sql = "select * from tour where tourID = "+$tourID+";";
-//    $result = &$db->query($sql);
-    
     $sql = 'select * from tour where tourID = ?;';
-    $result = &$db->query($sql,$tourID);
-    
-    $allTours = array();
+    $result = &$db->query($sql, $tourID);
     while ($tourRow = $result->fetchRow()) {
         $tour = array();
         foreach ($tourRow as $key => $value) {
@@ -78,72 +75,69 @@ function editTour($tourID){
                 default : break;
             }
         }
-        $allTours[] = $tour;
     }
     header('Content-Type: text/xml');
     echo '<?xml version="1.0" encoding="ISO-8859-1"?>
     <tour>';
-        echo "
-            <tourID>" . $allTours[0]['tourID'] . "</tourID>";
-        echo "
-            <name>" . $allTours[0]['name'] . "</name>";
-        echo "
-            <state>" . $allTours[0]['state'] . "</state>";
-        echo "
-            <imageUrl>" . $allTours[0]['imageUrl'] . "</imageUrl>";
-        echo "
-            <date>" . $allTours[0]['date'] . "</date>";
-        echo "
-            <mapImageUrl>" . $allTours[0]['mapImageUrl'] . "</mapImageUrl>";
+    echo "
+            <tourID>" . $tour['tourID'] . "</tourID>";
+    echo "
+            <name>" . $tour['name'] . "</name>";
+    echo "
+            <state>" . $tour['state'] . "</state>";
+    echo "
+            <imageUrl>" . $tour['imageUrl'] . "</imageUrl>";
+    echo "
+            <date>" . $tour['date'] . "</date>";
+    echo "
+            <mapImageUrl>" . $tour['mapImageUrl'] . "</mapImageUrl>";
     echo "
         </tour>";
 }
-function updateTour($tourID,$name,$state,$imageURL,$date,$mapImageUrl){
+
+function updateTour($tourID, $name, $state, $imageURL, $date, $mapImageUrl) {
     require '../../utils/db_connection.php';
     $sql = 'update tour set name = ?, state = ?, imageurl = ?, date= ?,mapimageurl = ? where tourid=?';
-    $data = array($name,$state,$imageURL,$date,$mapImageUrl,$tourID);
-//    $result = &$db->query($sql,$data);
-    if ($db->query($sql,$data)==true){
+    $data = array($name, $state, $imageURL, $date, $mapImageUrl, $tourID);
+    if ($db->query($sql, $data) == true) {
         header('Content-Type: text/xml');
-    echo '<?xml version="1.0" encoding="ISO-8859-1"?>
+        echo '<?xml version="1.0" encoding="ISO-8859-1"?>
     <result>Update Successfully</result>';
-    
-    }else{
+    } else {
         header('Content-Type: text/xml');
-    echo '<?xml version="1.0" encoding="ISO-8859-1"?>
+        echo '<?xml version="1.0" encoding="ISO-8859-1"?>
     <result>Update Failed</result>';
     }
 }
-function insertTour($name,$state,$imageURL,$date,$mapImageUrl){
-//    insert into tour VALUES (5,'a',1,'a',12,'a');
-//    insert into tour VALUES ( (select max(TourId)+1 from (select TourId from tour) as tourid) ,'a',1,'a',12,'a');
+
+function insertTour($name, $state, $imageURL, $date, $mapImageUrl) {
     require '../../utils/db_connection.php';
+    //tourID increases by one from max tourID in database
     $sql = 'insert into tour values((select max(TourId)+1 from (select TourId from tour) as tourid),?,?,?,?,?);';
-    $data = array($name,$state,$imageURL,$date,$mapImageUrl);
-//    $result = &$db->query($sql,$data);
-    if ($db->query($sql,$data)==true){
+    $data = array($name, $state, $imageURL, $date, $mapImageUrl);
+    if ($db->query($sql, $data) == true) {
         header('Content-Type: text/xml');
-    echo '<?xml version="1.0" encoding="ISO-8859-1"?>
+        echo '<?xml version="1.0" encoding="ISO-8859-1"?>
     <result>Add Tour Successfully</result>';
-    
-    }else{
+    } else {
         header('Content-Type: text/xml');
-    echo '<?xml version="1.0" encoding="ISO-8859-1"?>
+        echo '<?xml version="1.0" encoding="ISO-8859-1"?>
     <result>Add Tour Failed</result>';
     }
 }
-function deleteTour($tourID){
+
+function deleteTour($tourID) {
     require '../../utils/db_connection.php';
     $sql = 'DELETE FROM tour where tourId = ?;';
-    if ($db->query($sql,$tourID)==true){
+    if ($db->query($sql, $tourID) == true) {
         header('Content-Type: text/xml');
-    echo '<?xml version="1.0" encoding="ISO-8859-1"?>
+        echo '<?xml version="1.0" encoding="ISO-8859-1"?>
     <result>Delete Tour Successfully</result>';
-    
-    }else{
+    } else {
         header('Content-Type: text/xml');
-    echo '<?xml version="1.0" encoding="ISO-8859-1"?>
+        echo '<?xml version="1.0" encoding="ISO-8859-1"?>
     <result>Delete Tour Failed</result>';
     }
 }
+
 ?>
