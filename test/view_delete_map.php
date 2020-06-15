@@ -36,15 +36,18 @@
             <tr>
                 <td>1</td>
                 <td>
-                <select name="StartTime" id="StartTime" onchange="display()">
+                <select name="StartTime" id="StartTime" onchange="display(this.id); 
+                building(<?php echo $tour_id ?>, this.value);
+                classroom(<?php echo $tour_id ?>, this.value);
+                ">
                     <?php 
                     $counter = 0;
                     foreach ($times as $time) {
                         $num = $counter++;
-                        print("<input type='hidden' id='tour' name='tour' value=''>");
-                        $id = $time['TimesheetID'];
+                        // print("<input type='hidden' id='tour' name='tour' value=''>");
+                        $id = $time['TimesheetId'];
                         $start = $time['StartTime'];
-                        print("<option value=$id>$start</option>");
+                        print("<option id=$num value=$id>$start</option>");
                     }
                     ?>
                 </select>

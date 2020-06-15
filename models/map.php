@@ -19,6 +19,9 @@ class Map extends Model{
     /** return all maps of a given tour id */
     public function getMap($id) { return $this->getById(getMapSQL, $id); }
 
+    /** return all maps of a given tour id */
+    public function getMap2($id) { return $this->getById(getMap2SQL, $id); }
+
     public function getClassroom($id) { return $this->getById(getClassroomByBuildingID_SQL, $id); }
     
     /** add a new map
