@@ -98,4 +98,20 @@ function editTour($tourID){
     echo "
         </tour>";
 }
+function updateTour($tourID,$name,$state,$imageURL,$date,$mapImageUrl){
+    require '../../utils/db_connection.php';
+    $sql = 'update tour set name = ?, state = ?, imageurl = ?, date= ?,mapimageurl = ? where tourid=?';
+    $data = array($name,$state,$imageURL,$date,$mapImageUrl,$tourID);
+//    $result = &$db->query($sql,$data);
+    if ($db->query($sql,$data)==true){
+        header('Content-Type: text/xml');
+    echo '<?xml version="1.0" encoding="ISO-8859-1"?>
+    <result>Update Successfully</result>';
+    
+    }else{
+        header('Content-Type: text/xml');
+    echo '<?xml version="1.0" encoding="ISO-8859-1"?>
+    <result>Update Failed</result>';
+    }
+}
 ?>
