@@ -114,4 +114,36 @@ function updateTour($tourID,$name,$state,$imageURL,$date,$mapImageUrl){
     <result>Update Failed</result>';
     }
 }
+function insertTour($name,$state,$imageURL,$date,$mapImageUrl){
+//    insert into tour VALUES (5,'a',1,'a',12,'a');
+//    insert into tour VALUES ( (select max(TourId)+1 from (select TourId from tour) as tourid) ,'a',1,'a',12,'a');
+    require '../../utils/db_connection.php';
+    $sql = 'insert into tour values((select max(TourId)+1 from (select TourId from tour) as tourid),?,?,?,?,?);';
+    $data = array($name,$state,$imageURL,$date,$mapImageUrl);
+//    $result = &$db->query($sql,$data);
+    if ($db->query($sql,$data)==true){
+        header('Content-Type: text/xml');
+    echo '<?xml version="1.0" encoding="ISO-8859-1"?>
+    <result>Add Tour Successfully</result>';
+    
+    }else{
+        header('Content-Type: text/xml');
+    echo '<?xml version="1.0" encoding="ISO-8859-1"?>
+    <result>Add Tour Failed</result>';
+    }
+}
+function deleteTour($tourID){
+    require '../../utils/db_connection.php';
+    $sql = 'DELETE FROM tour where tourId = ?;';
+    if ($db->query($sql,$tourID)==true){
+        header('Content-Type: text/xml');
+    echo '<?xml version="1.0" encoding="ISO-8859-1"?>
+    <result>Delete Tour Successfully</result>';
+    
+    }else{
+        header('Content-Type: text/xml');
+    echo '<?xml version="1.0" encoding="ISO-8859-1"?>
+    <result>Delete Tour Failed</result>';
+    }
+}
 ?>

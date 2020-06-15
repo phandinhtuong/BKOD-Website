@@ -8,7 +8,7 @@ var xmlHttp;
 function displayAllTours() {
 
     xmlHttp = GetXmlHttpObject();
-    if (xmlHttp == null)
+    if (xmlHttp === null)
     {
         alert("Browser does not support HTTP Request");
         return;
@@ -16,7 +16,7 @@ function displayAllTours() {
     $q = "getAllTours";
 
     xmlHttp.onreadystatechange = function () {
-        if (xmlHttp.readyState == 4) {
+        if (xmlHttp.readyState === 4) {
             //Response Text
 //                document.getElementById("main").innerHTML = xmlHttp.responseText;
             //Response XML
@@ -26,12 +26,23 @@ function displayAllTours() {
 //                    xmlDoc.getElementsByTagName("tour").length;
 //            document.getElementById("main").innerHTML =
 //                    xmlDoc.getElementsByTagName("tourID")[0].childNodes[0].nodeValue;
+            // remove old tours list
+
+
+            var oldLi = document.getElementById('tours-list');
+            if (oldLi !== null) {
+                document.getElementById('main').removeChild(oldLi);
+            }
+
+
+
+
             var ul = document.createElement('ul');
             ul.setAttribute('id', 'tours-list');
 //            ul.setAttribute('id','tours-list')
             document.getElementById('main').appendChild(ul);
 
-            let isAdmin = localStorage.getItem("currentUser") == "admin";
+            let isAdmin = localStorage.getItem("currentUser") === "admin";
             if (isAdmin) {
                 var li = document.createElement("li");
                 li.setAttribute('class', 'addButton');
@@ -86,7 +97,8 @@ function displayAllTours() {
                     var deleteButton = document.createElement("button");
                     deleteButton.setAttribute('class', 'button');
                     deleteButton.textContent = "Delete tour";
-                    deleteButton.onclick = deleteOneTour;
+//                    deleteButton.onclick = deleteOneTour;
+                    deleteButton.setAttribute('onclick', 'deleteOneTour(' + tourID[i] + ')');
                     li.appendChild(deleteButton);
                 }
                 //test link of map image
@@ -97,12 +109,136 @@ function displayAllTours() {
 
             }
         }
-    }
+    };
     xmlHttp.open("GET", "../controllers/TourController/tourController.php?q=" + $q, true);
     xmlHttp.send();
 }
 function addOneTour() {
-    alert('TODO: Add one tour ');
+//    alert('TODO: Add one tour ');
+    xmlHttp = GetXmlHttpObject();
+    if (xmlHttp === null)
+    {
+        alert("Browser does not support HTTP Request");
+        return;
+    }
+    $q = "addTour";
+
+
+
+    // remove old tours list
+    var oldLi = document.getElementById('tours-list');
+    document.getElementById('main').removeChild(oldLi);
+
+    var ul = document.createElement('ul');
+    ul.setAttribute('id', 'tours-list');
+//            ul.setAttribute('id','tours-list')
+
+    document.getElementById('main').appendChild(ul);
+
+    var li = document.createElement("li");
+    li.setAttribute('class', 'tour');
+//            li.setAttribute("id","new");
+//            li.setAttribute('class', 'item');
+    ul.appendChild(li);
+//            li.innerHTML = "111";
+//                li.innerHTML = xmlDoc.getElementsByTagName("name")[i].childNodes[0].nodeValue;
+//            var tourName = ;
+
+    //"tour ID" part
+//            var spanTourID = document.createElement("span");
+////            spanTourID.innerHTML = 'Tour ID: ' + xmlDoc.getElementsByTagName("tourID")[0].childNodes[0].nodeValue;
+//            spanTourID.innerHTML = 'Tour ID: ' + $tourID;
+//            li.appendChild(spanTourID);
+
+
+    //"name" text
+    var spanName = document.createElement("span");
+    spanName.innerHTML = '<br>Name: ';
+    li.appendChild(spanName);
+
+    //input name
+    var inputName = document.createElement("input");
+    inputName.setAttribute('id', 'name');
+    inputName.setAttribute('size', '75');
+//            inputName.setAttribute('value', xmlDoc.getElementsByTagName("name")[0].childNodes[0].nodeValue);
+    li.appendChild(inputName);
+
+
+    //"state" text
+    var spanState = document.createElement("span");
+    spanState.innerHTML = '<br>State: ';
+    li.appendChild(spanState);
+
+    //input state
+    var inputState = document.createElement("input");
+    inputState.setAttribute('id', 'state');
+    inputState.setAttribute('size', '75');
+//            inputState.setAttribute('value', xmlDoc.getElementsByTagName("state")[0].childNodes[0].nodeValue);
+    li.appendChild(inputState);
+
+    //"Image URL" text
+    var spanImageUrl = document.createElement("span");
+    spanImageUrl.innerHTML = '<br>Image URL: ';
+    li.appendChild(spanImageUrl);
+
+    //input Image URL
+    var inputImageUrl = document.createElement("input");
+    inputImageUrl.setAttribute('id', 'imageurl');
+    inputImageUrl.setAttribute('size', '75');
+//            inputImageUrl.setAttribute('value', xmlDoc.getElementsByTagName("imageUrl")[0].childNodes[0].nodeValue);
+    li.appendChild(inputImageUrl);
+
+    //"Date" text
+    var spanDate = document.createElement("span");
+    spanDate.innerHTML = '<br>Date: ';
+    li.appendChild(spanDate);
+
+    //input date
+    var inputDate = document.createElement("input");
+    inputDate.setAttribute('id', 'date');
+    inputDate.setAttribute('size', '75');
+//            inputDate.setAttribute('value', xmlDoc.getElementsByTagName("date")[0].childNodes[0].nodeValue);
+    li.appendChild(inputDate);
+
+    //"Map Image URL" text
+    var spanMapImageURL = document.createElement("span");
+    spanMapImageURL.innerHTML = '<br>Map Image URL: ';
+    li.appendChild(spanMapImageURL);
+
+    //input map image URL
+    var inputMapImageURL = document.createElement("input");
+    inputMapImageURL.setAttribute('id', 'mapimageurl');
+    inputMapImageURL.setAttribute('size', '75');
+//            inputMapImageURL.setAttribute('value', xmlDoc.getElementsByTagName("mapImageUrl")[0].childNodes[0].nodeValue);
+    li.appendChild(inputMapImageURL);
+
+
+    //new line
+    var spanNewLine = document.createElement("span");
+    spanNewLine.innerHTML = '<br>';
+    li.appendChild(spanNewLine);
+
+
+    var addBtn = document.createElement("button");
+    addBtn.textContent = "Add tour";
+    addBtn.setAttribute('class', 'button');
+//            UpdateBtn.setAttribute('onclick', 'updateTour(' + tourID +','+document.getElementById('inputName')+','+document.getElementById('inputState')+
+//                    ','+document.getElementById('inputImageUrl')+','+document.getElementById('inputDate')+','+document.getElementById('inputMapImageURL')+')');
+    addBtn.setAttribute('onclick', 'insertTour()');
+//            updateBtn.setAttribute('onclick', 'updateTour()');
+    li.appendChild(addBtn);
+
+    var backBtn = document.createElement("button");
+    backBtn.textContent = "Back";
+    backBtn.setAttribute('class', 'button');
+//            UpdateBtn.setAttribute('onclick', 'updateTour(' + tourID +','+document.getElementById('inputName')+','+document.getElementById('inputState')+
+//                    ','+document.getElementById('inputImageUrl')+','+document.getElementById('inputDate')+','+document.getElementById('inputMapImageURL')+')');
+    backBtn.setAttribute('onclick', 'displayAllTours()');
+//            updateBtn.setAttribute('onclick', 'updateTour()');
+    li.appendChild(backBtn);
+
+    xmlHttp.open("GET", "../controllers/TourController/tourController.php?q=" + $q, true);
+    xmlHttp.send();
 }
 function displayOneTour() {
     // console.log("WHY?");
@@ -117,7 +253,7 @@ function editOneTour(tourID) {
 //    alert('TODO: Edit one tour ' + tourID);
 //    alert(tourID);
     xmlHttp = GetXmlHttpObject();
-    if (xmlHttp == null)
+    if (xmlHttp === null)
     {
         alert("Browser does not support HTTP Request");
         return;
@@ -127,7 +263,7 @@ function editOneTour(tourID) {
 //    alert($tourID);
 
     xmlHttp.onreadystatechange = function () {
-        if (xmlHttp.readyState == 4) {
+        if (xmlHttp.readyState === 4) {
             //Response Text
 //                document.getElementById("main").innerHTML = xmlHttp.responseText;
             //Response XML
@@ -262,8 +398,17 @@ function editOneTour(tourID) {
 //            updateBtn.setAttribute('onclick', 'updateTour()');
             li.appendChild(updateBtn);
 
+            var backBtn = document.createElement("button");
+            backBtn.textContent = "Back";
+            backBtn.setAttribute('class', 'button');
+//            UpdateBtn.setAttribute('onclick', 'updateTour(' + tourID +','+document.getElementById('inputName')+','+document.getElementById('inputState')+
+//                    ','+document.getElementById('inputImageUrl')+','+document.getElementById('inputDate')+','+document.getElementById('inputMapImageURL')+')');
+            backBtn.setAttribute('onclick', 'displayAllTours()');
+//            updateBtn.setAttribute('onclick', 'updateTour()');
+            li.appendChild(backBtn);
+
         }
-    }
+    };
     xmlHttp.open("GET", "../controllers/TourController/tourController.php?q=" + $q + "&tourID=" + $tourID, true);
     xmlHttp.send();
 
@@ -271,13 +416,42 @@ function editOneTour(tourID) {
 //function updateTour(tourID, name, state, imageUrl, date, mapImageUrl){
 //    alert(tourID +" "+ name +" "+ state +" "+ imageUrl +" "+ date+" " + mapImageUrl);
 //}
+function insertTour() {
+//    alert(document.getElementById('tours-list').getElementsByTagName('input')[0].value);
+    xmlHttp = GetXmlHttpObject();
+    if (xmlHttp === null)
+    {
+        alert("Browser does not support HTTP Request");
+        return;
+    }
+    $q = "insertTour";
+    $name = document.getElementById('tours-list').getElementsByTagName('input')[0].value;
+    $state = document.getElementById('tours-list').getElementsByTagName('input')[1].value;
+    $imageURL = document.getElementById('tours-list').getElementsByTagName('input')[2].value;
+    $date = document.getElementById('tours-list').getElementsByTagName('input')[3].value;
+    $mapImageUrl = document.getElementById('tours-list').getElementsByTagName('input')[4].value;
+
+    xmlHttp.onreadystatechange = function () {
+        if (xmlHttp.readyState === 4) {
+            var xmlDoc = xmlHttp.responseXML;
+            var result = xmlDoc.getElementsByTagName("result")[0].childNodes[0].nodeValue;
+            alert(result);
+//            editOneTour($tourID);
+        }
+    };
+
+
+    xmlHttp.open("GET", "../controllers/TourController/tourController.php?q=" + $q + "&name=" + $name
+            + "&state=" + $state + "&imageURL=" + $imageURL + "&date=" + $date + "&mapImageUrl=" + $mapImageUrl, true);
+    xmlHttp.send();
+}
 function updateTour(tourID) {
 //    var li = document.getElementsByTagName("input");
 //$tourID = tourID;
 //    alert($tourID);
 //    var tourID = 
     xmlHttp = GetXmlHttpObject();
-    if (xmlHttp == null)
+    if (xmlHttp === null)
     {
         alert("Browser does not support HTTP Request");
         return;
@@ -285,27 +459,55 @@ function updateTour(tourID) {
     $q = "updateTour";
     $tourID = tourID;
     $name = document.getElementById('tours-list').getElementsByTagName('input')[0].value;
-    $state =document.getElementById('tours-list').getElementsByTagName('input')[1].value;
+    $state = document.getElementById('tours-list').getElementsByTagName('input')[1].value;
     $imageURL = document.getElementById('tours-list').getElementsByTagName('input')[2].value;
     $date = document.getElementById('tours-list').getElementsByTagName('input')[3].value;
-    $mapImageUrl =document.getElementById('tours-list').getElementsByTagName('input')[4].value;
+    $mapImageUrl = document.getElementById('tours-list').getElementsByTagName('input')[4].value;
 //    alert(document.getElementById('tours-list').getElementsByTagName('input')[2].value);
     xmlHttp.onreadystatechange = function () {
-        if (xmlHttp.readyState == 4) {
+        if (xmlHttp.readyState === 4) {
             var xmlDoc = xmlHttp.responseXML;
             var result = xmlDoc.getElementsByTagName("result")[0].childNodes[0].nodeValue;
             alert(result);
             editOneTour($tourID);
         }
-    }
-    
-    
-    xmlHttp.open("GET", "../controllers/TourController/tourController.php?q=" + $q + "&tourID=" + $tourID+ "&name=" + $name
-    + "&state=" + $state+ "&imageURL=" + $imageURL+ "&date=" + $date+ "&mapImageUrl=" + $mapImageUrl, true);
+    };
+
+
+    xmlHttp.open("GET", "../controllers/TourController/tourController.php?q=" + $q + "&tourID=" + $tourID + "&name=" + $name
+            + "&state=" + $state + "&imageURL=" + $imageURL + "&date=" + $date + "&mapImageUrl=" + $mapImageUrl, true);
     xmlHttp.send();
 }
-function deleteOneTour() {
-    alert('TODO: Delete one tour');
+function deleteOneTour(tourID) {
+//    alert('TODO: Delete one tour');
+    if (confirm('Delete tour with tourID = ' + tourID + '?')) {
+        xmlHttp = GetXmlHttpObject();
+        if (xmlHttp === null)
+        {
+            alert("Browser does not support HTTP Request");
+            return;
+        }
+        $q = "deleteTour";
+        $tourID = tourID;
+        xmlHttp.onreadystatechange = function () {
+            if (xmlHttp.readyState === 4) {
+                var xmlDoc = xmlHttp.responseXML;
+                var result = xmlDoc.getElementsByTagName("result")[0].childNodes[0].nodeValue;
+//                alert(result);
+//                editOneTour($tourID);
+
+                alert(result);
+                displayAllTours();
+            }
+        };
+
+
+        xmlHttp.open("GET", "../controllers/TourController/tourController.php?q=" + $q + "&tourID=" + $tourID, true);
+        xmlHttp.send();
+
+    } else {
+//        alert('not deleted');
+    }
 }
 function GetXmlHttpObject()
 {
