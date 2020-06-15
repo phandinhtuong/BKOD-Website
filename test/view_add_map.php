@@ -12,6 +12,7 @@
     $foo = new Map;
 
     $tour_id = 1;
+    
     $existing_times = $foo->getTime($tour_id);
     $all_times = $foo->getAllTimes();
     $times = array();

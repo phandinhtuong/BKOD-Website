@@ -12,30 +12,50 @@
     $foo = new Map;
 
     $tour_id = 1;
-    $times = $foo->getTime($tour_id);
     
-    $buildings = $foo->getAllBuildings();
+    $times = $foo->getTime($tour_id);
+
+    $res = $foo->getMap($tour_id) ;
+    print_r($res);
+
+    $buildings = array();
+    $classes = array();
+    foreach ($res as $re) {
+        array_push($buildings, $re['buildingName']);
+        array_push($classes, $re['classroomName']);
+    }
+
+    echo '</br/>';
+    print_r($buildings);
+    
+    echo '</br/>';  
+    print_r($classes);
     ?>
-        <form action="add_map.php"><table>
+        <form action="delete_map.php"><table>
             <?php TableHeader(); ?>
             <tr>
                 <td>1</td>
-                <td><select name="start_time" id="start_time" onchange="update(this.value)">
+                <td>
+                <select name="StartTime" id="StartTime" onchange="display()">
                     <?php 
+                    $counter = 0;
                     foreach ($times as $time) {
-                        $id = $time['id'];
-                        $start = $time['start_time'];
+                        $num = $counter++;
+                        print("<input type='hidden' id='tour' name='tour' value=''>");
+                        $id = $time['TimesheetID'];
+                        $start = $time['StartTime'];
                         print("<option value=$id>$start</option>");
                     }
                     ?>
-                </select></td>
-                <td><div id="end_time" name="end_time" value=""></div></td>
+                </select>
+                </td>
+                <td><div id="endtime" name="endtime" value=""></div></td>
                 <td><div id="building" name="building" value=""></div></td>
                 <td><div id="class" name="class" value=""></div></td>
             </tr>
         </table>
-        <input type="hidden" id="tour" name="tour" value="1">
-        <input type="submit" value="Add map" />
+        <input type="hidden" id="tour" name="tour" value="<?php echo $tour_id ?>">
+        <input type="submit" value="delete map" />
     </form>  
     </body>
 </html>
