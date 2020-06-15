@@ -6,13 +6,11 @@ class DBConnection{
     function __construct() {       
         require_once 'DB.php';
         # parameters for connecting to the "business_service" 
-        $usernameDB = "root";
-        $passwordDB = "";
-        $hostspec = "localhost";
-        $database = "bkod";
-        // $dbtype = 'pgsql';
-        // $dbtype = 'oci8';
-        $dbtype = 'mysqli';
+        $usernameDB = DB_USER;
+        $passwordDB = DB_PASSWORD;
+        $hostspec = DB_HOST;
+        $database = DB_NAME;
+        $dbtype = DB_TYPE;
     
         # DSN constructed from parameters 
         $dsn = "$dbtype://$usernameDB:$passwordDB@$hostspec/$database";

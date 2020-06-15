@@ -1,5 +1,4 @@
 <?php
-
 require_once 'DB.php';
 # parameters for connecting to the "business_service" 
 $username = "root";
@@ -11,7 +10,7 @@ $database = "bkod";
 $dbtype = 'mysqli';
 
 # DSN constructed from parameters 
-$dsn = "$dbtype://$username:$password@$hostspec/$database";
+$dsn = "$dbtype://$DB_NAME:$password@$hostspec/$database";
 
 # Establish the connection
 $db = DB::connect($dsn);
