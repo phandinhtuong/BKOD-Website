@@ -1,8 +1,8 @@
 <!DOCTYPE html>
 <head>
     <script src="static/getHeader.js"></script> <!-- header part -->
-    <script src="Tour.js"></script> <!-- javascript file for managing tour-->
-    <link rel=stylesheet href="static/Tour.css" type="text/css"> <!-- Tour style sheet -->
+    <script src="../public/js/Tour.js"></script> <!-- javascript file for managing tour-->
+    <link rel=stylesheet href="../public/css/Tour.css" type="text/css"> <!-- Tour style sheet -->
 </head>
 <body>
     <?php
