@@ -52,8 +52,9 @@ FROM Timesheet
 ;");
 
 define("getBuildingSQL", "
-SELECT BuildingID, Name, SubName
-FROM Building
+SELECT DISTINCT b.BuildingID, b.Name, b.SubName
+FROM Building as b, Building2Classroom as b2c
+WHERE b.BuildingID = b2c.BuildingID
 ;");
 
 define("getClassroomByBuildingID_SQL", "
