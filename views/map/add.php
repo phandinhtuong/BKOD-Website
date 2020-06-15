@@ -11,9 +11,9 @@
     // Map Object
     $foo = new Map;
 
-    $tour_id = 1;
-    
-    $existing_times = $foo->getTime($tour_id);
+    $tour_id = $_GET['tourID'];
+    print($tour_id)
+;    $existing_times = $foo->getTime($tour_id);
     $all_times = $foo->getAllTimes();
     $times = array();
 
@@ -28,7 +28,7 @@
         <form action="../../controllers/map/add.php"><table>
             <?php TableHeader(); ?>
             <tr>
-                <td>1</td>
+                <td><?php echo $tour_id; ?></td>
                 <td>
                 <select name="StartTime" id="StartTime" onchange="displayEndTime()">
                     <?php 
@@ -57,7 +57,7 @@
                 <td><select name="class" id="class"></select></td>
             </tr>
         </table>
-        <input type="hidden" id="tour" name="tour" value="1">
+        <input type="hidden" id="tour" name="tour" value="<?php echo $tour_id; ?>">
         <input type="submit" value="Add map" />
     </form>  
     </body>

@@ -120,6 +120,8 @@ function insertTour($name, $state, $imageURL, $date) {
 
 function deleteTour($tourID) {
     require '../../utils/db_connection.php';
+    $sql2= 'DELETE FROM tour2timesheet where tourId = ?;';
+    $db->query($sql2, $tourID);
     $sql = 'DELETE FROM tour where tourId = ?;';
     if ($db->query($sql, $tourID) == true) {
         header('Content-Type: text/xml');
