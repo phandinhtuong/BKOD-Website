@@ -1,5 +1,5 @@
 <?php
-    include_once("../models/map.php");
+    include_once("../../models/map.php");
 
     // Map Object
     $foo = new Map;

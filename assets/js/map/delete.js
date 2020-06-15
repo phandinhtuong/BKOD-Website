@@ -25,7 +25,7 @@ function buildingfunc(tourid, timeid)
         }
     };
 
-    x.open("GET", "get.php?tourid=" + tourid + "&timeid=" + timeid, true);
+    x.open("GET", "../../controllers/map/get.php?tourid=" + tourid + "&timeid=" + timeid, true);
     x.send();
 }
 
@@ -40,6 +40,6 @@ function classroom(tourid, timeid)
         }
     };
 
-    x.open("GET", "get2.php?tourid=" + tourid + "&timeid=" + timeid, true);
+    x.open("GET", "../../controllers/map/get2.php?tourid=" + tourid + "&timeid=" + timeid, true);
     x.send();
 }

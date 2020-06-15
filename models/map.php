@@ -1,6 +1,8 @@
 <?php
-require '../utils/sql_commands.php';
-require_once '../utils/model.class.php';
+// require '../utils/sql_commands.php';
+// require_once '../utils/model.class.php';
+require_once $_SERVER['DOCUMENT_ROOT'].'/bkod/utils/model.class.php';
+require_once $_SERVER['DOCUMENT_ROOT'].'/bkod/utils/sql_commands.php';
 
 /** Map links tour, time, building and classroom together */
 class Map extends Model{

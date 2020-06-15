@@ -2,7 +2,7 @@
 function showMap(classroom, building, buildingID) {
     var myWindow = window.open("", "myWindow","width="+screen.availWidth+",height="+screen.availHeight);
     myWindow.document.write("<p>classroom: <b>" + classroom + "</b> of building: <b>" + building + "</b></p>");
-    myWindow.document.write("<img src=../assets/img/building" + buildingID + ".gif>");
+    myWindow.document.write("<img src=../../assets/img/building" + buildingID + ".gif>");
     
     // myWindow.opener.document.write("<p>This is the source window!</p>");
 }

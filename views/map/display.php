@@ -2,22 +2,24 @@
 <html>
     <head>
         <title>test display map</title>
-        <script src="../assets/js/map/display_map.js"></script>
+        <script src="../../assets/js/map/display.js"></script>
     </head>
     <body>
     <?php
-    include_once("../models/map.php");
+    include_once("../../models/map.php");
 
     // Map Object
     $foo = new Map;
 
     // get all tours id and name
-    $id2 = $_GET['tourID'];
+    // $id2 = $_GET['tourID'];
+    $id2 = '1';
+    
     $tours = $foo->getAllTours() ;
 //    print("Choose your tour: ");    
     
     // create buttons to show timeline of each tour
-    // print_r($tours);
+    print_r($tours);
     foreach ($tours as $tour) {
         print('<br/>');
 

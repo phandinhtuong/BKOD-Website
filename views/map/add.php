@@ -1,12 +1,12 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <title>test add map</title>
-        <script src="../assets/js/map/add_map.js"></script>
+        <title>adding new map</title>
+        <script src="../../assets/js/map/add.js"></script>
    </head>
     <body>
     <?php
-    include_once("../models/map.php");
+    include_once("../../models/map.php");
 
     // Map Object
     $foo = new Map;
@@ -25,7 +25,7 @@
 
     $buildings = $foo->getAllBuildings();
     ?>
-        <form action="add_map.php"><table>
+        <form action="../../controllers/map/add.php"><table>
             <?php TableHeader(); ?>
             <tr>
                 <td>1</td>

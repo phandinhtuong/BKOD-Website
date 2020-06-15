@@ -9,7 +9,7 @@ function get_class_by_building(id)
         }
     };
 
-    x.open("GET", "get_class_by_building.php?q=" + id, true);
+    x.open("GET", "../../controllers/map/get_class_by_building.php?q=" + id, true);
     x.send();
 }
 

@@ -1,5 +1,5 @@
 <?php
-    include_once("../models/map.php");
+    include_once("../../models/map.php");
 
     // Map Object
     $foo = new Map;
@@ -14,4 +14,5 @@
 
     $foo->addMap($tourid, $timeid, $classid, $buildingid);
 
-    header("Location: display_map.php");
+    print("Successfully added!");
+    // header("Location: display_map.php");
