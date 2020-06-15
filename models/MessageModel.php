@@ -10,7 +10,7 @@ class MessageModel {
 //        $getAllMessagesQuery = $db->prepare("SELECT * FROM message");
 //        $getAllMessagesQuery = $db->prepare("SELECT * FROM message WHERE recieverId = '" . $currentUserId . "' AND senderId = '" . $selectedUserId . "' " . "ORDER by messageId DESC");
 
-        $getAllMessagesQuery = $db->prepare("SELECT * FROM message WHERE ( recieverId = ?  AND senderId = ? ) OR (recieverId = ? AND  senderId = ?) ORDER by messageId DESC");
+        $getAllMessagesQuery = $db->prepare("SELECT * FROM message WHERE ( recieverId = ?  AND senderId = ? ) OR (recieverId = ? AND  senderId = ?) ORDER by messageId ASC");
 
         if (PEAR::isError($getAllMessagesQuery)) {
             echo "Bad query detected!";
@@ -40,34 +40,33 @@ class MessageModel {
                 $allMessages[] = $trueMessage;
             }
 //    echo json_encode($allMessages);
-            echo "<table border='1'>";
             foreach ($allMessages as $row) {
 //while ($row = mysqli_fetch_array($res)) {
-                echo "<tr>";
-                echo "<td>" . $row['senderId'] . "</td>";
-                echo "<td>" . $row['recieverId'] . "</td>";
-                echo "<td>" . $row['mContent'] . "</td>";
-                echo "<td>" . $row['messageId'] . "</td>";
-                echo "<td>" . $row['time'] . "</td>";
-                echo "</tr>";
+                if ($row['senderId'] == $currentUserId) {
+                    echo "<div style='background-color: #00FFFF; display: table; margin-right: 320px; margin-left:auto; border-radius: 25px; height: 20px; padding: 5px'>"
+                    . $row['mContent'] . "</div>";
+                } else {
+                    echo "<div style='background-color: #7FFF00; display: table; margin-right: auto; margin-left:20px; border-radius: 25px; height: 20px; padding: 5px'>"
+                    . $row['mContent'] . "</div>";
+                }
             }
-            echo "</table>";
         }
     }
 
     public function sendMessage($senderId, $receiverId, $message) {
         require '../../utils/db_connection.php';
+        date_default_timezone_set('Asia/Ho_Chi_Minh');
         $messageId = time();
-        $time = time();
+        $date = date('Y/m/d h:i:s.a', time());
         $insertMessageQuery = $db->prepare("INSERT INTO message (SenderId, RecieverId, messageId, mContent, Time) VALUES (?, ?, ?, ?, ?)");
         if (PEAR::isError($insertMessageQuery)) {
             return "Bad query detected!";
         }
 //        echo MessageModel::$currentUserId . ", " . $receiverId . ", " .  $messageId . ", " .  $message . ", " .  $time;
-        $data = array($senderId, $receiverId, $messageId, $message, $time);
+        $data = array($senderId, $receiverId, $messageId, $message, $date);
         $res = &$db->execute($insertMessageQuery, $data);
 
-        if (PEAR::isError($res)) {
+        if (PEAR::isError($res)) {  
             $err = $res->getDebugInfo();
             if (strpos($err, 'Duplicate entry') !== false) {
                 return json_encode("Message already existed!");

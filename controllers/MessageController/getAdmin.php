@@ -46,12 +46,8 @@ if (PEAR::isError($res)) {
     }
     echo '<select style="width: 100%; height: 500px; border-radius: 20px; border-radius: 10px" id="user" name="user" size=20 multiple>';
     foreach ($allUsers as $row) {
-        if ($row['username'] != 'admin') {
-            if ($row['userId'] == 2) {
-                echo'<option style="border: 1px solid #00FF00; background-color: #FF8C00; display: table; border-radius: 25px; height: 15px; padding: 5px" selected value="' . $row['userId'] . '">' . $row['fullName'] . '</option>';
-            } else {
-                echo'<option style="border: 1px solid #00FF00; background-color: #FF8C00; display: table; border-radius: 25px; height: 15px; padding: 5px" value="' . $row['userId'] . '">' . $row['fullName'] . ' </option>';
-            }
+        if ($row['username'] == 'admin') {
+            echo'<option style="border: 1px solid #00FF00; background-color: #FF8C00; display: table; border-radius: 25px; height: 15px; padding: 5px" selected value="' . $row['userId'] . '">' . $row['fullName'] . '</option>';
         }
     }
     echo'</select>';

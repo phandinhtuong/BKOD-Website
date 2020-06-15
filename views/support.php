@@ -118,7 +118,7 @@
         <script type="text/javascript">
     // show all messages
     var xmlhttp1 = new XMLHttpRequest();
-    xmlhttp1.open("GET", "../controllers/MessageController/getMessengerUsers.php", true);
+    xmlhttp1.open("GET", "../controllers/MessageController/getAdmin.php", true);
     xmlhttp1.send();
     xmlhttp1.onreadystatechange = function () {
         if (xmlhttp1.readyState == 4) {
@@ -127,7 +127,7 @@
     }
         </script>
     </div>
-    <div id="chatlogs" style="overflow-y: auto">Message Section
+    <div id="chatlogs">Message Section
         <script type="text/javascript">
             // show all messages
 //            var xmlhttp = new XMLHttpRequest();
