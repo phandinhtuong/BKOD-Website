@@ -11,12 +11,12 @@
     // Map Object
     $foo = new Map;
 
-    $tour_id = 1;
+    $tour_id = $_GET['tourID'];
     
     $times = $foo->getTime($tour_id);
 
     $res = $foo->getMap($tour_id) ;
-    print_r($res);
+//    print_r($res);
 
     $buildings = array();
     $classes = array();
@@ -25,16 +25,16 @@
         array_push($classes, $re['ClassroomId']);
     }
 
-    echo '</br/>';
-    print_r($buildings);
-    
-    echo '</br/>';  
-    print_r($classes);
+//    echo '</br/>';
+//    print_r($buildings);
+//    
+//    echo '</br/>';  
+//    print_r($classes);
     ?>
         <form action="../../controllers/map/delete.php"><table>
             <?php TableHeader(); ?>
             <tr>
-                <td>1</td>
+                <td><?php echo $tour_id; ?></td>
                 <td>
                 <select name="StartTime" id="StartTime" onchange="display(); 
                 buildingfunc(<?php echo $tour_id ?>, this.value);

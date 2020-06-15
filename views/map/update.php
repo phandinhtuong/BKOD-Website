@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <title>test add map</title>
+        <title>update map</title>
         <script src="../../assets/js/map/update.js"></script>
    </head>
     <body>
@@ -11,19 +11,19 @@
     // Map Object
     $foo = new Map;
 
-    $tour_id = 1;
+    $tour_id = $_GET['tourID'];
     
     $times = $foo->getTime($tour_id);
     
     $old = $foo->getMap($tour_id);
 
-    print_r($old);
+//    print_r($old);
     $buildings = $foo->getAllBuildings();
     ?>
         <form action="../../controllers/map/update.php"><table>
             <?php TableHeader(); ?>
             <tr>
-                <td>1</td>
+                <td><?php echo $tour_id; ?></td>
                 <td>
                 <select name="StartTime" id="StartTime" onchange="displayEndTime()">
                     <?php 

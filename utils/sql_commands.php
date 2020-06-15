@@ -97,6 +97,23 @@ insert into building2classroom (buildingid, classroomid)
 values (?, ?)
 ;");
 
+//define("add_SQL", "
+//insert into building2classroom (buildingid, classroomid)
+//values (?, ?)
+//;");
+//SELECT t.TourId, ti.StartTime, ti.EndTime, c.ClassroomId, b.BuildingId ,
+//c.Name as classroomName, b.Name as buildingName
+//FROM tour as t, 
+//tour2timesheet as t2ti, timesheet as ti, timesheet2classroom as ti2c,
+//classroom as c, building2classroom as b2c, building as b
+//WHERE t.TourId = ? AND ti.TimesheetId = ?
+//AND t.TourId = t2ti.TourId 
+//AND t2ti.TimesheetId = ti.TimesheetId
+//AND ti.TimesheetId = ti2c.TimesheetId
+//AND ti2c.ClassroomId = c.ClassroomId
+//AND c.ClassroomId = b2c.ClassroomId
+//AND b2c.BuildingId = b.BuildingId;
+
 define("updatetour2timesheet_SQL", "
 update tour2timesheet 
 SET tourid = ?, timesheetid = ?
@@ -111,4 +128,9 @@ values (?, ?, ?)
 define("deleteMapSQL", "
 DELETE FROM tour2timesheet 
 WHERE TourId = ? AND TimesheetId = ?
+;");
+
+define("deleteMapSQL2", "
+DELETE FROM timesheet2classroom 
+WHERE TimesheetId = ?
 ;");

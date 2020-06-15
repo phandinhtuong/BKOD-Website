@@ -4,7 +4,7 @@ class DBConnection{
     protected $_db;
 
     function __construct() {       
-        require_once $_SERVER['DOCUMENT_ROOT'].'/bkod/config/config.php';
+        require_once $_SERVER['DOCUMENT_ROOT'].'/BKOD-Website/config/config.php';
         // include_once '../config/config.php';
         require_once 'DB.php';
         # parameters for connecting to the "business_service" 

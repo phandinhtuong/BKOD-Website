@@ -12,16 +12,15 @@
     $foo = new Map;
 
     // get all tours id and name
-    // $id2 = $_GET['tourID'];
-    $id2 = '1';
+     $id2 = $_GET['tourID'];
+//    $id2 = '1';
     
     $tours = $foo->getAllTours() ;
 //    print("Choose your tour: ");    
     
     // create buttons to show timeline of each tour
-    print_r($tours);
+//    print_r($tours);
     foreach ($tours as $tour) {
-        print('<br/>');
 
         $id = $tour['TourID'];
         $name = $tour['Name'];
@@ -48,6 +47,7 @@
         }
         print("</ol>");
         print("</div>");   
+        
     }
 ?>
     </body>

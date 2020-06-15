@@ -40,7 +40,7 @@ function displayAllTours() { // display all tours available in database
             var tourID = []; // tourID array to edit or delete tour
             //display all tours
             for (i = 0; i < xmlDoc.getElementsByTagName("tour").length; i++) {
-                if (isAdmin || xmlDoc.getElementsByTagName("state")[i].childNodes[0].nodeValue.localeCompare("0")!==0) { // if user is admin or state != 0
+                if (isAdmin || xmlDoc.getElementsByTagName("state")[i].childNodes[0].nodeValue.localeCompare("0") !== 0) { // if user is admin or state != 0
                     var li = document.createElement("li");
                     li.setAttribute('class', 'tour');
                     ul.appendChild(li);
@@ -65,9 +65,9 @@ function displayAllTours() { // display all tours available in database
                     //manage tour by admin : edit and delete tour buttons
                     if (isAdmin) {
                         var divBtn = document.createElement("div"); //div for buttons
-                        divBtn.setAttribute('class','divBtn');
+                        divBtn.setAttribute('class', 'divBtn');
                         li.appendChild(divBtn);
-                        
+
                         var editBtn = document.createElement("button"); // edit tour button
                         editBtn.textContent = "Edit tour";
                         editBtn.setAttribute('class', 'button');
@@ -170,7 +170,7 @@ function displayOneTour(tourID) { // display one tour
     // alert('TODO: Display one tour');
     var $tourID = tourID;
 //    alert($tourID);
-    window.location.href = "../test/display_map.php?tourID=" + $tourID + " ";
+    window.location.href = "map/display.php?tourID=" + $tourID + " ";
     // alert("after redirection");
 }
 
@@ -252,6 +252,30 @@ function getOneTourToEdit(tourID) { // edit one tour - just display to edit prop
             inputDate.setAttribute('value', xmlDoc.getElementsByTagName("date")[0].childNodes[0].nodeValue);
             li.appendChild(inputDate);
 
+            //just new line
+            var spanNewLine = document.createElement("span");
+            spanNewLine.innerHTML = '<br>';
+            li.appendChild(spanNewLine);
+
+            var addJourney = document.createElement("button");
+            addJourney.setAttribute('class', 'button');
+            addJourney.textContent = "Add Journey";
+            addJourney.setAttribute('onclick', 'window.open("map/add.php?tourID='+$tourID+'", "myWindow","width="+screen.availWidth+",height="+screen.availHeight)');
+            li.appendChild(addJourney);
+
+            var updateJourney = document.createElement("button");
+            updateJourney.setAttribute('class', 'button');
+            updateJourney.textContent = "Update Journey";
+            updateJourney.setAttribute('onclick', 'window.open("map/update.php?tourID='+$tourID+'", "myWindow","width="+screen.availWidth+",height="+screen.availHeight)');
+            li.appendChild(updateJourney);
+
+            var deleteJourney = document.createElement("button");
+            deleteJourney.setAttribute('class', 'button');
+            deleteJourney.textContent = "Delete Journey";
+            deleteJourney.setAttribute('onclick', 'window.open("map/delete.php?tourID='+$tourID+'", "myWindow","width="+screen.availWidth+",height="+screen.availHeight)');
+            li.appendChild(deleteJourney);
+
+//          
             //just new line
             var spanNewLine = document.createElement("span");
             spanNewLine.innerHTML = '<br>';

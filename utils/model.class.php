@@ -1,6 +1,6 @@
 <?php
 // require_once 'db_connection.class.php';
-require_once $_SERVER['DOCUMENT_ROOT'].'/bkod/utils/db_connection.class.php';
+require_once $_SERVER['DOCUMENT_ROOT'].'/BKOD-Website/utils/db_connection.class.php';
 
 class Model {
     protected $_db;
