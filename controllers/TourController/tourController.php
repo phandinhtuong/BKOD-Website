@@ -1,11 +1,11 @@
 <?php
-include '../../models/tourModel.php';
-$q = $_GET['q'];
+include '../../models/tourModel.php'; //include tour model to connect to database
+$q = $_GET['q']; //query string 
 if (strcmp($q, "getAllTours") == 0){
     getAllTours();
-} else if (strcmp($q, "editTour")==0){
+} else if (strcmp($q, "getOneTourToEdit")==0){
     $tourID = $_GET['tourID'];
-    editTour($tourID);
+    getOneTourToEdit($tourID);
 } else if (strcmp($q, "updateTour")==0){
     $tourID = $_GET['tourID'];
     $name=$_GET['name'];

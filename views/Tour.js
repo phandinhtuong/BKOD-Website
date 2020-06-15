@@ -1,71 +1,48 @@
-/* 
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-
-var xmlHttp;
-function displayAllTours() {
-
+var xmlHttp; //global XML HTTP object
+function displayAllTours() { // display all tours available in database
     xmlHttp = GetXmlHttpObject();
     if (xmlHttp === null)
     {
         alert("Browser does not support HTTP Request");
         return;
     }
-    $q = "getAllTours";
-
-    xmlHttp.onreadystatechange = function () {
-        if (xmlHttp.readyState === 4) {
-            //Response Text
-//                document.getElementById("main").innerHTML = xmlHttp.responseText;
+    $q = "getAllTours"; // query string
+    xmlHttp.onreadystatechange = function () { //readyState property of XML HTTP Request changes
+        if (xmlHttp.readyState === 4) { //the operation is complete
             //Response XML
             var xmlDoc = xmlHttp.responseXML;
 
-//            document.getElementById("name").innerHTML =
-//                    xmlDoc.getElementsByTagName("tour").length;
-//            document.getElementById("main").innerHTML =
-//                    xmlDoc.getElementsByTagName("tourID")[0].childNodes[0].nodeValue;
-            // remove old tours list
-
-
+            // remove old tours list if exists
             var oldLi = document.getElementById('tours-list');
             if (oldLi !== null) {
                 document.getElementById('main').removeChild(oldLi);
             }
 
-
-
-
+            //new tours list
             var ul = document.createElement('ul');
             ul.setAttribute('id', 'tours-list');
-//            ul.setAttribute('id','tours-list')
             document.getElementById('main').appendChild(ul);
 
+            //manage tour by admin : add tour button
             let isAdmin = localStorage.getItem("currentUser") === "admin";
             if (isAdmin) {
                 var li = document.createElement("li");
                 li.setAttribute('class', 'addButton');
                 ul.appendChild(li);
 
-                var addBtn = document.createElement("button");
+                var addBtn = document.createElement("button"); //add new tour button
                 addBtn.setAttribute('class', 'button');
                 addBtn.textContent = "Add tour";
-                addBtn.onclick = addOneTour;
+                addBtn.onclick = addOneTour; //direct to add tour function
                 li.appendChild(addBtn);
             }
-            var tourID = [];
+
+            var tourID = []; // tourID array to edit or delete tour
             //display all tours
             for (i = 0; i < xmlDoc.getElementsByTagName("tour").length; i++) {
-//                var li = document.createElement("li");
                 var li = document.createElement("li");
                 li.setAttribute('class', 'tour');
-//            li.setAttribute("id","new");
-//            li.setAttribute('class', 'item');
                 ul.appendChild(li);
-//            li.innerHTML = "111";
-//                li.innerHTML = xmlDoc.getElementsByTagName("name")[i].childNodes[0].nodeValue;
-
 
                 //map image of tour
                 var p = document.createElement("img");
@@ -73,84 +50,51 @@ function displayAllTours() {
                 p.setAttribute('height', 70);
 //                p.setAttribute('src', 'http://htqt.hust.edu.vn/imgs/maphnen.jpg');
                 p.setAttribute('src', xmlDoc.getElementsByTagName("mapImageUrl")[i].childNodes[0].nodeValue);
-
-                //    p.onclick = displayOneTour();
                 li.appendChild(p);
 
                 //name of tour
                 var tourName = document.createElement("span");
                 tourName.innerHTML = xmlDoc.getElementsByTagName("name")[i].childNodes[0].nodeValue;
                 tourName.setAttribute('class', 'tourName');
-                //click on one tour to display 
-                tourName.onclick = displayOneTour;
-
+                tourName.onclick = displayOneTour; // click on tour name to display tour
                 li.appendChild(tourName);
-
+                
+                //manage tour by admin : edit and delete tour buttons
                 if (isAdmin) {
                     tourID[i] = xmlDoc.getElementsByTagName("tourID")[i].childNodes[0].nodeValue;
-                    var editBtn = document.createElement("button");
+                    var editBtn = document.createElement("button"); // edit tour button
                     editBtn.textContent = "Edit tour";
                     editBtn.setAttribute('class', 'button');
-                    editBtn.setAttribute('onclick', 'editOneTour(' + tourID[i] + ')');
+                    editBtn.setAttribute('onclick', 'getOneTourToEdit(' + tourID[i] + ')'); //click button to edit tour
                     li.appendChild(editBtn);
 
-                    var deleteButton = document.createElement("button");
+                    var deleteButton = document.createElement("button"); //delete tour button
                     deleteButton.setAttribute('class', 'button');
                     deleteButton.textContent = "Delete tour";
 //                    deleteButton.onclick = deleteOneTour;
-                    deleteButton.setAttribute('onclick', 'deleteOneTour(' + tourID[i] + ')');
+                    deleteButton.setAttribute('onclick', 'deleteOneTour(' + tourID[i] + ')'); //click button to delete tour
                     li.appendChild(deleteButton);
                 }
-                //test link of map image
-//                var link = document.createElement("li");
-//                link.setAttribute('class','tour');
-//                ul.appendChild(link);
-//                link.innerHTML = xmlDoc.getElementsByTagName("mapImageUrl")[i].childNodes[0].nodeValue;
-
             }
         }
     };
-    xmlHttp.open("GET", "../controllers/TourController/tourController.php?q=" + $q, true);
-    xmlHttp.send();
+    xmlHttp.open("GET", "../controllers/TourController/tourController.php?q=" + $q, true); // initialize XML HTTP Request
+    xmlHttp.send(); // send request
 }
-function addOneTour() {
-//    alert('TODO: Add one tour ');
-    xmlHttp = GetXmlHttpObject();
-    if (xmlHttp === null)
-    {
-        alert("Browser does not support HTTP Request");
-        return;
-    }
-    $q = "addTour";
-
-
-
+function addOneTour() { // add new tour - just display to input properties of tour
     // remove old tours list
     var oldLi = document.getElementById('tours-list');
     document.getElementById('main').removeChild(oldLi);
 
+    //new tours list - acctually 1 new tour
     var ul = document.createElement('ul');
     ul.setAttribute('id', 'tours-list');
-//            ul.setAttribute('id','tours-list')
-
     document.getElementById('main').appendChild(ul);
 
     var li = document.createElement("li");
     li.setAttribute('class', 'tour');
-//            li.setAttribute("id","new");
-//            li.setAttribute('class', 'item');
     ul.appendChild(li);
-//            li.innerHTML = "111";
-//                li.innerHTML = xmlDoc.getElementsByTagName("name")[i].childNodes[0].nodeValue;
-//            var tourName = ;
-
-    //"tour ID" part
-//            var spanTourID = document.createElement("span");
-////            spanTourID.innerHTML = 'Tour ID: ' + xmlDoc.getElementsByTagName("tourID")[0].childNodes[0].nodeValue;
-//            spanTourID.innerHTML = 'Tour ID: ' + $tourID;
-//            li.appendChild(spanTourID);
-
-
+    
     //"name" text
     var spanName = document.createElement("span");
     spanName.innerHTML = '<br>Name: ';
@@ -160,9 +104,7 @@ function addOneTour() {
     var inputName = document.createElement("input");
     inputName.setAttribute('id', 'name');
     inputName.setAttribute('size', '75');
-//            inputName.setAttribute('value', xmlDoc.getElementsByTagName("name")[0].childNodes[0].nodeValue);
     li.appendChild(inputName);
-
 
     //"state" text
     var spanState = document.createElement("span");
@@ -173,7 +115,6 @@ function addOneTour() {
     var inputState = document.createElement("input");
     inputState.setAttribute('id', 'state');
     inputState.setAttribute('size', '75');
-//            inputState.setAttribute('value', xmlDoc.getElementsByTagName("state")[0].childNodes[0].nodeValue);
     li.appendChild(inputState);
 
     //"Image URL" text
@@ -185,7 +126,6 @@ function addOneTour() {
     var inputImageUrl = document.createElement("input");
     inputImageUrl.setAttribute('id', 'imageurl');
     inputImageUrl.setAttribute('size', '75');
-//            inputImageUrl.setAttribute('value', xmlDoc.getElementsByTagName("imageUrl")[0].childNodes[0].nodeValue);
     li.appendChild(inputImageUrl);
 
     //"Date" text
@@ -197,7 +137,6 @@ function addOneTour() {
     var inputDate = document.createElement("input");
     inputDate.setAttribute('id', 'date');
     inputDate.setAttribute('size', '75');
-//            inputDate.setAttribute('value', xmlDoc.getElementsByTagName("date")[0].childNodes[0].nodeValue);
     li.appendChild(inputDate);
 
     //"Map Image URL" text
@@ -209,117 +148,63 @@ function addOneTour() {
     var inputMapImageURL = document.createElement("input");
     inputMapImageURL.setAttribute('id', 'mapimageurl');
     inputMapImageURL.setAttribute('size', '75');
-//            inputMapImageURL.setAttribute('value', xmlDoc.getElementsByTagName("mapImageUrl")[0].childNodes[0].nodeValue);
     li.appendChild(inputMapImageURL);
 
-
-    //new line
+    //just new line
     var spanNewLine = document.createElement("span");
     spanNewLine.innerHTML = '<br>';
     li.appendChild(spanNewLine);
 
-
+    // add button
     var addBtn = document.createElement("button");
     addBtn.textContent = "Add tour";
     addBtn.setAttribute('class', 'button');
-//            UpdateBtn.setAttribute('onclick', 'updateTour(' + tourID +','+document.getElementById('inputName')+','+document.getElementById('inputState')+
-//                    ','+document.getElementById('inputImageUrl')+','+document.getElementById('inputDate')+','+document.getElementById('inputMapImageURL')+')');
-    addBtn.setAttribute('onclick', 'insertTour()');
-//            updateBtn.setAttribute('onclick', 'updateTour()');
+    addBtn.setAttribute('onclick', 'insertTour()'); // direct to insert tour function
     li.appendChild(addBtn);
 
+    //back button
     var backBtn = document.createElement("button");
     backBtn.textContent = "Back";
     backBtn.setAttribute('class', 'button');
-//            UpdateBtn.setAttribute('onclick', 'updateTour(' + tourID +','+document.getElementById('inputName')+','+document.getElementById('inputState')+
-//                    ','+document.getElementById('inputImageUrl')+','+document.getElementById('inputDate')+','+document.getElementById('inputMapImageURL')+')');
-    backBtn.setAttribute('onclick', 'displayAllTours()');
-//            updateBtn.setAttribute('onclick', 'updateTour()');
+    backBtn.setAttribute('onclick', 'displayAllTours()'); //back to display all tours
     li.appendChild(backBtn);
-
-    xmlHttp.open("GET", "../controllers/TourController/tourController.php?q=" + $q, true);
-    xmlHttp.send();
 }
-function displayOneTour() {
+function displayOneTour() { // display one tour 
     // console.log("WHY?");
     // alert('TODO: Display one tour');
     window.location.href = "../test/display_map.php";
     // alert("after redirection");
 }
 
-function editOneTour(tourID) {
+function getOneTourToEdit(tourID) { // edit one tour - just display to edit properties of tour
     //input: tour id to edit
-    //this function is used to edit one tour
-//    alert('TODO: Edit one tour ' + tourID);
-//    alert(tourID);
     xmlHttp = GetXmlHttpObject();
     if (xmlHttp === null)
     {
         alert("Browser does not support HTTP Request");
         return;
     }
-    $q = "editTour";
+    $q = "getOneTourToEdit";
     var $tourID = tourID;
-//    alert($tourID);
-
     xmlHttp.onreadystatechange = function () {
         if (xmlHttp.readyState === 4) {
-            //Response Text
-//                document.getElementById("main").innerHTML = xmlHttp.responseText;
-            //Response XML
             var xmlDoc = xmlHttp.responseXML;
-
-
-
-
-//            document.getElementById("name").innerHTML =
-//                    xmlDoc.getElementsByTagName("tour").length;
-//            document.getElementById("main").innerHTML =
-//                    xmlDoc.getElementsByTagName("tourID")[0].childNodes[0].nodeValue;
-
             // remove old tours list
             var oldLi = document.getElementById('tours-list');
             document.getElementById('main').removeChild(oldLi);
 
-
             var ul = document.createElement('ul');
             ul.setAttribute('id', 'tours-list');
-//            ul.setAttribute('id','tours-list')
-
             document.getElementById('main').appendChild(ul);
 
-//            let isAdmin = localStorage.getItem("currentUser") == "admin";
-//            if (isAdmin) {
-//                var li = document.createElement("li");
-//                li.setAttribute('class', 'addButton');
-//                ul.appendChild(li);
-//
-//                var addBtn = document.createElement("button");
-//                addBtn.setAttribute('class', 'button');
-//                addBtn.textContent = "Add tour";
-//                addBtn.onclick = addOneTour;
-//                li.appendChild(addBtn);
-//            }
-            //display all tours
-            //
-//            i = 0;
-//            for (i = 0; i < xmlDoc.getElementsByTagName("tour").length; i++) {
-//                var li = document.createElement("li");
             var li = document.createElement("li");
             li.setAttribute('class', 'tour');
-//            li.setAttribute("id","new");
-//            li.setAttribute('class', 'item');
             ul.appendChild(li);
-//            li.innerHTML = "111";
-//                li.innerHTML = xmlDoc.getElementsByTagName("name")[i].childNodes[0].nodeValue;
-//            var tourName = ;
 
             //"tour ID" part
             var spanTourID = document.createElement("span");
-//            spanTourID.innerHTML = 'Tour ID: ' + xmlDoc.getElementsByTagName("tourID")[0].childNodes[0].nodeValue;
             spanTourID.innerHTML = 'Tour ID: ' + $tourID;
             li.appendChild(spanTourID);
-
 
             //"name" text
             var spanName = document.createElement("span");
@@ -332,7 +217,6 @@ function editOneTour(tourID) {
             inputName.setAttribute('size', '75');
             inputName.setAttribute('value', xmlDoc.getElementsByTagName("name")[0].childNodes[0].nodeValue);
             li.appendChild(inputName);
-
 
             //"state" text
             var spanState = document.createElement("span");
@@ -382,42 +266,30 @@ function editOneTour(tourID) {
             inputMapImageURL.setAttribute('value', xmlDoc.getElementsByTagName("mapImageUrl")[0].childNodes[0].nodeValue);
             li.appendChild(inputMapImageURL);
 
-
-            //new line
+            //just new line
             var spanNewLine = document.createElement("span");
             spanNewLine.innerHTML = '<br>';
             li.appendChild(spanNewLine);
 
-
+            //update button
             var updateBtn = document.createElement("button");
             updateBtn.textContent = "Update tour";
             updateBtn.setAttribute('class', 'button');
-//            UpdateBtn.setAttribute('onclick', 'updateTour(' + tourID +','+document.getElementById('inputName')+','+document.getElementById('inputState')+
-//                    ','+document.getElementById('inputImageUrl')+','+document.getElementById('inputDate')+','+document.getElementById('inputMapImageURL')+')');
-            updateBtn.setAttribute('onclick', 'updateTour(' + $tourID + ')');
-//            updateBtn.setAttribute('onclick', 'updateTour()');
+            updateBtn.setAttribute('onclick', 'updateTour(' + $tourID + ')'); // direct to update tour function
             li.appendChild(updateBtn);
 
+            //back button
             var backBtn = document.createElement("button");
             backBtn.textContent = "Back";
             backBtn.setAttribute('class', 'button');
-//            UpdateBtn.setAttribute('onclick', 'updateTour(' + tourID +','+document.getElementById('inputName')+','+document.getElementById('inputState')+
-//                    ','+document.getElementById('inputImageUrl')+','+document.getElementById('inputDate')+','+document.getElementById('inputMapImageURL')+')');
-            backBtn.setAttribute('onclick', 'displayAllTours()');
-//            updateBtn.setAttribute('onclick', 'updateTour()');
+            backBtn.setAttribute('onclick', 'displayAllTours()'); //back to display all tours
             li.appendChild(backBtn);
-
         }
     };
     xmlHttp.open("GET", "../controllers/TourController/tourController.php?q=" + $q + "&tourID=" + $tourID, true);
     xmlHttp.send();
-
 }
-//function updateTour(tourID, name, state, imageUrl, date, mapImageUrl){
-//    alert(tourID +" "+ name +" "+ state +" "+ imageUrl +" "+ date+" " + mapImageUrl);
-//}
-function insertTour() {
-//    alert(document.getElementById('tours-list').getElementsByTagName('input')[0].value);
+function insertTour() { //insert tour to database 
     xmlHttp = GetXmlHttpObject();
     if (xmlHttp === null)
     {
@@ -425,6 +297,8 @@ function insertTour() {
         return;
     }
     $q = "insertTour";
+    
+     // get tour properties from input text fields
     $name = document.getElementById('tours-list').getElementsByTagName('input')[0].value;
     $state = document.getElementById('tours-list').getElementsByTagName('input')[1].value;
     $imageURL = document.getElementById('tours-list').getElementsByTagName('input')[2].value;
@@ -435,21 +309,15 @@ function insertTour() {
         if (xmlHttp.readyState === 4) {
             var xmlDoc = xmlHttp.responseXML;
             var result = xmlDoc.getElementsByTagName("result")[0].childNodes[0].nodeValue;
-            alert(result);
-//            editOneTour($tourID);
+            displayAllTours();
+            alert(result); //alert result of adding new tour
         }
     };
-
-
     xmlHttp.open("GET", "../controllers/TourController/tourController.php?q=" + $q + "&name=" + $name
             + "&state=" + $state + "&imageURL=" + $imageURL + "&date=" + $date + "&mapImageUrl=" + $mapImageUrl, true);
     xmlHttp.send();
 }
-function updateTour(tourID) {
-//    var li = document.getElementsByTagName("input");
-//$tourID = tourID;
-//    alert($tourID);
-//    var tourID = 
+function updateTour(tourID) { //update tour to database
     xmlHttp = GetXmlHttpObject();
     if (xmlHttp === null)
     {
@@ -458,29 +326,29 @@ function updateTour(tourID) {
     }
     $q = "updateTour";
     $tourID = tourID;
+    
+    // get tour properties from input text fields
     $name = document.getElementById('tours-list').getElementsByTagName('input')[0].value;
     $state = document.getElementById('tours-list').getElementsByTagName('input')[1].value;
     $imageURL = document.getElementById('tours-list').getElementsByTagName('input')[2].value;
     $date = document.getElementById('tours-list').getElementsByTagName('input')[3].value;
     $mapImageUrl = document.getElementById('tours-list').getElementsByTagName('input')[4].value;
-//    alert(document.getElementById('tours-list').getElementsByTagName('input')[2].value);
+    
     xmlHttp.onreadystatechange = function () {
         if (xmlHttp.readyState === 4) {
             var xmlDoc = xmlHttp.responseXML;
             var result = xmlDoc.getElementsByTagName("result")[0].childNodes[0].nodeValue;
-            alert(result);
+            alert(result); //alert result of updating tour
             editOneTour($tourID);
         }
     };
-
-
     xmlHttp.open("GET", "../controllers/TourController/tourController.php?q=" + $q + "&tourID=" + $tourID + "&name=" + $name
             + "&state=" + $state + "&imageURL=" + $imageURL + "&date=" + $date + "&mapImageUrl=" + $mapImageUrl, true);
     xmlHttp.send();
 }
-function deleteOneTour(tourID) {
-//    alert('TODO: Delete one tour');
-    if (confirm('Delete tour with tourID = ' + tourID + '?')) {
+function deleteOneTour(tourID) { // delete tour
+    //input: tour ID used to delete
+    if (confirm('Delete tour with tourID = ' + tourID + '?')) { //confirm delete tour dialog
         xmlHttp = GetXmlHttpObject();
         if (xmlHttp === null)
         {
@@ -493,23 +361,16 @@ function deleteOneTour(tourID) {
             if (xmlHttp.readyState === 4) {
                 var xmlDoc = xmlHttp.responseXML;
                 var result = xmlDoc.getElementsByTagName("result")[0].childNodes[0].nodeValue;
-//                alert(result);
-//                editOneTour($tourID);
-
-                alert(result);
+                alert(result); //alert result of deleting tour
                 displayAllTours();
             }
         };
-
-
         xmlHttp.open("GET", "../controllers/TourController/tourController.php?q=" + $q + "&tourID=" + $tourID, true);
         xmlHttp.send();
 
-    } else {
-//        alert('not deleted');
     }
 }
-function GetXmlHttpObject()
+function GetXmlHttpObject() //get XML HTTP object by XML HTTP Request or Active X object
 {
     var objXMLHttp = null;
     if (window.XMLHttpRequest)
