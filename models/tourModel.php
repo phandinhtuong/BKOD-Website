@@ -19,8 +19,6 @@ function getAllTours() { // get all tours to display
                     break;
                 case 4 : $tour["date"] = $value;
                     break;
-                case 5 : $tour["mapImageUrl"] = $value;
-                    break;
                 default : break;
             }
         }
@@ -43,8 +41,6 @@ function getAllTours() { // get all tours to display
             <imageUrl>" . $row['imageUrl'] . "</imageUrl>";
         echo "
             <date>" . $row['date'] . "</date>";
-        echo "
-            <mapImageUrl>" . $row['mapImageUrl'] . "</mapImageUrl>";
         echo "
         </tour>";
     }
@@ -70,8 +66,6 @@ function getOneTourToEdit($tourID) { //get one specific tour to edit
                     break;
                 case 4 : $tour["date"] = $value;
                     break;
-                case 5 : $tour["mapImageUrl"] = $value;
-                    break;
                 default : break;
             }
         }
@@ -90,15 +84,13 @@ function getOneTourToEdit($tourID) { //get one specific tour to edit
     echo "
             <date>" . $tour['date'] . "</date>";
     echo "
-            <mapImageUrl>" . $tour['mapImageUrl'] . "</mapImageUrl>";
-    echo "
         </tour>";
 }
 
-function updateTour($tourID, $name, $state, $imageURL, $date, $mapImageUrl) {
+function updateTour($tourID, $name, $state, $imageURL, $date) {
     require '../../utils/db_connection.php';
-    $sql = 'update tour set name = ?, state = ?, imageurl = ?, date= ?,mapimageurl = ? where tourid=?';
-    $data = array($name, $state, $imageURL, $date, $mapImageUrl, $tourID);
+    $sql = 'update tour set name = ?, state = ?, imageurl = ?, date= ? where tourid=?';
+    $data = array($name, $state, $imageURL, $date, $tourID);
     if ($db->query($sql, $data) == true) {
         header('Content-Type: text/xml');
         echo '<?xml version="1.0" encoding="ISO-8859-1"?>
@@ -110,11 +102,11 @@ function updateTour($tourID, $name, $state, $imageURL, $date, $mapImageUrl) {
     }
 }
 
-function insertTour($name, $state, $imageURL, $date, $mapImageUrl) {
+function insertTour($name, $state, $imageURL, $date) {
     require '../../utils/db_connection.php';
     //tourID increases by one from max tourID in database
     $sql = 'insert into tour values((select max(TourId)+1 from (select TourId from tour) as tourid),?,?,?,?,?);';
-    $data = array($name, $state, $imageURL, $date, $mapImageUrl);
+    $data = array($name, $state, $imageURL, $date,$imageURL);
     if ($db->query($sql, $data) == true) {
         header('Content-Type: text/xml');
         echo '<?xml version="1.0" encoding="ISO-8859-1"?>

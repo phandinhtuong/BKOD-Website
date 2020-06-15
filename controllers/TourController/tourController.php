@@ -12,15 +12,13 @@ if (strcmp($q, "getAllTours") == 0){
     $state =$_GET['state'];
     $imageURL = $_GET['imageURL'];
     $date = $_GET['date'];
-    $mapImageUrl = $_GET['mapImageUrl'];
-    updateTour($tourID,$name,$state,$imageURL,$date,$mapImageUrl);
+    updateTour($tourID,$name,$state,$imageURL,$date);
 } else if (strcmp($q, "insertTour")==0){
     $name=$_GET['name'];
     $state =$_GET['state'];
     $imageURL = $_GET['imageURL'];
     $date = $_GET['date'];
-    $mapImageUrl = $_GET['mapImageUrl'];
-    insertTour($name,$state,$imageURL,$date,$mapImageUrl);
+    insertTour($name,$state,$imageURL,$date);
 } else if (strcmp($q, "deleteTour")==0){
     $tourID = $_GET['tourID'];
     deleteTour($tourID);
