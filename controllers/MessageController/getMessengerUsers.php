@@ -1,4 +1,5 @@
 <?php
+
 require '../../utils/db_connection.php';
 header('Content-Type: application/json');
 
@@ -45,7 +46,11 @@ if (PEAR::isError($res)) {
     }
     echo '<select id="user" name="user" size=20 multiple>';
     foreach ($allUsers as $row) {
-        echo'<option value="' . $row['userId'] . '">' . $row['fullName'] .' </option>';
+        if ($row['userId'] == 2) {
+            echo'<option selected value="' . $row['userId'] . '">' . $row['fullName'] . ' </option>';
+        } else {
+            echo'<option value="' . $row['userId'] . '">' . $row['fullName'] . ' </option>';
+        }
     }
     echo'</select>';
 }

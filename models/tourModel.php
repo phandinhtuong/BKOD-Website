@@ -1,5 +1,4 @@
 <?php
-
 function getAllTours() {
     require '../../utils/db_connection.php';
     $sql = 'select * from tour;';
@@ -50,11 +49,15 @@ function getAllTours() {
     echo "
         </tours>";
 }
-
-function getAllToursResponseText() {
-    require '../utils/db_connection.php';
-    $sql = 'select * from tour;';
-    $result = &$db->query($sql);
+function editTour($tourID){
+    require '../../utils/db_connection.php';
+    
+//    $sql = "select * from tour where tourID = "+$tourID+";";
+//    $result = &$db->query($sql);
+    
+    $sql = 'select * from tour where tourID = ?;';
+    $result = &$db->query($sql,$tourID);
+    
     $allTours = array();
     while ($tourRow = $result->fetchRow()) {
         $tour = array();
@@ -77,90 +80,22 @@ function getAllToursResponseText() {
         }
         $allTours[] = $tour;
     }
-//    echo json_encode($allTours);
-    echo "<table border='1'>
-<tr>
-<th>ID</th>
-<th>Name</th>
-<th>State</th>
-<th>ImageUrl</th>
-<th>Date</th>
-<th>MapImageUrl</th>
-</tr>";
-    foreach ($allTours as $row) {
-//while ($row = mysqli_fetch_array($res)) {
-        echo "<tr>";
-        echo "<td>" . $row['tourID'] . "</td>";
-        echo "<td>" . $row['name'] . "</td>";
-        echo "<td>" . $row['state'] . "</td>";
-        echo "<td>" . $row['imageUrl'] . "</td>";
-        echo "<td>" . $row['date'] . "</td>";
-        echo "<td>" . $row['mapImageUrl'] . "</td>";
-        echo "</tr>";
-    }
-    echo "</table>";
+    header('Content-Type: text/xml');
+    echo '<?xml version="1.0" encoding="ISO-8859-1"?>
+    <tour>';
+        echo "
+            <tourID>" . $allTours[0]['tourID'] . "</tourID>";
+        echo "
+            <name>" . $allTours[0]['name'] . "</name>";
+        echo "
+            <state>" . $allTours[0]['state'] . "</state>";
+        echo "
+            <imageUrl>" . $allTours[0]['imageUrl'] . "</imageUrl>";
+        echo "
+            <date>" . $allTours[0]['date'] . "</date>";
+        echo "
+            <mapImageUrl>" . $allTours[0]['mapImageUrl'] . "</mapImageUrl>";
+    echo "
+        </tour>";
 }
-
-function getAllToursByPEAR() {
-    require '../utils/db_connection.php';
-//header('Content-Type: application/json');
-
-    $getAllToursQuery = $db->prepare("select * from tour;");
-    if (PEAR::isError($getAllToursQuery)) {
-        echo "Bad query detected!";
-    }
-
-    $res = &$db->execute($getAllToursQuery);
-
-    if (PEAR::isError($res)) {
-        $err = $res->getDebugInfo();
-        echo json_encode("An unknown error occured!");
-    } else {
-        $allTours = array();
-        while ($tourRow = $res->fetchRow()) {
-            $tour = array();
-            foreach ($tourRow as $key => $value) {
-                switch ($key) {
-                    case 0 : $tour["tourID"] = $value;
-                        break;
-                    case 1 : $tour["name"] = $value;
-                        break;
-                    case 2 : $tour["state"] = $value;
-                        break;
-                    case 3 : $tour["imageUrl"] = $value;
-                        break;
-                    case 4 : $tour["date"] = $value;
-                        break;
-                    case 5 : $tour["mapImageUrl"] = $value;
-                        break;
-                    default : break;
-                }
-            }
-            $allTours[] = $tour;
-        }
-//    echo json_encode($allTours);
-        echo "<table border='1'>
-<tr>
-<th>ID</th>
-<th>Name</th>
-<th>State</th>
-<th>ImageUrl</th>
-<th>Date</th>
-<th>MapImageUrl</th>
-</tr>";
-        foreach ($allTours as $row) {
-//while ($row = mysqli_fetch_array($res)) {
-            echo "<tr>";
-            echo "<td>" . $row['tourID'] . "</td>";
-            echo "<td>" . $row['name'] . "</td>";
-            echo "<td>" . $row['state'] . "</td>";
-            echo "<td>" . $row['imageUrl'] . "</td>";
-            echo "<td>" . $row['date'] . "</td>";
-            echo "<td>" . $row['mapImageUrl'] . "</td>";
-            echo "</tr>";
-        }
-        echo "</table>";
-    }
-}
-
 ?>
