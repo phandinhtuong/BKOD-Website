@@ -8,7 +8,7 @@ class Map extends Model{
     public function getAllMaps() { return $this->getAll(getAllMapsSQL);}
 
     /** get all tours name and id */
-        public function getAllTours() { return $this->getAll(getToursIDSQL);}
+    public function getAllTours() { return $this->getAll(getToursIDSQL);}
     
     public function getAllBuildings () { return $this->getAll(getBuildingSQL); }
 

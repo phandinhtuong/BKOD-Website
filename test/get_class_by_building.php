@@ -9,8 +9,8 @@
     print($q);
     $classes = $foo->getClassroom($q);
     foreach ($classes as $class) {
-        $id = $class['id'];
-        $name = $class['name'];
+        $id = $class['classroomId'];
+        $name = $class['Name'];
         print("<option value=$id>$name</option>");
     }
     // print_r( $foo->getClassroom($q) );

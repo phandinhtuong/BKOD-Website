@@ -29,7 +29,7 @@
             <tr>
                 <td>1</td>
                 <td>
-                <select name="StartTime" id="StartTime" onchange="updateEndTime()">
+                <select name="StartTime" id="StartTime" onchange="displayEndTime()">
                     <?php 
                     foreach ($times as $time) {
                         $id = $time['TimesheetID'];
