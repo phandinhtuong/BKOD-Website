@@ -47,6 +47,19 @@
         xhttp.send();
     }
 
+    function refreshSelection() {
+//        document.getElementById("selectMessage").value = document.getElementById("chatSelection").value;
+        var request = new XMLHttpRequest();
+        request.onreadystatechange = function () {
+            if (request.readyState == 4 && request.status == 200) {
+                document.getElementById('rightcol').innerHTML = request.responseText;
+            }
+        }
+        request.open('POST', "../controllers/MessageController/getMessageInfo.php?messageId=" + document.getElementById("chatSelection").value);
+        request.send();
+    }
+
+
     function submitChat() {
         if (form1.receiverId.value == '' || form1.message.value == '') {
             alert('ALL FIELDS ARE MANDATORY!!');
@@ -86,19 +99,19 @@
                 border-radius: 20px;
             }
             #rightcol {
-                background: #f00;
+                background: #ADFF2F;
                 float: right;
                 width: 20%;
                 height: 500px;
             }
-            #content {
+            #chatlogs {
                 background: #fff;
                 float: left;
-                width: 59%;
+                width: 60%;
                 height: 500px;
             }
             #footer {
-                background: #0f0;
+                background: #ADFF2F;
                 float: right;
                 clear: both;
                 width: 100%;
@@ -127,7 +140,7 @@
     }
         </script>
     </div>
-    <div id="chatlogs">Message Section
+    <div id="chatlogs" onclick="refreshSelection()">Message Section
         <script type="text/javascript">
             // show all messages
 //            var xmlhttp = new XMLHttpRequest();
@@ -159,15 +172,17 @@
 //            }
         </script>
     </div>
-    <div id="footer" align="center">Sending messages
-
-        <form name=form1>
-            <input id="receiver" type="hidden" name="receiverId" value="Enter your recipient ID.">
-            <input style='border-radius: 10px' type="text" name="message" size="130" placeholder="Enter your message here.">
-            <a href="#" onclick="submitChat()"> Send</a> <br>
-        </form>
-
+    <div id="rightcol">Message Information
     </div>
+        <div id="footer" align="center">Sending messages
+
+            <form name=form1>
+                <input id="receiver" type="hidden" name="receiverId" value="Enter your recipient ID.">
+                <input style='border-radius: 10px' type="text" name="message" size="130" placeholder="Enter your message here.">
+                <a href="#" onclick="submitChat()"> Send</a> <br>
+            </form>
+
+        </div>
 
 </body>
 </html>

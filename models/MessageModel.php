@@ -40,19 +40,71 @@ class MessageModel {
                 $allMessages[] = $trueMessage;
             }
 //    echo json_encode($allMessages);
+//            foreach ($allMessages as $row) {
+////while ($row = mysqli_fetch_array($res)) {
+//                if ($row['senderId'] == $currentUserId) {
+//                    echo "<div style='background-color: #00FFFF; display: table; margin-right: 320px; margin-left:auto; border-radius: 25px; height: 20px; padding: 5px'>"
+//                    . $row['mContent'] . "</div>";
+//                } else {
+//                    echo "<div style='background-color: #7FFF00; display: table; margin-right: auto; margin-left:20px; border-radius: 25px; height: 20px; padding: 5px'>"
+//                    . $row['mContent'] . "</div>";
+//                }
+//            }
+
+            echo '<select style="width: 100%; height: 500px; border-radius: 5px" id="chatSelection" name="chatSelection" size=20 multiple>';
             foreach ($allMessages as $row) {
-//while ($row = mysqli_fetch_array($res)) {
                 if ($row['senderId'] == $currentUserId) {
-                    echo "<div style='background-color: #00FFFF; display: table; margin-right: 320px; margin-left:auto; border-radius: 25px; height: 20px; padding: 5px'>"
-                    . $row['mContent'] . "</div>";
+                    echo'<option style="background-color: #00FFFF; display: table; margin-right: 0px; margin-left:auto; border-radius: 25px; height: 20px; padding: 5px" value="' . $row['messageId'] . '">' . $row['mContent'] . '</option>';
                 } else {
-                    echo "<div style='background-color: #7FFF00; display: table; margin-right: auto; margin-left:20px; border-radius: 25px; height: 20px; padding: 5px'>"
-                    . $row['mContent'] . "</div>";
+                    echo'<option style="background-color: #7FFF00; display: table; margin-right: auto; margin-left:20px; border-radius: 25px; height: 20px; padding: 5px" value="' . $row['messageId'] . '">' . $row['mContent'] . '</option>';
                 }
             }
+            echo'</select>';
         }
     }
 
+    public function getMessageInfo($messageId) {
+        require '../../utils/db_connection.php';
+        $allMessages = array();
+        $trueMessage = array();
+
+        $getMessageInfoQuery = $db->prepare("SELECT * FROM message WHERE messageId = ?");
+
+        if (PEAR::isError($getMessageInfoQuery)) {
+            echo "Bad query detected!";
+        }
+
+        $res = &$db->execute($getMessageInfoQuery, $messageId);
+
+        if (PEAR::isError($res)) {
+            $err = $res->getDebugInfo();
+            echo json_encode("An unknown error occured!");
+        } else {
+            while (($message = $res->fetchRow())) {
+                foreach ($message as $key => $value) {
+                    if ($key === 0)
+                        $trueMessage["senderId"] = $value;
+                    else if ($key === 1)
+                        $trueMessage["recieverId"] = $value;
+                    else if ($key === 2)
+                        $trueMessage["messageId"] = $value;
+                    else if ($key === 3)
+                        $trueMessage["mContent"] = $value;
+                    else if ($key === 4)
+                        $trueMessage["time"] = $value;
+                }
+                $allMessages[] = $trueMessage;
+            }
+
+            foreach ($allMessages as $row) {
+                    echo'Content: ';
+                    echo'<input id="messageContent" type="text" name="receiverId" readonly value="'. $row['mContent'] . '"><br>';
+                    echo'Time sent: ';
+                    echo'<input id="messageTime" type="text" name="receiverId" readonly value="'. $row['time'] . '">';
+            }
+        }
+    }
+        
     public function sendMessage($senderId, $receiverId, $message) {
         require '../../utils/db_connection.php';
         date_default_timezone_set('Asia/Ho_Chi_Minh');
@@ -66,7 +118,7 @@ class MessageModel {
         $data = array($senderId, $receiverId, $messageId, $message, $date);
         $res = &$db->execute($insertMessageQuery, $data);
 
-        if (PEAR::isError($res)) {  
+        if (PEAR::isError($res)) {
             $err = $res->getDebugInfo();
             if (strpos($err, 'Duplicate entry') !== false) {
                 return json_encode("Message already existed!");

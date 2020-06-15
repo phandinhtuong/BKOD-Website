@@ -16,6 +16,15 @@ class MessageController extends Controller {
             echo json_encode("Application error:" . $e->getMessage());
         }
     }
+    
+    public function getMessageInfo($messageId) {
+        try {
+            $messageInfo = $this->_model->getMessageInfo($messageId);
+            echo $messageInfo;
+        } catch (Exception $e) {
+            echo json_encode("Application error:" . $e->getMessage());
+        }
+    }
 
     public function sendMessage($senderId, $receiverId, $message) {
         try {
