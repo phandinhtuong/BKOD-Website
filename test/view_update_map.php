@@ -2,7 +2,7 @@
 <html>
     <head>
         <title>test add map</title>
-        <script src="js/add_map.js"></script>
+        <script src="js/update_map.js"></script>
    </head>
     <body>
     <?php
@@ -15,9 +15,12 @@
     
     $times = $foo->getTime($tour_id);
     
+    $old = $foo->getMap($tour_id);
+
+    print_r($old);
     $buildings = $foo->getAllBuildings();
     ?>
-        <form action="add_map.php"><table>
+        <form action="update_map.php"><table>
             <?php TableHeader(); ?>
             <tr>
                 <td>1</td>
@@ -25,8 +28,9 @@
                 <select name="StartTime" id="StartTime" onchange="displayEndTime()">
                     <?php 
                     foreach ($times as $time) {
-                        $id = $time['TimesheetID'];
+                        $id = $time['TimesheetId'];
                         $start = $time['StartTime'];
+                        print("$id - $start <br/>");
                         print("<option value=$id>$start</option>");
                     }
                     ?>
@@ -49,8 +53,9 @@
                 <td><select name="class" id="class"></select></td>
             </tr>
         </table>
-        <input type="hidden" id="tour" name="tour" value="1">
-        <input type="submit" value="Add map" />
+        <input type="hidden" id="tour" name="tour" value="<?php echo $tour_id?>">
+        
+        <input type="submit" value="update map" />
     </form>  
     </body>
 </html>

@@ -33,7 +33,7 @@
                 <select name="StartTime" id="StartTime" onchange="displayEndTime()">
                     <?php 
                     foreach ($times as $time) {
-                        $id = $time['TimesheetID'];
+                        $id = $time['TimesheetId'];
                         $start = $time['StartTime'];
                         print("<option value=$id>$start</option>");
                     }

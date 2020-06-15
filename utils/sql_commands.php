@@ -2,7 +2,7 @@
 /** all query commands */
 define(
     "getMapSQL", "
-SELECT t.TourId, ti.StartTime, ti.EndTime, c.ClassroomId, b.BuildingId ,
+SELECT t.TourId, ti.TimesheetId, ti.StartTime, ti.EndTime, c.ClassroomId, b.BuildingId ,
 c.Name as classroomName, b.Name as buildingName
 FROM tour as t, 
 tour2timesheet as t2ti, timesheet as ti, timesheet2classroom as ti2c,
@@ -95,6 +95,17 @@ values (?, ?, ?)
 define("addbuilding2classroom_SQL", "
 insert into building2classroom (buildingid, classroomid)
 values (?, ?)
+;");
+
+define("updatetour2timesheet_SQL", "
+update tour2timesheet 
+SET tourid = ?, timesheetid = ?
+WHERE tourid =
+;");
+
+define("updatetimesheet2classroom_SQL", "
+insert into timesheet2classroom
+values (?, ?, ?)
 ;");
 
 define("deleteMapSQL", "
