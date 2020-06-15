@@ -97,14 +97,14 @@ class MessageModel {
             }
 
             foreach ($allMessages as $row) {
-                    echo'Content: ';
-                    echo'<input id="messageContent" type="text" name="receiverId" readonly value="'. $row['mContent'] . '"><br>';
-                    echo'Time sent: ';
-                    echo'<input id="messageTime" type="text" name="receiverId" readonly value="'. $row['time'] . '">';
+                echo'Content: ';
+                echo'<input id="messageContent" type="text" name="receiverId" readonly value="' . $row['mContent'] . '"><br>';
+                echo'Time sent: ';
+                echo'<input id="messageTime" type="text" name="receiverId" readonly value="' . $row['time'] . '">';
             }
         }
     }
-        
+
     public function sendMessage($senderId, $receiverId, $message) {
         require '../../utils/db_connection.php';
         date_default_timezone_set('Asia/Ho_Chi_Minh');
@@ -127,6 +127,117 @@ class MessageModel {
             }
         } else {
             echo $this->getAllMessages($senderId, $receiverId);
+        }
+    }
+
+    public function getMessengerUsers() {
+        require '../../utils/db_connection.php';
+        $getAllUsersQuery = $db->prepare("SELECT * FROM user");
+        if (PEAR::isError($getAllUsersQuery)) {
+            echo "Bad query detected!";
+        }
+
+        $res = &$db->execute($getAllUsersQuery);
+
+        if (PEAR::isError($res)) {
+            $err = $res->getDebugInfo();
+            echo json_encode("An unknown error occured!");
+        } else {
+            $allUsers = array();
+            $count = 0;
+            while (($user = $res->fetchRow())) {
+                $count++;
+                $trueUser = array();
+                $trueUser["no"] = $count;
+                foreach ($user as $key => $value) {
+                    if ($key === 0)
+                        $trueUser["userId"] = $value;
+                    else if ($key === 1)
+                        $trueUser["username"] = $value;
+                    else if ($key === 3)
+                        $trueUser["fullName"] = $value;
+                    else if ($key === 4)
+                        $trueUser["birthday"] = $value;
+                    else if ($key === 5)
+                        $trueUser["gender"] = $value;
+                    else if ($key === 6)
+                        $trueUser["school"] = $value;
+                    else if ($key === 7)
+                        $trueUser["class"] = $value;
+                    else if ($key === 8)
+                        $trueUser["phoneNumber"] = $value;
+                    else if ($key === 9)
+                        $trueUser["isCounselor"] = $value;
+                    else if ($key === 10)
+                        $trueUser["state"] = $value;
+                }
+                $allUsers[] = $trueUser;
+            }
+            echo '<select style="width: 100%; height: 500px; border-radius: 20px; border-radius: 10px" id="user" name="user" size=20 multiple>';
+            foreach ($allUsers as $row) {
+                if ($row['username'] != 'admin') {
+                    if ($row['userId'] == 2) {
+                        echo'<option style="border: 1px solid #00FF00; background-color: #FF8C00; display: table; border-radius: 25px; height: 15px; padding: 5px" selected value="' . $row['userId'] . '">' . $row['fullName'] . '</option>';
+                    } else {
+                        echo'<option style="border: 1px solid #00FF00; background-color: #FF8C00; display: table; border-radius: 25px; height: 15px; padding: 5px" value="' . $row['userId'] . '">' . $row['fullName'] . ' </option>';
+                    }
+                }
+            }
+            echo'</select>';
+        }
+    }
+
+    public function getAdmin() {
+        require '../../utils/db_connection.php';
+
+        $getAllUsersQuery = $db->prepare("SELECT * FROM user");
+        if (PEAR::isError($getAllUsersQuery)) {
+            echo "Bad query detected!";
+        }
+
+        $res = &$db->execute($getAllUsersQuery);
+
+        if (PEAR::isError($res)) {
+            $err = $res->getDebugInfo();
+            echo json_encode("An unknown error occured!");
+        } else {
+            $allUsers = array();
+            $count = 0;
+            while (($user = $res->fetchRow())) {
+                $count++;
+                $trueUser = array();
+                $trueUser["no"] = $count;
+                foreach ($user as $key => $value) {
+                    if ($key === 0)
+                        $trueUser["userId"] = $value;
+                    else if ($key === 1)
+                        $trueUser["username"] = $value;
+                    else if ($key === 3)
+                        $trueUser["fullName"] = $value;
+                    else if ($key === 4)
+                        $trueUser["birthday"] = $value;
+                    else if ($key === 5)
+                        $trueUser["gender"] = $value;
+                    else if ($key === 6)
+                        $trueUser["school"] = $value;
+                    else if ($key === 7)
+                        $trueUser["class"] = $value;
+                    else if ($key === 8)
+                        $trueUser["phoneNumber"] = $value;
+                    else if ($key === 9)
+                        $trueUser["isCounselor"] = $value;
+                    else if ($key === 10)
+                        $trueUser["state"] = $value;
+                }
+                $allUsers[] = $trueUser;
+            }
+            echo '<select style="width: 100%; height: 500px; border-radius: 20px; border-radius: 10px" id="user" name="user" size=20 multiple>';
+            foreach ($allUsers as $row) {
+                if ($row['username'] == 'admin') {
+                    echo'<option style="border: 1px solid #00FF00; background-color: #FF8C00; display: table; border-radius: 25px; height: 15px; padding: 5px" selected value="' . $row['userId'] . '">' . $row['fullName'] . '</option>';
+                }
+            }
+            echo'</select>';
         }
     }
 

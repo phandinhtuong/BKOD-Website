@@ -34,6 +34,24 @@ class MessageController extends Controller {
             echo json_encode("Application error:" . $e->getMessage());
         }
     }
+    
+    public function getMessengerUsers() {
+        try {
+            $result = $this->_model->getMessengerUsers();
+            echo $result;
+        } catch (Exception $e) {
+            echo json_encode("Application error:" . $e->getMessage());
+        }
+    }
+    
+    public function getAdmin(){
+        try {
+            $result = $this->_model->getAdmin();
+            echo $result;
+        } catch (Exception $e) {
+            echo json_encode("Application error:" . $e->getMessage());
+        }
+    }
 }
 
 include ("../../models/MessageModel.php");
