@@ -64,18 +64,22 @@ function displayAllTours() { // display all tours available in database
 
                     //manage tour by admin : edit and delete tour buttons
                     if (isAdmin) {
+                        var divBtn = document.createElement("div"); //div for buttons
+                        divBtn.setAttribute('class','divBtn');
+                        li.appendChild(divBtn);
+                        
                         var editBtn = document.createElement("button"); // edit tour button
                         editBtn.textContent = "Edit tour";
                         editBtn.setAttribute('class', 'button');
                         editBtn.setAttribute('onclick', 'getOneTourToEdit(' + tourID[i] + ')'); //click button to edit tour
-                        li.appendChild(editBtn);
+                        divBtn.appendChild(editBtn);
 
                         var deleteButton = document.createElement("button"); //delete tour button
                         deleteButton.setAttribute('class', 'button');
                         deleteButton.textContent = "Delete tour";
 //                    deleteButton.onclick = deleteOneTour;
                         deleteButton.setAttribute('onclick', 'deleteOneTour(' + tourID[i] + ')'); //click button to delete tour
-                        li.appendChild(deleteButton);
+                        divBtn.appendChild(deleteButton);
                     }
                 }
             }
