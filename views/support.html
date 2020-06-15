@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<link rel=stylesheet href="../public/css/message.css" type="text/css">
+<script src="../public/js/Support.js"></script> <!-- javascript file for managing message-->
+
+<script src="static/getHeader.js"></script>
+
+<html>
+    <head>
+        <title>MY Chat view</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    </head>
+    <body>
+        <div id="header">
+            <p><h1>Messages</h1></p>
+    </div>
+    <script src="static/getNavBar.js"></script>
+    <div id="leftcol">User
+    </div>
+    <div id="chatlogs" onclick="refreshSelection()">Message Section
+        <script type="text/javascript">
+        </script>
+    </div>
+    <div id="rightcol">Message Information
+    </div>
+    <div id="footer" align="center">Sending messages
+
+        <form name=form1>
+            <input id="receiver" type="hidden" name="receiverId" value="Enter your recipient ID.">
+            <input style='border-radius: 10px' type="text" name="message" size="130" placeholder="Enter your message here.">
+            <a href="#" onclick="submitChat()"> Send</a> <br>
+        </form>
+
+    </div>
+
+</body>
+</html>
