@@ -2,11 +2,11 @@
 <html>
     <head>
         <title>test add map</title>
-        <script src="../assets/js/map/update_map.js"></script>
+        <script src="../../assets/js/map/update.js"></script>
    </head>
     <body>
     <?php
-    include_once("../models/map.php");
+    include_once("../../models/map.php");
 
     // Map Object
     $foo = new Map;
@@ -20,7 +20,7 @@
     print_r($old);
     $buildings = $foo->getAllBuildings();
     ?>
-        <form action="update_map.php"><table>
+        <form action="../../controllers/map/update.php"><table>
             <?php TableHeader(); ?>
             <tr>
                 <td>1</td>

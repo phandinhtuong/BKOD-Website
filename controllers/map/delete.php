@@ -1,5 +1,5 @@
 <?php
-    include_once("../models/map.php");
+    include_once("../../models/map.php");
 
     // Map Object
     $foo = new Map;
@@ -12,6 +12,7 @@
     
     $foo->deleteMap($tourid, $timeid);
 
+    echo "delete successfully";
     // echo $tourid . $classid . $timeid . $buildingid;
 
     // $foo->addMap($tourid, $timeid, $classid, $buildingid);

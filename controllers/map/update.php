@@ -14,8 +14,9 @@
     $foo->deleteMap($tourid, $timeid);
     $foo->addMap($tourid, $timeid, $classid, $buildingid);
 
+    echo "update successfully";
     // echo $tourid . $classid . $timeid . $buildingid;
 
     // $foo->addMap($tourid, $timeid, $classid, $buildingid);
 
-    header("Location: display_map.php");
+    // header("Location: display_map.php");

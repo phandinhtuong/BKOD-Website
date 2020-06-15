@@ -2,11 +2,11 @@
 <html>
     <head>
         <title>test add map</title>
-        <script src="../assets/js/map/delete_map.js"></script>
+        <script src="../../assets/js/map/delete.js"></script>
    </head>
     <body>
     <?php
-    include_once("../models/map.php");
+    include_once("../../models/map.php");
 
     // Map Object
     $foo = new Map;
@@ -31,7 +31,7 @@
     echo '</br/>';  
     print_r($classes);
     ?>
-        <form action="delete_map.php"><table>
+        <form action="../../controllers/map/delete.php"><table>
             <?php TableHeader(); ?>
             <tr>
                 <td>1</td>
