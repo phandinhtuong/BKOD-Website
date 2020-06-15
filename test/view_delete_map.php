@@ -2,7 +2,7 @@
 <html>
     <head>
         <title>test add map</title>
-        <script src="js/delete_map.js"></script>
+        <script src="../assets/js/map/delete_map.js"></script>
    </head>
     <body>
     <?php

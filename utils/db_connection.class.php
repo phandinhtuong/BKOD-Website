@@ -4,6 +4,7 @@ class DBConnection{
     protected $_db;
 
     function __construct() {       
+        include_once '../config/config.php';
         require_once 'DB.php';
         # parameters for connecting to the "business_service" 
         $usernameDB = DB_USER;

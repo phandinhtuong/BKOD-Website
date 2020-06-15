@@ -2,7 +2,7 @@
 <html>
     <head>
         <title>test display map</title>
-        <script src="js/display_map.js"></script>
+        <script src="../assets/js/map/display_map.js"></script>
     </head>
     <body>
     <?php
