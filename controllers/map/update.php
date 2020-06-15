@@ -4,7 +4,7 @@
     // Map Object
     $foo = new Map;
 
-    print_r($_REQUEST);
+    // print_r($_REQUEST);
 
     $tourid = $_REQUEST['tour'];
     $classid = $_REQUEST['class'];
@@ -13,8 +13,9 @@
     
     $foo->deleteMap($tourid, $timeid);
     $foo->addMap($tourid, $timeid, $classid, $buildingid);
+    echo "<script>window.close();</script>";
 
-    echo "update successfully";
+    // echo "update successfully";
     // echo $tourid . $classid . $timeid . $buildingid;
 
     // $foo->addMap($tourid, $timeid, $classid, $buildingid);
