@@ -32,7 +32,7 @@ AND b2c.BuildingId = b.BuildingId;");
 define("getToursIDSQL" ,"select TourID, Name from tour"); 
 
 define("getTimesheetSQL", "
-SELECT TimesheetID, StartTime, EndTime
+SELECT TimesheetId, StartTime, EndTime
 FROM Timesheet
 ;");
 
