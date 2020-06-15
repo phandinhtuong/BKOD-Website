@@ -12,7 +12,7 @@
     $foo = new Map;
 
     // get all tours id and name
-    $tour = filter_input("GET", "id") ;
+    $tour = filter_input("GET", "tourID") ;
     print("Choose your tour: ");    
     
     // create buttons to show timeline of each tour

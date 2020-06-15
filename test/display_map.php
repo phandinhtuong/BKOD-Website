@@ -12,8 +12,9 @@
     $foo = new Map;
 
     // get all tours id and name
+    $id2 = $_GET['tourID'];
     $tours = $foo->getAllTours() ;
-    print("Choose your tour: ");    
+//    print("Choose your tour: ");    
     
     // create buttons to show timeline of each tour
     // print_r($tours);
@@ -22,10 +23,13 @@
 
         $id = $tour['TourID'];
         $name = $tour['Name'];
+        if($id!==$id2){
+            continue;
+        }
+        print($name);
+//        print( "<button type='button' ". "onclick=" ."\"" . "toggleDiv($id)" . "\"" .">$name</button>");
         
-        print( "<button type='button' ". "onclick=" ."\"" . "toggleDiv($id)" . "\"" .">$name</button>");
-        
-        print("<div id=myDIV$id style=\"display: none\"> Timeline of <b>$name</b>: ");
+        print("<div id=myDIV$id > Timeline of <b>$name</b>: ");
         $res = $foo->getMap($id) ;
 
         print("<ol>");
@@ -37,7 +41,7 @@
             $classroom = $b["classroomName"];
             $building = $b["buildingName"];
              
-            print("<li><div style=\"color:blue\" onclick=\"showMap('$classroom', '$building', $buildingID)\">$start_time - $end_time</div></li>");
+            print("<li><div style=\"color:blue; cursor : pointer; \" onclick=\"showMap('$classroom', '$building', $buildingID)\">$start_time - $end_time</div></li>");
             
         }
         print("</ol>");
