@@ -2,9 +2,14 @@
 
 header('Content-Type: application/json');
 
+require_once("../../utils/auth.php");
+$username = requireAuthenticated();
 include ("MessageController.php");
 
-$messageId = $_REQUEST['messageId'];
+$messageId = $_GET['messageId'];
 
-echo $messageController->getMessageInfo($messageId);
+include ("../../models/UserModel.php");
+$userModel = new UserModel();
+$currentUserId = $userModel->getUserId($username);
+echo $messageController->getMessageInfo($messageId, $currentUserId);
 ?>

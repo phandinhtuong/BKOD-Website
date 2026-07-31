@@ -25,7 +25,7 @@
 
     $buildings = $foo->getAllBuildings();
     ?>
-        <form action="../../controllers/map/add.php"><table>
+        <form action="../../controllers/map/add.php" method="post"><table>
             <?php TableHeader(); ?>
             <tr>
                 <td><?php echo $tour_id; ?></td>

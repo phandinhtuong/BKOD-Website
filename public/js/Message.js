@@ -7,7 +7,7 @@ function load() {
             document.getElementById("receiver").value = document.getElementById("user").value;
         }
     };
-    xhttp.open("POST", "../controllers/MessageController/getMessages.php?username=" + localStorage.getItem("currentUser") + "&selectedUserId=" + document.getElementById("user").value);
+    xhttp.open("POST", "../controllers/MessageController/getMessages.php?selectedUserId=" + encodeURIComponent(document.getElementById("user").value));
     xhttp.send();
 }
 setInterval(load, 1000);
@@ -38,8 +38,9 @@ function submitChat() {
             document.getElementById('chatlogs').innerHTML = xmlhttp2.responseText;
         }
     }
-    xmlhttp2.open('POST', "../controllers/MessageController/sendMessage.php?receiverId=" + receiverId + '&message=' + message + '&username=' + localStorage.getItem("currentUser"))
-    xmlhttp2.send();
+    xmlhttp2.open('POST', "../controllers/MessageController/sendMessage.php")
+    xmlhttp2.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+    xmlhttp2.send(new URLSearchParams({receiverId: receiverId, message: message}).toString());
 }
 
 var xmlhttp1 = new XMLHttpRequest();

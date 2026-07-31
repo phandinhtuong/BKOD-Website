@@ -1,15 +1,14 @@
 <?php
 session_start(); //start session from the beginning
 $username = null;
-$password = null;
+$password = "";
 $registerSuccess = false;
 if (isset($_SESSION["registerSuccess"])) { //if user just registered
     $username = $_SESSION["registerSuccess"]["username"]; //set username and password corresponding to what user registered
-    $password = $_SESSION["registerSuccess"]["psw"];
+    $password = "";
     $registerSuccess = true;
 } else {
-    $username = "a@a.a"; // default username and password
-    $password = "a";
+    $username = "";
 }
 ?>
 <html>

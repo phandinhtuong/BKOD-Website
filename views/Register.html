@@ -72,7 +72,6 @@
           errorEl.style.display = 'block';
           errorEl.textContent = res;
         } else {
-          localStorage.setItem('user', JSON.stringify(res));
           localStorage.setItem('regSuccess', true);
           window.location.href = '../views/index.php'
         }

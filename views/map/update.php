@@ -20,7 +20,7 @@
 //    print_r($old);
     $buildings = $foo->getAllBuildings();
     ?>
-        <form action="../../controllers/map/update.php"><table>
+        <form action="../../controllers/map/update.php" method="post"><table>
             <?php TableHeader(); ?>
             <tr>
                 <td><?php echo $tour_id; ?></td>

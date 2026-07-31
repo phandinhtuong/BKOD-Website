@@ -31,7 +31,7 @@
 //    echo '</br/>';  
 //    print_r($classes);
     ?>
-        <form action="../../controllers/map/delete.php"><table>
+        <form action="../../controllers/map/delete.php" method="post"><table>
             <?php TableHeader(); ?>
             <tr>
                 <td><?php echo $tour_id; ?></td>

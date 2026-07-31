@@ -57,7 +57,7 @@ function displayAllTours() { // display all tours available in database
 
                     //name of tour
                     var tourName = document.createElement("span");
-                    tourName.innerHTML = xmlDoc.getElementsByTagName("name")[i].childNodes[0].nodeValue;
+                    tourName.textContent = xmlDoc.getElementsByTagName("name")[i].childNodes[0].nodeValue;
                     tourName.setAttribute('class', 'tourName');
                     tourName.setAttribute('onclick', 'displayOneTour(' + tourID[i] + ')'); // click on tour name to display tour
                     li.appendChild(tourName);
@@ -201,7 +201,7 @@ function getOneTourToEdit(tourID) { // edit one tour - just display to edit prop
 
             //"tour ID" part
             var spanTourID = document.createElement("span");
-            spanTourID.innerHTML = 'Tour ID: ' + $tourID;
+            spanTourID.textContent = 'Tour ID: ' + $tourID;
             li.appendChild(spanTourID);
 
             //"name" text
@@ -322,9 +322,11 @@ function insertTour() { //insert tour to database
             alert(result); //alert result of adding new tour
         }
     };
-    xmlHttp.open("GET", "../controllers/TourController/tourController.php?q=" + $q + "&name=" + $name
-            + "&state=" + $state + "&imageURL=" + $imageURL + "&date=" + $date, true);
-    xmlHttp.send();
+    xmlHttp.open("POST", "../controllers/TourController/tourController.php", true);
+    xmlHttp.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+    xmlHttp.send(new URLSearchParams({
+        q: $q, name: $name, state: $state, imageURL: $imageURL, date: $date
+    }).toString());
 }
 function updateTour(tourID) { //update tour to database
     xmlHttp = GetXmlHttpObject();
@@ -350,9 +352,11 @@ function updateTour(tourID) { //update tour to database
             editOneTour($tourID);
         }
     };
-    xmlHttp.open("GET", "../controllers/TourController/tourController.php?q=" + $q + "&tourID=" + $tourID + "&name=" + $name
-            + "&state=" + $state + "&imageURL=" + $imageURL + "&date=" + $date, true);
-    xmlHttp.send();
+    xmlHttp.open("POST", "../controllers/TourController/tourController.php", true);
+    xmlHttp.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+    xmlHttp.send(new URLSearchParams({
+        q: $q, tourID: $tourID, name: $name, state: $state, imageURL: $imageURL, date: $date
+    }).toString());
 }
 function deleteOneTour(tourID) { // delete tour
     //input: tour ID used to delete
@@ -373,8 +377,9 @@ function deleteOneTour(tourID) { // delete tour
                 displayAllTours();
             }
         };
-        xmlHttp.open("GET", "../controllers/TourController/tourController.php?q=" + $q + "&tourID=" + $tourID, true);
-        xmlHttp.send();
+        xmlHttp.open("POST", "../controllers/TourController/tourController.php", true);
+        xmlHttp.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+        xmlHttp.send(new URLSearchParams({q: $q, tourID: $tourID}).toString());
 
     }
 }

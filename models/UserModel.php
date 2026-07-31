@@ -5,15 +5,14 @@ class UserModel {
     public function registerUser($username, $psw, $fullName) {
         require '../../utils/db_connection.php';
 
-        $hash256Password = $psw . $username . "BKODv1Habvietio";
-        $hash256Password = hash("sha256", $hash256Password);
+        $passwordHash = password_hash($psw, PASSWORD_DEFAULT);
         $userId = time();
 
         $insertUserQuery = $db->prepare("INSERT INTO user (UserId, username, password, fullname) VALUES (?, ?, ?, ?)");
         if (PEAR::isError($insertUserQuery)) {
             return "Bad query detected!";
         }
-        $data = array($userId, $username, $hash256Password, $fullName);
+        $data = array($userId, $username, $passwordHash, $fullName);
         $res = &$db->execute($insertUserQuery, $data);
 
         if (PEAR::isError($res)) {
@@ -24,18 +23,17 @@ class UserModel {
                 return json_encode("An unknown error occured!");
             }
         } else {
-            $loginInfo = array(
-                'username' => $username,
-                'psw' => $psw
-            );
-            return json_encode($loginInfo);
+            return json_encode("Registered successfully!");
         }
     }
 
     public function getUserInfo($username) {
         require '../../utils/db_connection.php';
 
-        $getUsersInfoQuery = $db->prepare("SELECT * FROM user where username = ?");
+        $getUsersInfoQuery = $db->prepare(
+            "SELECT UserId, username, NULL AS password, fullname, birthday, gender, school, class, phoneNumber, isCounselor, state
+             FROM user WHERE username = ?"
+        );
         if (PEAR::isError($getUsersInfoQuery)) {
             return "Bad query detected!";
         }
@@ -52,7 +50,7 @@ class UserModel {
 
     public function getUserId($username) {
         require '../../utils/db_connection.php';
-        $getUsersInfoQuery = $db->prepare("SELECT * FROM user where username = ?");
+        $getUsersInfoQuery = $db->prepare("SELECT UserId FROM user WHERE username = ?");
         if (PEAR::isError($getUsersInfoQuery)) {
             return "Bad query detected!";
         }
@@ -147,8 +145,7 @@ class UserModel {
         $res = &$db->execute($deleteUserQuery, $username);
 
         if (PEAR::isError($res)) {
-            $err = $res->getDebugInfo();
-            return json_encode($err);
+            return json_encode("An unknown error occured!");
         } else {
             return json_encode("Deleted successfully!");
         }

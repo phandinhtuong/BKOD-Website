@@ -17,9 +17,9 @@ class MessageController extends Controller {
         }
     }
     
-    public function getMessageInfo($messageId) {
+    public function getMessageInfo($messageId, $currentUserId) {
         try {
-            $messageInfo = $this->_model->getMessageInfo($messageId);
+            $messageInfo = $this->_model->getMessageInfo($messageId, $currentUserId);
             echo $messageInfo;
         } catch (Exception $e) {
             echo json_encode("Application error:" . $e->getMessage());

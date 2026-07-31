@@ -1,4 +1,6 @@
 <?php
+  require_once("../../utils/auth.php");
+  requireAdminMutation();
   include ("NewsController.php");
   $_POST = json_decode(file_get_contents('php://input'), true);
   if (isset($_POST['newsId'])) {

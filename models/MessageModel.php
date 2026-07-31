@@ -53,28 +53,32 @@ class MessageModel {
 
             echo '<select style="width: 100%; height: 500px; border-radius: 5px" id="chatSelection" name="chatSelection" size=20 multiple>';
             foreach ($allMessages as $row) {
+                $messageId = htmlspecialchars($row['messageId'], ENT_QUOTES, 'UTF-8');
+                $content = htmlspecialchars($row['mContent'], ENT_QUOTES, 'UTF-8');
                 if ($row['senderId'] == $currentUserId) {
-                    echo'<option style="background-color: #00FFFF; display: table; margin-right: 0px; margin-left:auto; border-radius: 25px; height: 20px; padding: 5px" value="' . $row['messageId'] . '">' . $row['mContent'] . '</option>';
+                    echo'<option style="background-color: #00FFFF; display: table; margin-right: 0px; margin-left:auto; border-radius: 25px; height: 20px; padding: 5px" value="' . $messageId . '">' . $content . '</option>';
                 } else {
-                    echo'<option style="background-color: #7FFF00; display: table; margin-right: auto; margin-left:20px; border-radius: 25px; height: 20px; padding: 5px" value="' . $row['messageId'] . '">' . $row['mContent'] . '</option>';
+                    echo'<option style="background-color: #7FFF00; display: table; margin-right: auto; margin-left:20px; border-radius: 25px; height: 20px; padding: 5px" value="' . $messageId . '">' . $content . '</option>';
                 }
             }
             echo'</select>';
         }
     }
 
-    public function getMessageInfo($messageId) {
+    public function getMessageInfo($messageId, $currentUserId) {
         require '../../utils/db_connection.php';
         $allMessages = array();
         $trueMessage = array();
 
-        $getMessageInfoQuery = $db->prepare("SELECT * FROM message WHERE messageId = ?");
+        $getMessageInfoQuery = $db->prepare(
+            "SELECT * FROM message WHERE messageId = ? AND (senderId = ? OR recieverId = ?)"
+        );
 
         if (PEAR::isError($getMessageInfoQuery)) {
             echo "Bad query detected!";
         }
 
-        $res = &$db->execute($getMessageInfoQuery, $messageId);
+        $res = &$db->execute($getMessageInfoQuery, array($messageId, $currentUserId, $currentUserId));
 
         if (PEAR::isError($res)) {
             $err = $res->getDebugInfo();
@@ -98,9 +102,9 @@ class MessageModel {
 
             foreach ($allMessages as $row) {
                 echo'Content: ';
-                echo'<input id="messageContent" type="text" name="receiverId" readonly value="' . $row['mContent'] . '"><br>';
+                echo'<input id="messageContent" type="text" name="receiverId" readonly value="' . htmlspecialchars($row['mContent'], ENT_QUOTES, 'UTF-8') . '"><br>';
                 echo'Time sent: ';
-                echo'<input id="messageTime" type="text" name="receiverId" readonly value="' . $row['time'] . '">';
+                echo'<input id="messageTime" type="text" name="receiverId" readonly value="' . htmlspecialchars($row['time'], ENT_QUOTES, 'UTF-8') . '">';
             }
         }
     }
@@ -176,10 +180,12 @@ class MessageModel {
             echo '<select style="width: 100%; height: 500px; border-radius: 20px; border-radius: 10px" id="user" name="user" size=20 multiple>';
             foreach ($allUsers as $row) {
                 if ($row['username'] != 'admin') {
+                    $userId = htmlspecialchars($row['userId'], ENT_QUOTES, 'UTF-8');
+                    $fullName = htmlspecialchars($row['fullName'], ENT_QUOTES, 'UTF-8');
                     if ($row['userId'] == 2) {
-                        echo'<option style="border: 1px solid #00FF00; background-color: #FF8C00; display: table; border-radius: 25px; height: 15px; padding: 5px" selected value="' . $row['userId'] . '">' . $row['fullName'] . '</option>';
+                        echo'<option style="border: 1px solid #00FF00; background-color: #FF8C00; display: table; border-radius: 25px; height: 15px; padding: 5px" selected value="' . $userId . '">' . $fullName . '</option>';
                     } else {
-                        echo'<option style="border: 1px solid #00FF00; background-color: #FF8C00; display: table; border-radius: 25px; height: 15px; padding: 5px" value="' . $row['userId'] . '">' . $row['fullName'] . ' </option>';
+                        echo'<option style="border: 1px solid #00FF00; background-color: #FF8C00; display: table; border-radius: 25px; height: 15px; padding: 5px" value="' . $userId . '">' . $fullName . ' </option>';
                     }
                 }
             }
